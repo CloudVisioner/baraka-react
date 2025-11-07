@@ -5,12 +5,12 @@ import { store } from "./app/store";
 import App from "./app/App";
 import reportWebVitals from "./reportWebVitals";
 import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-
+import { ThemeProvider} from "@mui/material/styles";
+import theme from "./app/MaterialTheme";
 import "./css/index.css";
 
+
 // Define a default theme
-const theme = createTheme();
 
 ReactDOM.render(
   <React.StrictMode>
