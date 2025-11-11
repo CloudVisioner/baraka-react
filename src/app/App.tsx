@@ -2,34 +2,23 @@ import React from "react";
 import "../css/app.css";
 
 import { Container, Button, Box, Stack, Typography } from "@mui/material";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route, Switch, useLocation } from "react-router-dom";
 import { ProductsPages } from "./screens/productsPage";
 import { OrdersPage } from "./screens/ordersPage";
 import { HomePage } from "./screens/homePage";
-import { UserPage} from "./screens/userPage";
+import { UserPage } from "./screens/userPage";
+import { HomeNavbar } from "./components/headers/HomeNavbar";
+import { OtherNavbar } from "./components/headers/OtherNavbar";
+import { Footer } from "./components/footer";
 
 function App() {
+  const location = useLocation();
+  console.log("location", location)
   return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">HomePage</Link>
-          </li>
-          <li>
-            <Link to="/products">ProductsPage</Link>
-          </li>
-          <li>
-            <Link to="/orders">OrdersPage</Link>
-          </li>
-          <li>
-            <Link to="/member-page">UserPage</Link>
-          </li>
-        </ul>
-      </nav>
-
+    <>
+    {location.pathname === "/" ? <HomeNavbar/> : <OtherNavbar/>}
       <Switch>
-        <Route path="/product">
+        <Route path="/products">
           <ProductsPages />
         </Route>
         <Route path="/orders">
@@ -42,12 +31,10 @@ function App() {
           <HomePage />
         </Route>
       </Switch>
-    </div>
+      <Footer />
+    </>
   );
 
-  function Home() {
-    return <Container>Home</Container>;
-  }
 }
 
 export default App;
