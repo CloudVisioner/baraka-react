@@ -1,4 +1,5 @@
 import React from "react";
+import { createRoot } from "react-dom/client"
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
@@ -9,11 +10,16 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./app/MaterialTheme"; //
 import "./css/index.css";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Container } from "@mui/material";
 
 // Define a default theme
 // index.tsx is a connecter between App.tsx and root
 
-ReactDOM.render(
+const container = document.getElementById('root')!;
+const root = createRoot(container)
+
+
+root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
@@ -24,7 +30,6 @@ ReactDOM.render(
       </ThemeProvider>
     </Provider>
   </React.StrictMode>, // passing <App /> componet to root, an empty HTML. Created in jsReact
-  document.getElementById("root") // React put the HTML from your App.tsx inside it.
   // Style comes from css files.
 );
 
