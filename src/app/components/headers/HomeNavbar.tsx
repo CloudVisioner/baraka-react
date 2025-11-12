@@ -44,7 +44,7 @@ export function HomeNavbar() {
             ) : null}
 
             <Box className={"hover-line"}>
-              <NavLink to="/help" activeClassName={"underline"}>
+              <NavLink to="/help-page" activeClassName={"underline"}>
                 Help
               </NavLink>
             </Box>
