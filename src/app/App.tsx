@@ -2,11 +2,11 @@ import React from "react";
 
 import { Container, Button, Box, Stack, Typography } from "@mui/material";
 import { Link, Route, Switch, useLocation } from "react-router-dom";
-import  ProductsPages  from "./screens/productsPage";
-import  OrdersPage  from "./screens/ordersPage";
-import HomePage  from "./screens/homePage";
-import  UserPage  from "./screens/userPage";
-import  HomeNavbar  from "./components/headers/HomeNavbar";
+import ProductsPages from "./screens/productsPage";
+import OrdersPage from "./screens/ordersPage";
+import HomePage from "./screens/homePage";
+import UserPage from "./screens/userPage";
+import HomeNavbar from "./components/headers/HomeNavbar";
 import OtherNavbar from "./components/headers/OtherNavbar";
 import Footer from "./components/footer";
 import "../css/app.css";
@@ -16,10 +16,10 @@ import { HelpPage } from "./screens/helpPage";
 
 function App() {
   const location = useLocation();
-  console.log("location", location)
+  console.log("location", location);
   return (
     <>
-    {location.pathname === "/" ? <HomeNavbar/> : <OtherNavbar/>}
+      {location.pathname === "/" ? <HomeNavbar /> : <OtherNavbar />}
       <Switch>
         <Route path="/products">
           <ProductsPages />
@@ -30,7 +30,7 @@ function App() {
         <Route path="/member-page">
           <UserPage />
         </Route>
-         <Route path="/help-page">
+        <Route path="/help-page">
           <HelpPage />
         </Route>
         <Route path="/">
@@ -40,7 +40,6 @@ function App() {
       <Footer />
     </>
   );
-
 }
 
 export default App;

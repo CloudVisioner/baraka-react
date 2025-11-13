@@ -18,12 +18,12 @@ import { Container } from "@mui/material";
 const container = document.getElementById('root')!;
 const root = createRoot(container)
 
-
+// Global Integration
 root.render(
-  <React.StrictMode>
+  <React.StrictMode> 
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
+        <CssBaseline /> 
         <Router>
           <App />
         </Router>
