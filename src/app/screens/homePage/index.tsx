@@ -5,6 +5,7 @@ import Advertisement from "./Advertisement";
 import AcitveUsers from "./AcitveUsers";
 import Events from "./Events";
 import Statistics from "./Statistic";
+import "../../../css/home.css"
 
 
 export default function HomePage() {
