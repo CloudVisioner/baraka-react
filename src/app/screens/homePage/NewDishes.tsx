@@ -31,7 +31,7 @@ export default function NewDishes() {
                     <Card key={index} variant="outlined" className={"card"}>
                       <CardOverflow>
                         <div className="product-sale">Normal size</div>
-                        <AspectRatio ratio="1">
+                        <AspectRatio ratio="1"> 
                           <img src={ele.imagePath} alt="" />
                         </AspectRatio>
                       </CardOverflow>

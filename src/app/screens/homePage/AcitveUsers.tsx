@@ -30,6 +30,7 @@ export default function ActiveUsers() {
                           <img src={ele.memberImage} alt="" />
                         </AspectRatio>
                       </CardOverflow>
+                      
 
                       <CardOverflow variant="soft" className="user-detail">
                         <Stack className="member-nickname">
