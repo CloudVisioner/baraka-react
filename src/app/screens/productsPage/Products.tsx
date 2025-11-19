@@ -20,13 +20,6 @@ const products = [
   { productName: "Kebab", imagePath: "/img/kebab-fresh.webp" },
 ];
 
-const list = [
-  { productName: "Lavash", imagePath: "/img/lavash.webp" },
-  { productName: "Cutlet", imagePath: "/img/cutlet.webp" },
-  { productName: "Kebab", imagePath: "/img/kebab.webp" },
-  { productName: "Kebab", imagePath: "/img/kebab-fresh.webp" },
-];
-
 export default function Products() {
   return (
     <div className={"products"}>
@@ -34,20 +27,21 @@ export default function Products() {
         <Stack flexDirection={"column"} alignItems={"center"}>
           <Stack className="first">
             <Box className={"res-name"}>Burak Restaurant</Box>
-            <Box className="search-wrapper">
-              <Stack
-                flexDirection={"row"}
-                justifyContent={"space-between"}
-                alignItems={"center"}
-                className="search"
-              >
-                <Box className="search-text">Type here</Box>
+            <Stack className="search-wrapper">
+              <Stack className="search" direction="row" alignItems="center">
+                <input
+                  id="myInput"
+                  type="text"
+                  className="search-input"
+                  placeholder="Type here"
+                />
+
                 <Button variant="contained" className="search-button">
-                  Search
-                  <img className="user-avatar" src={"/icons/Vector.svg"} />
+                  SEARCH
+                  <img className="user-avatar" src="/icons/Vector.svg" />
                 </Button>
               </Stack>
-            </Box>
+            </Stack>
           </Stack>
         </Stack>
 
@@ -129,6 +123,23 @@ export default function Products() {
             ) : (
               <Box className="no-data">Products are not available!</Box>
             )}
+
+            <Stack className={"pagination-section"}>
+              <Pagination
+                count={3}
+                page={1}
+                renderItem={(item) => (
+                  <PaginationItem
+                    components ={{
+                      previous: ArrowBackIcon,
+                      next: ArrowForwardIcon,
+                    }}
+                    {...item}
+                    color={"secondary"}
+                  />
+                )}
+              />
+            </Stack>
           </Stack>
         </Stack>
       </Container>

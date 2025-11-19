@@ -2,7 +2,7 @@ import { Box, Button, Container, Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
 export default function OtherNavbar() {
-    const authMember = null;
+    const authMember = true;
 
     return <div className="other-navbar">
       <Container className="navbar-container">
@@ -15,7 +15,7 @@ export default function OtherNavbar() {
 
           <Stack className="links">
             <Box className={"hover-line"}>
-              <NavLink to="/" activeClassName={"underline"}>
+              <NavLink to="/" >
                 Home
               </NavLink>
             </Box>
