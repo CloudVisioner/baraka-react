@@ -1,7 +1,7 @@
 import { Member } from "./member";
 import { Product } from "./product";
 
-export interface ApprootState {
+export interface AppRootState {
     homePage: HomePageState;
 }
 
