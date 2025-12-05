@@ -10,16 +10,17 @@ export default function HomeNavbar() {
   const [value, setvalue] = useState<boolean>(true);
 
   useEffect(() => {
-    console.log("componentDidMount", count);
-    setCount(count + 1);
+    console.log("componentDidMount", count); // two time rendering "STRICT MODE"
+    setCount(count + 1); // Works only every render //3
     return () => {
-      console.log("componentWillUnmount");
+      console.log("componentWillUnmount"); // 2
     };
   }, [value]);
 
-  // ** Handlers ** //
+  // ** Handlers ** // 
   const buttonHandler = () => {
-    setvalue(!value);
+    setvalue(!value); // 1
+    console.log('VALUE', value);
   };
   return (
     <div className="home-navbar">
