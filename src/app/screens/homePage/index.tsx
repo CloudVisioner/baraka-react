@@ -28,18 +28,10 @@ export default function HomePage() {
   const { setPopularDishes } = actionDispatch(useDispatch()); // Real React Hook
   const { popularDishes } = useSelector(popularDishesRetriever);
 
-  console.log(process.env.REACT_APP_API_URL)
+  console.log(process.env.REACT_APP_API_URL);
 
-  useEffect(() => {
-    // Backend server data request => Data
-    const result = [{}];
-    // Slice: Data => Store
-    console.log("REDUX IS RUNNING");
-    // @ts-ignore
-    setPopularDishes(result);
-  }, []);
+  useEffect(() => {}, []);
 
-  console.log("popularDishes", popularDishes);
   return (
     <div className={"homepage"}>
       <Statistics />
