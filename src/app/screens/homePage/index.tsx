@@ -21,39 +21,20 @@ const actionDispatch = (dispatch: Dispatch) => ({
 
 const popularDishesRetriever = createSelector(
   retrievePopularDishes,
-  (popularDishes) => ({ popularDishes })
+  (popularDishes) => ({ popularDishes }) // just selcted data name
 );
 
 export default function HomePage() {
-  const dispatch = useDispatch();
-  const { setPopularDishes } = actionDispatch(dispatch);
-
+  const { setPopularDishes } = actionDispatch(useDispatch()); // Real React Hook
   const { popularDishes } = useSelector(popularDishesRetriever);
+
+  console.log(process.env.REACT_APP_API_URL)
 
   useEffect(() => {
     // Backend server data request => Data
-    const result = [
-      {
-        _id: "690a18227de83329dec4ec07",
-        productStatus: "PROCESS",
-        productCollection: "DISH",
-        productName: "Steak",
-        productPrice: 15,
-        productLeftCount: 199,
-        productSize: "NORMAL",
-        productVolume: 1,
-        productDesc: "This is the most delicious Steak",
-        productImages: [
-          // image URLs
-        ],
-        productViews: 0,
-        createdAt: "2025-11-04T15:13:38.078+00:00",
-        updatedAt: "2025-11-05T02:57:02.550+00:00",
-        __v: 0,
-      },
-    ];
-
+    const result = [{}];
     // Slice: Data => Store
+    console.log("REDUX IS RUNNING");
     // @ts-ignore
     setPopularDishes(result);
   }, []);
