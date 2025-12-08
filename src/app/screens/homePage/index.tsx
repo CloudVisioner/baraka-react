@@ -6,10 +6,9 @@ import AcitveUsers from "./AcitveUsers";
 import Events from "./Events";
 import Statistics from "./Statistic";
 import "../../../css/home.css";
-
 import { useDispatch,  } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setPopularDishes } from "./slice";
+import { setNewDishes, setPopularDishes } from "./slice";
 import { retrievePopularDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
 import ProductService from "../../services/ProductService";
@@ -21,6 +20,7 @@ import {
 /** REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
   setPopularDishes: (data: Product[]) => dispatch(setPopularDishes(data)),
+  setNewDishes: (data: Product[]) => dispatch(setNewDishes(data)),
 });
 
 
@@ -42,6 +42,19 @@ export default function HomePage() {
       .then((data) => {
         console.log("data passed here:", data);
         setPopularDishes(data);
+      })
+      .catch((err) => console.log(err));
+
+      product
+      .getProducts({
+        page: 1,
+        limit: 4,
+        order: "createdAt",
+        productCollection: ProductCollection.DISH,
+      })
+      .then((data) => {
+        console.log("data passed here:", data);
+        setNewDishes(data);
       })
       .catch((err) => console.log(err));
   }, []);
