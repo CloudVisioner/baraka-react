@@ -3,6 +3,7 @@ import { Product } from "./product";
 
 //** REACT APP STATE **//
 export interface AppRootState {
+    productsPage: any;
     homePage: HomePageState;
 }
 
