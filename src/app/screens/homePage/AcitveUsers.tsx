@@ -6,6 +6,17 @@ import AspectRatio from "@mui/joy/AspectRatio";
 import Divider from "../../components/divider";
 import "../../../css/products.css";
 
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { retrieveTopUsers } from "./selector";
+import { serverApi } from "../../../lib/config";
+import { Member } from "../../../lib/types/member";
+
+/** REDUX SLICE & SELECTOR */
+const topUsersRetriever = createSelector(retrieveTopUsers, (topUsers) => ({
+  topUsers,
+}));
+
 const activeUsers = [
   { memberNick: "Martin", memberImage: "/img/martin.webp" },
   { memberNick: "Justin", memberImage: "/img/justin.webp" },
@@ -14,6 +25,7 @@ const activeUsers = [
 ];
 
 export default function ActiveUsers() {
+  const { topUsers } = useSelector(topUsersRetriever);
   return (
     <div className="active-users-frame">
       <Container>
@@ -22,22 +34,26 @@ export default function ActiveUsers() {
 
           <Stack className={"cards-frame"}>
             <CssVarsProvider>
-              {activeUsers.length !== 0 ? (
-                activeUsers.map((ele, index) => {
+              {topUsers.length !== 0 ? (
+                topUsers.map((member: Member) => {
+                  const imagePath = `${serverApi}/${member.memberImage}`;
                   return (
-                    <Card key={index} variant="outlined" className={"card"}>
+                    <Card
+                      key={member._id}
+                      variant="outlined"
+                      className={"card"}
+                    >
                       <CardOverflow>
                         <AspectRatio ratio="1">
-                          <img src={ele.memberImage} alt="" />
+                          <img src={imagePath} alt="" />
                         </AspectRatio>
                       </CardOverflow>
-                      
 
                       <CardOverflow variant="soft" className="user-detail">
                         <Stack className="member-nickname">
                           <Stack flexDirection={"row"}>
                             <Typography className={"title"}>
-                              {ele.memberNick}
+                              {member.memberNick}
                             </Typography>
                           </Stack>
                         </Stack>

@@ -32,6 +32,7 @@ export default function Products() {
   const { products } = useSelector(productsRetriever);
 
   useEffect(() => {
+
     const product = new ProductService();
     product
       .getProducts({
@@ -41,9 +42,10 @@ export default function Products() {
         productCollection: ProductCollection.DISH,
         search: "",
       })
+      
       .then((data) => setProducts(data))
       .catch((err) => console.log(err));
-  }, []);
+  }, []); 
 
   return (
     <div className={"products"}>
