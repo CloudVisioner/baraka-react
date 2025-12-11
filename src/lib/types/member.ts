@@ -17,8 +17,6 @@ export interface Member {
 
 export interface MemberInput {
   // What client is allowed or not while creating a member.
-  memberType?: MemberType;
-  memberStatus?: MemberStatus;
   memberNick: string;
   memberPhone: string;
   memberPassword: string;

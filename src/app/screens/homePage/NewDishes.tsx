@@ -7,7 +7,7 @@ import Typography from "@mui/joy/Typography";
 import { CssVarsProvider } from "@mui/joy/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Divider from "../../components/divider/index";
-import { retrievePopularDishes } from "./selector";
+import { retrieveNewDishes } from "./selector";
 
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -15,13 +15,15 @@ import { Product } from "../../../lib/types/product";
 import { ProductCollection } from "../../../lib/enums/product.enum";
 import { serverApi } from "../../../lib/config";
 
-const nreDishesRetriever = createSelector(
-  retrievePopularDishes,
-  (newDishes) => ({ newDishes })
+
+/** REDUX SLICE & SELECTOR */
+const newDishesRetriever = createSelector(
+    retrieveNewDishes,
+    (newDishes) => ({ newDishes })
 );
 
 export default function NewDishes() {
-  const { newDishes } = useSelector(nreDishesRetriever);
+  const { newDishes } = useSelector(newDishesRetriever );
 
   console.log("newDishes", newDishes);
   return (
@@ -33,7 +35,7 @@ export default function NewDishes() {
           <Stack className={"cards-frame"}>
             <CssVarsProvider>
               {newDishes.length !== 0 ? (
-                newDishes.map((product, index) => {
+                newDishes.map((product: Product) => {
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
                   const sizeVolume = product.productCollection === ProductCollection.DRINK ? product.productVolume + "l" : product.productSize + "size"
                   return (
