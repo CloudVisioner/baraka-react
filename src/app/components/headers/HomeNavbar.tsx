@@ -2,10 +2,15 @@ import { Box, Button, Container, Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
 import React, { useEffect, useState } from "react";
+import { CartItem } from "../../../lib/types/search";
 
-export default function HomeNavbar() {
+interface HomeNavbarProps {
+  cartItems: CartItem[];
+}
+
+export default function HomeNavbar(props: HomeNavbarProps) {
+  const {cartItems} = props;
   const authMember = false;
-
   const [count, setCount] = useState<number>(0);
   const [value, setvalue] = useState<boolean>(true);
 
@@ -17,10 +22,10 @@ export default function HomeNavbar() {
     };
   }, [value]);
 
-  // ** Handlers ** // 
+  // ** Handlers ** //
   const buttonHandler = () => {
     setvalue(!value); // 1
-    console.log('VALUE', value);
+    console.log("VALUE", value);
   };
   return (
     <div className="home-navbar">
@@ -67,7 +72,7 @@ export default function HomeNavbar() {
               </NavLink>
             </Box>
 
-            <Basket />
+            <Basket cartItems={[]} />
 
             {!authMember ? (
               <Box>
