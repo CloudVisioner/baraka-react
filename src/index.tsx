@@ -1,5 +1,5 @@
 import React from "react";
-import { createRoot } from "react-dom/client"
+import { createRoot } from "react-dom/client";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
@@ -11,25 +11,28 @@ import theme from "./app/MaterialTheme"; //
 import "./css/index.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Container } from "@mui/material";
+import ContextProvider from "./app/context/ContextProvider";
 
 // Define a default theme
 // index.tsx is a connecter between App.tsx and root
 
-const container = document.getElementById('root')!;
-const root = createRoot(container)
+const container = document.getElementById("root")!;
+const root = createRoot(container);
 
 // Global Integration
 root.render(
-  <React.StrictMode> 
+  <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline /> 
-        <Router>
-          <App />
-        </Router>
-      </ThemeProvider>
+      <ContextProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+            <App />
+          </Router>
+        </ThemeProvider>
+      </ContextProvider>
     </Provider>
-  </React.StrictMode>, // passing <App /> componet to root, an empty HTML. Created in jsReact
+  </React.StrictMode> // passing <App /> componet to root, an empty HTML. Created in jsReact
   // Style comes from css files.
 );
 
