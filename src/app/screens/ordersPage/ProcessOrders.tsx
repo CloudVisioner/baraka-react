@@ -3,28 +3,49 @@ import { Box, Stack, Button } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
 import moment from "moment";
 
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { retrievePausedOrders, retrieveProcessOrders } from "./selector";
+import { Product } from "../../../lib/types/product";
+import { ProductCollection } from "../../../lib/enums/product.enum";
+import { serverApi } from "../../../lib/config";
+import { Order, OrderItem } from "../../../lib/types/orders";
+
+/** REDUX SLICE & SELECTOR */
+const processdOrdersRetriever = createSelector(
+  retrieveProcessOrders,
+  (processOrders) => ({ processOrders }) // just selcted data name
+);
+
 export default function PausedOrders() {
+  const { processOrders } = useSelector(processdOrdersRetriever);
   return (
     <TabPanel value={"2"}>
       <Stack className={"container-paused"}>
-        {[1, 2].map((ele, index) => {
+        {processOrders.map((order: Order) => {
           return (
-            <Box key={index} className={"order-main-box"}>
+            <Box key={order._id} className={"order-main-box"}>
               <Box className={"order-box-scroll"}>
-                {[1, 2, 3].map((ele2, index2) => {
+                {order?.orderItems?.map((item: OrderItem) => {
+                  const product: Product = order.productData.filter(
+                    (ele: Product) => item.productId === ele._id
+                  )[0];
+                  const imagePath = `${serverApi}/${product.productImages[0]}`;
                   return (
-                    <Box key={index2} className={"orders-name-price"}>
+                    <Box key={item._id} className={"orders-name-price"}>
                       <img
-                        src={"/img/kebab-fresh.webp"}
+                        src={imagePath}
                         className={"order-dish-img"}
                       />
-                      <p className={"title-dish"}>Kebab</p>
+                      <p className={"title-dish"}>{product.productName}</p>
                       <Box className={"price-box"}>
-                        <p>$12</p>
+                        <p>${item.itemPrice}</p>
                         <img src={"/icons/close.svg"} />
-                        <p>2</p>
+                        <p>{item.itemQuantity}</p>
                         <img src={"/icons/pause.svg"} />
-                        <p style={{ marginLeft: "15px" }}>$24</p>
+                        <p style={{ marginLeft: "15px" }}>
+                          ${item.itemQuantity * item.itemPrice}
+                        </p>
                       </Box>
                     </Box>
                   );
@@ -32,18 +53,14 @@ export default function PausedOrders() {
 
                 <Box className={"total-price-box"}>
                   <Box className={"box-total"}>
-                    <p>Product prize</p>
+                    <p>${order.orderTotal - order.orderDelivery}</p>
                     <p>$22</p>
-                    <img src={"/icons/plus.svg"}
-                   />
+                    <img src={"/icons/plus.svg"} />
                     <p>delivery cost</p>
-                    <p>$2</p>
-                    <img
-                      src={"/icons/pause.svg"}
-                   
-                    />
+                    <p>${order.orderDelivery}</p>
+                    <img src={"/icons/pause.svg"} />
                     <p>Total</p>
-                    <p>$24</p>
+                    <p>${order.orderTotal}</p>
                   </Box>
                   <p className={"data-compl"}>
                     {moment().format("YY-MM-DD HH: mm")}
@@ -57,124 +74,16 @@ export default function PausedOrders() {
           );
         })}
 
-        {false && (
-          <Box display="flex" flexDirection={"row"} justifyContent={"center"}>
-            <img
-              src={"/icons/noimage-list.svg"}
-              style={{ width: 300, height: 300 }}
-            />
-          </Box>
-        )}
+        {!processOrders ||
+          (processOrders.length === 0 && (
+            <Box display="flex" flexDirection={"row"} justifyContent={"center"}>
+              <img
+                src={"/icons/noimage-list.svg"}
+                style={{ width: 300, height: 300 }}
+              />
+            </Box>
+          ))}
       </Stack>
     </TabPanel>
   );
-} /*
-
-// CSS
-
-// .order-page .order-main-content .order-main-box {
-//   position: relative;
-//   width: 100%;
-//   max-height: 285px;
-//   margin-bottom: 25px;
-//   border-radius: 16px;
-//   background: #f8f8fe;
-//   box-shadow: -12px 12px 4px 0 #bababf, 0 4px 10px 9px #d3d3e7 inset,
-//     0 4px 16px 0 rgba(242, 189, 87, 0.04) inset;
-// }
-
-// .order-page .order-box-scroll .orders-name-price {
-//   position: relative;
-//   max-height: 47px;
-//   margin-top: 5px;
-//   margin-left: 50px;
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center; /* */
-// }
-
-// .order-page .order-box-scroll .orders-name-price .order-dish-img {
-//   position: relative;
-//   position: relative;
-//   width: 50px;
-//   height: 47px;
-//   border-radius: 50px;
-//   background-size: cover;
-//   background: #000;
-// }
-
-// .order-page .order-box-scroll .orders-name-price .title-dish {
-//   position: relative;
-//   width: 260px;
-//   margin-left: 36px;
-//   color: #000;
-//   font-family: Commissioner;
-//   font-size: 22px;
-//   font-style: normal;
-//   font-weight: 500;
-//   line-height: 36px;
-// }
-
-// .order-page .order-box-scroll .orders-name-price .price-box {
-//   position: relative;
-//   width: 170px;
-//   height: 100%;
-//   margin-left: 150px;
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-between;
-//   align-items: center;
-// }
-
-/*
-.order-page .order-main-content .order-main.box {
-  position: relative;
-  width: 100%;
-  max-height: 285px;
-  margin-bottom: 25px;
-  border-radius: 16px;
-  background: yellowgreen;
-  box-shadow: -12px 12px 4px 0 #bababf, 0 4px 10px 9px #d3d3e7 inset,
-    0 4px 16px 0 rgba(242, 189, 87, 0.04) inset;
 }
-
-.order-page .order-box-scroll .orders-name-price {
-  position: relative;
-  height: 47px;
-  margin-top: 5px;
-  margin-left: 50px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.order-page .order-box-scroll .orders-name-price .order-dish-img {
-  position: relative;
-  width: 50px;
-  height: 47px;
-  border-radius: 50px;
-  background-size: cover;
- background: #000;
-}
-
-.order-page .order-box-scroll .orders-name-price .title-dish {
-  /* position: relative; */
-//   width: 260px;
-//   height: 36px;
-//   margin-left: 20px;
-//   font-family: "Commissioner";
-//   font-style: normal;
-//   font-weight: 500;
-//   font-size: 22px;
-//   line-height: 36px;
-//   color: •#000000;
-// }
-// .order-page .order-box-scroll .orders-name-price .price-box {
-//   position: relative;
-//   max-width: 170px;
-//   height: 100%;
-//   margin-left: 150px;
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   justify-content: space-between;
-// } */
