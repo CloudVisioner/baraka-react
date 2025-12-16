@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { CartItem } from "../../lib/types/search";
-import { json } from "stream/consumers";
 
 const useBasket = () => {
   const cartJson: string | null = localStorage.getItem("cartData");
   const currentCart = cartJson ? JSON.parse(cartJson) : [];
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(currentCart);
 
   const onAdd = (input: CartItem) => {
     const exist: any = cartItems.find(
@@ -39,7 +38,7 @@ const useBasket = () => {
     } else {
       const cartUpdate = cartItems.map((item: CartItem) =>
         item._id === input._id
-          ? { ...exist, qunatity: exist.quantity - 1 }
+          ? { ...exist, quantity: exist.quantity - 1 }
           : item
       );
       setCartItems(cartUpdate);
@@ -58,7 +57,7 @@ const useBasket = () => {
   const onDeleteAll = () => {
     setCartItems([]);
     localStorage.removeItem("cartData");
-  }
+  };
 
   return {
     cartItems,
