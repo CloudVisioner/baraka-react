@@ -49,6 +49,7 @@
   box-shadow: 14px 14px 5px 0 #bbbbbf, 0 1px 11px 12px #d3d3e7 inset,
     0 4px 16px 0 rgba(242, 189, 87, 0.04) inset;
   margin-bottom: 25px; /* LOOOOOOOK */
+  /* background-color: blue; */
 }
 
 .order-page .order-right .order-info-box .member-box {
@@ -225,6 +226,7 @@
     0 4px 16px 0 rgba(242, 189, 87, 0.04) inset;
   overflow-y: scroll;
   overflow-x: hidden;
+  /* background-color: green; */
 }
 
 .order-page .order-box-scroll .orders-name-price {
@@ -236,6 +238,7 @@
   display: flex;
   flex-direction: row;
   align-items: center; /* */
+
 }
 
 .order-page .order-box-scroll .orders-name-price .order-dish-img {
@@ -257,6 +260,7 @@
   font-style: normal;
   font-weight: 500;
   line-height: 36px;
+
 }
 
 .order-page .order-box-scroll .orders-name-price .price-box {
@@ -268,6 +272,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
 }
 
 .order-page .order-main-content .total-price-box .cancel-button {
@@ -280,16 +285,18 @@
   position: sticky;
   bottom: 2px;
   width: 100%;
-  height: 41px;
-  margin: 7px 0 7px 0;
+  height: 44px;
+  margin-top: 100px;
+  
   display: flex;
   flex-direction: row;
   align-items: center;
   /* justify-content: space-between; */
   box-sizing: border-box;
   border-radius: 5px;
-  overflow: hidden;
-  left: 30px;
+  /* overflow: hidden; */
+  /* left: 30px;
+  background: #f5f5f5; */
 }
 
 /* .order-page .order-main-content .box-total {

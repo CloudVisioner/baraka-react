@@ -1,4 +1,4 @@
-import { useState, SyntheticEvent } from "react";
+import { useState, SyntheticEvent, useEffect } from "react";
 import { Container, Stack, Box } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -10,9 +10,10 @@ import FinishedOrders from "./FinishedOrders";
 import "../../../css/order.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import {  setPausedOrders, setProcessOrders, setFinishedOrders } from "./slice";
-import { Order } from "../../../lib/types/orders";
-
+import { setPausedOrders, setProcessOrders, setFinishedOrders } from "./slice";
+import { Order, OrderInquiry } from "../../../lib/types/orders";
+import { OrderStatus } from "../../../lib/enums/order.enum";
+import OrderService from "../../services/OrderService";
 
 /** REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -23,8 +24,36 @@ const actionDispatch = (dispatch: Dispatch) => ({
 });
 
 export default function OrdersPage() {
-  const {setPausedOrders, setFinishedOrders, setProcessOrders} = actionDispatch(useDispatch())
-  const [value, setValue] = useState("2");
+  const { setPausedOrders, setFinishedOrders, setProcessOrders } =
+    actionDispatch(useDispatch());
+  const [value, setValue] = useState("1");
+  const [orderInquery, setOrderInquery] = useState<OrderInquiry>({
+    page: 1,
+    limit: 5,
+    orderStatus: OrderStatus.PAUSE,
+  });
+
+  useEffect(() => { /////////////////////////////////////////
+    const order = new OrderService();
+
+    order
+      .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PAUSE })
+      .then((data) => setPausedOrders(data))
+      .catch((err) => console.log(err));
+
+
+    order
+      .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PROCESS })
+      .then((data) => setProcessOrders(data))
+      .catch((err) => console.log(err));
+
+
+    order
+      .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.FINISH })
+      .then((data) => setFinishedOrders(data))
+      .catch((err) => console.log(err));
+
+  }, [orderInquery]);
 
   //** HANDLERS **//
 
@@ -117,22 +146,22 @@ export default function OrdersPage() {
             />
 
             <Stack className="cards-img">
-                <img
-                    src={"/icons/western-card.svg"}
-                    className={"order-user-prof-img"}
-                  />
-                     <img
-                    src={"/icons/master-card.svg"}
-                    className={"order-user-prof-img"}
-                  />
-                     <img
-                    src={"/icons/paypal-card.svg"}
-                    className={"order-user-prof-img"}
-                  />
-                     <img
-                    src={"/icons/visa-card.svg"}
-                    className={"order-user-prof-img"}
-                  />
+              <img
+                src={"/icons/western-card.svg"}
+                className={"order-user-prof-img"}
+              />
+              <img
+                src={"/icons/master-card.svg"}
+                className={"order-user-prof-img"}
+              />
+              <img
+                src={"/icons/paypal-card.svg"}
+                className={"order-user-prof-img"}
+              />
+              <img
+                src={"/icons/visa-card.svg"}
+                className={"order-user-prof-img"}
+              />
             </Stack>
           </Box>
         </Stack>
@@ -140,9 +169,6 @@ export default function OrdersPage() {
     </div>
   );
 }
-
-
-
 
 // .order-page .order-main-box {
 //   display: flex;
