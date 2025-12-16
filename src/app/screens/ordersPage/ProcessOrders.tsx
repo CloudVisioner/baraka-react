@@ -1,15 +1,18 @@
 import React from "react";
 import { Box, Stack, Button } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
-import moment from "moment";
-
+import moment from "moment"
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { retrievePausedOrders, retrieveProcessOrders } from "./selector";
+import { retrieveProcessOrders } from "./selector";
 import { Product } from "../../../lib/types/product";
-import { ProductCollection } from "../../../lib/enums/product.enum";
-import { serverApi } from "../../../lib/config";
-import { Order, OrderItem } from "../../../lib/types/orders";
+import { Messages, serverApi } from "../../../lib/config";
+import { Order, OrderItem, OrderUpdateInput } from "../../../lib/types/orders";
+import { useGlobals } from "../../hooks/useGlobal";
+import { T } from "../../../lib/types/common";
+import { OrderStatus } from "../../../lib/enums/order.enum";
+import OrderService from "../../services/OrderService";
+import { sweetErrorHandling } from "../../../lib/sweetAlert";
 
 /** REDUX SLICE & SELECTOR */
 const processdOrdersRetriever = createSelector(
@@ -17,8 +20,41 @@ const processdOrdersRetriever = createSelector(
   (processOrders) => ({ processOrders }) // just selcted data name
 );
 
-export default function PausedOrders() {
+interface PausedOrdersProps {
+  setValue: (input: string) => void;
+}
+
+export default function PausedOrders(props: PausedOrdersProps) {
+  const { setValue } = props;
+  const { authMember, setOrderBuilder } = useGlobals();
   const { processOrders } = useSelector(processdOrdersRetriever);
+
+  //** HANDLERS **//
+
+  const finishOrderHandler = async (e: T) => {
+    try {
+      if (!authMember) throw new Error(Messages.error2);
+      // PAYMENT PROCESS
+
+      const orderId = e.target.value;
+      const input: OrderUpdateInput = {
+        orderId: orderId,
+        orderStatus: OrderStatus.FINISH,
+      };
+
+      const confirmation = window.confirm("Have you received your order?");
+      if (confirmation) {
+        const order = new OrderService();
+        await order.updateOrder(input);
+        setValue("3");
+        setOrderBuilder(new Date());
+      }
+    } catch (err) {
+      console.log(err);
+      sweetErrorHandling(err);
+    }
+  };
+
   return (
     <TabPanel value={"2"}>
       <Stack className={"container-paused"}>
@@ -33,10 +69,7 @@ export default function PausedOrders() {
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
                   return (
                     <Box key={item._id} className={"orders-name-price"}>
-                      <img
-                        src={imagePath}
-                        className={"order-dish-img"}
-                      />
+                      <img src={imagePath} className={"order-dish-img"} />
                       <p className={"title-dish"}>{product.productName}</p>
                       <Box className={"price-box"}>
                         <p>${item.itemPrice}</p>
@@ -65,7 +98,12 @@ export default function PausedOrders() {
                   <p className={"data-compl"}>
                     {moment().format("YY-MM-DD HH: mm")}
                   </p>
-                  <Button variant="contained" className={"verify-button"}>
+                  <Button
+                    value={order._id}
+                    variant="contained"
+                    className={"verify-button"}
+                    onClick={finishOrderHandler}
+                  >
                     VERIFY TO FULLFIL
                   </Button>
                 </Box>
