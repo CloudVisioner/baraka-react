@@ -44,12 +44,12 @@ export default function OrdersPage() {
     const order = new OrderService();
 
     order
-      .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PAUSE })
+     .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PAUSE })
       .then((data) => setPausedOrders(data))
       .catch((err) => console.log(err));
 
-    order
-      .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PROCESS })
+    order 
+      .getMyOrders({... orderInquery, orderStatus: OrderStatus.PROCESS })
       .then((data) => setProcessOrders(data))
       .catch((err) => console.log(err));
 

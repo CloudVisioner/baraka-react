@@ -15,7 +15,7 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       : null
   );
   const [orderBuilder, setOrderBuilder] = useState(new Date());
-  console.log("=== verify ===");
+  console.log("=== verify ==="); ///
   return (
     <GlobalContext.Provider
       value={{ authMember, setAuthMember, orderBuilder, setOrderBuilder }}
