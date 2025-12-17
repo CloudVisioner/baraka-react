@@ -111,10 +111,10 @@ export default function PausedOrders(props: PausedOrdersProps) {
 
               <Box className={"total-price-box"}>
                 <Box className={"box-total"}>
-                  <p>Product price</p>
+                  <p>ProducPrize </p>
                   <p>${order.orderTotal - order.orderDelivery}</p>
                   <img src={"/icons/plus.svg"} />
-                  <p>Delivery cost</p>
+                  <p>DeliveryCost</p>
                   <p>${order.orderDelivery}</p>
                   <img src={"/icons/pause.svg"} />
                   <p>Total</p>

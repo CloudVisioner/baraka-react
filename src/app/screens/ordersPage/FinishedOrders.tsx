@@ -1,8 +1,6 @@
 import React from "react";
 import { Box, Stack } from "@mui/material";
-import Button from "@mui/material/Button";
 import TabPanel from "@mui/lab/TabPanel";
-
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrieveFinishedOrders, retrievePausedOrders } from "./selector";
@@ -52,10 +50,10 @@ export default function FinishedOrders() {
 
               <Box className={"total-price-box"}>
                 <Box className={"box-total"}>
-                  <p>Product price</p>
+                  <p>ProductPrice</p>
                   <p>${order.orderTotal - order.orderDelivery}</p>
                   <img src={"/icons/plus.svg"} />
-                  <p>Delivery cost</p>
+                  <p>DeliveryCost</p>
                      <p>${order.orderDelivery}</p>
                   <img src={"/icons/pause.svg"} />
                   <p>Total</p>
