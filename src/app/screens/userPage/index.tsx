@@ -61,8 +61,8 @@ export default function UserPage() {
                   {authMember?.memberType}
                 </span>
                 <span className={"order-user-prof"}>
-                  {authMember?.memberAdress
-                    ? authMember.memberAdress
+                  {authMember?.memberAddress
+                    ? authMember.memberAddress
                     : "no address"}
                 </span>
                 <Box className={"user-media-box"}>

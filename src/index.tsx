@@ -14,7 +14,7 @@ import { Container } from "@mui/material";
 import ContextProvider from "./app/context/ContextProvider";
 
 // Define a default theme
-// index.tsx is a connecter between App.tsx and root
+// index.tsx is a connector between App.tsx and root
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);

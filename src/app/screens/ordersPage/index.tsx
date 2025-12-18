@@ -132,8 +132,8 @@ export default function OrdersPage() {
                 className={"order-user-address-txt"}
               >
                 <LocationOnIcon />{" "}
-                {authMember?.memberAdress
-                  ? authMember.memberAdress
+                {authMember?.memberAddress
+                  ? authMember.memberAddress
                   : "no address"}
               </div>
             </Box>

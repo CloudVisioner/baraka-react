@@ -24,7 +24,7 @@ export function Settings() {
       memberNick: authMember?.memberNick,
       memberPhone: authMember?.memberPhone,
       memberPassword: authMember?.memberPassword,
-      memberAdress: authMember?.memberAdress,
+      memberAddress: authMember?.memberAddress,
       memberDesc: authMember?.memberDesc,
       memberPoints: authMember?.memberPoints,
       memberImage: authMember?.memberImage,
@@ -43,7 +43,7 @@ export function Settings() {
   };
 
   const memberAddressHandler = (e: T) => {
-    memberUpdateInput.memberAdress = e.target.value;
+    memberUpdateInput.memberAddress = e.target.value;
     setMemberUpdateInput({ ...memberUpdateInput });
   };
 
@@ -58,7 +58,7 @@ export function Settings() {
       if (
         memberUpdateInput.memberNick === "" ||
         memberUpdateInput.memberPhone === "" ||
-        memberUpdateInput.memberAdress === "" ||
+        memberUpdateInput.memberAddress === "" ||
         memberUpdateInput.memberDesc === ""
       ) {
         throw new Error(Messages.error3);
@@ -137,9 +137,9 @@ export function Settings() {
             className={"spec-input  mb-address"}
             type="text"
             placeholder={
-              authMember?.memberAdress ? authMember?.memberAdress : "no address"
+              authMember?.memberAddress ? authMember?.memberAddress : "no address"
             }
-            value={memberUpdateInput.memberAdress}
+            value={memberUpdateInput.memberAddress}
             name="memberAddress"
             onChange={memberAddressHandler}
           />
