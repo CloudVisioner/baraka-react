@@ -13,6 +13,13 @@ class MemberService {
 
   constructor() {
     this.path = serverApi;
+    // Debug: Log the API path being used
+    if (!this.path || this.path === "undefined" || this.path.includes("undefined")) {
+      console.error("❌ Invalid API URL detected:", this.path);
+      console.error("Please check your .env file and ensure REACT_APP_API_URL is set correctly");
+    } else {
+      console.log("🔗 MemberService initialized with API URL:", this.path);
+    }
   }
 
   public async getTopUsers(): Promise<Member[]> {
@@ -45,8 +52,10 @@ class MemberService {
   public async signup(input: MemberInput): Promise<Member> {
     try {
       const url = this.path + "/member/signup";
+      console.log("📤 Signup request URL:", url);
+      console.log("📤 Signup request data:", input);
       const result = await axios.post(url, input, { withCredentials: true });
-      console.log("signup:", result);
+      console.log("✅ Signup successful:", result);
 
       const member: Member = result.data.member;
       console.log("member", member);

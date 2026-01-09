@@ -2,162 +2,198 @@
   width: 100%;
   height: 773px;
   display: flex;
-  background: url("/public/img/banner.webp");
+  flex-direction: column;
+  position: relative;
+  background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url("/public/img/Untitled design (2).webp");
   background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Glassmorphism Navigation Bar */
+.home-navbar .navbar-glass {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .home-navbar .navbar-container {
-  margin-top: 55px;
+  margin-top: 0;
   height: 642px;
+  padding-top: 100px;
+  position: relative;
+  z-index: 1;
 }
 
-.home-navbar .navbar-container .menu {
-  height: 50px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+/* Modern Brand Logo */
+.home-navbar .brand-logo-modern {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #f8f8ff;
+  letter-spacing: -0.3px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.home-navbar .navbar-container .menu .brand-logo {
-  width: 125px;
-  height: 30px;
+/* Modern Navigation Links */
+.home-navbar .nav-link-modern {
+  position: relative;
 }
 
-.home-navbar .navbar-container .menu .links {
-  min-width: 700px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+.home-navbar .nav-link-modern a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+  padding: 8px 0;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
 }
 
-.home-navbar .navbar-container .menu .login-button {
-  background: "#3776CC";
-  color: "#f8f8ff";
+.home-navbar .nav-link-modern a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #d7b586 0%, #f4d19e 100%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
 }
 
-.home-navbar .navbar-container .menu .user-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 24px;
+.home-navbar .nav-link-modern a:hover {
+  color: #f8f8ff;
+  transform: translateY(-1px);
+}
+
+.home-navbar .nav-link-modern a:hover::after {
+  width: 100%;
+}
+
+.home-navbar .nav-link-modern a.nav-active {
+  color: #f8f8ff;
+  font-weight: 500;
+}
+
+.home-navbar .nav-link-modern a.nav-active::after {
+  width: 100%;
 }
 
 .home-navbar a {
   text-decoration: none;
 }
 
-.home-navbar .hover-line a {
-  color: #f8f8ff;
-  z-index: 100;
-}
-
-.home-navbar .underline {
-  display: block;
-  content: "";
-  border-bottom: solid 2px #d7b686;
-}
-
-.home-navbar .hover-line:after {
-  display: block;
-  content: "";
-  border-bottom: solid 2px #d7b686;
-  transform: scaleX(0);
-  transition: transform 250ms ease-in-out;
-}
-
-.home-navbar .hover-line:hover:after {
-  transform: scaleX(1);
-}
-
-.home-navbar div.hover-line:after {
-  transform-origin: 0% 50%;
-}
-
 .home-navbar .navbar-container .header-frame {
-  margin-top: 142px;
+  margin-top: 80px;
   height: 462px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .home-navbar .navbar-container .header-frame .detail {
   width: 510px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
+  z-index: 10;
 }
 
 .home-navbar .navbar-container .header-frame .detail .head-main-txt {
-  width: 450px;
-  height: 150px;
-  font-family: "Roboto Serif";
-  font-size: 50px;
+  width: 100%;
+  max-width: 600px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  font-size: 56px;
   font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  letter-spacing: -0.75px;
-  color: #f8f8ff;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -1.2px;
+  color: #ffffff;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
 }
 
 .home-navbar .navbar-container .header-frame .detail .wel-txt {
-  width: 510px;
-  height: 42px;
-  font-family: "Roboto Serif";
-  font-size: 36px;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  font-size: 32px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.54px;
-  color: #d7b686;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+  color: #d7b586;
+  margin-bottom: 12px;
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
 }
 
 .home-navbar .navbar-container .header-frame .detail .service-txt {
-  margin-top: 23px;
-  width: 153px;
-  height: 23px;
-  font-family: "Roboto Serif";
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  letter-spacing: -0.3px;
-  color: #d5d5d5;
-}
-
-
-.home-navbar .navbar-container .header-frame .detail .signup {
-  margin-top: 73px;
-}
-
-.home-navbar .navbar-container .header-frame .detail .signup-button {
-  width: 210px;
-  height: 60px;
-  border-radius: 4px;
-  background: #1976d2;
-  color: #f8f8ff;
-  text-align: center;
-  font-family: Poppins;
+  margin-top: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
   font-size: 17px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+  color: rgba(255, 255, 255, 0.8);
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
 }
 
-.home-navbar .navbar-container .logo-frame{
+.home-navbar .navbar-container .header-frame .detail .signup {
+  margin-top: 40px;
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
+}
+
+.home-navbar .navbar-container .header-frame .detail .signup-button-modern {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+}
+
+.home-navbar .navbar-container .logo-frame {
   margin-top: 43px;
   width: 690px;
   height: 419px;
+  max-width: 100%;
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both;
 }
 
-.home-navbar .navbar-container .logo-frame .logo-img{
+.home-navbar .navbar-container .logo-frame .logo-img {
   width: 100%;
   height: 100%;
   background: url("/public/img/logo.webp");
   background-size: contain;
   background-repeat: no-repeat;
-  filter: invert(30%);
+  background-position: center;
+  filter: drop-shadow(0 10px 40px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+.home-navbar .navbar-container .logo-frame .logo-img:hover {
+  transform: scale(1.02);
 }
 
 
@@ -170,75 +206,78 @@
   width: 100%;
   height: 400px;
   display: flex;
-  background: url("/public/img/banner.webp");
+  flex-direction: column;
+  position: relative;
+  background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url("/public/img/banner.webp");
   background-size: cover;
+  background-position: center;
 }
 
-.other-navbar .navbar-container {
-  margin-top: 55px;
+/* Glassmorphism Navigation Bar for Other Pages */
+.other-navbar .navbar-glass {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.other-navbar .navbar-container .menu {
-  height: 50px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+/* Modern Navigation Links for Other Navbar */
+.other-navbar .nav-link-modern {
+  position: relative;
 }
 
-.other-navbar .navbar-container .menu .brand-logo {
-  width: 125px;
-  height: 30px;
+.other-navbar .nav-link-modern a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+  padding: 8px 0;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
 }
 
-.other-navbar .navbar-container .menu .links {
-  min-width: 700px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+.other-navbar .nav-link-modern a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #d7b586 0%, #f4d19e 100%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
 }
 
-.other-navbar .navbar-container .menu .login-button {
-  background: "#3776CC";
-  color: "#f8f8ff";
+.other-navbar .nav-link-modern a:hover {
+  color: #f8f8ff;
+  transform: translateY(-1px);
 }
 
-.other-navbar .navbar-container .menu .user-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 24px;
+.other-navbar .nav-link-modern a:hover::after {
+  width: 100%;
+}
+
+.other-navbar .nav-link-modern a.nav-active {
+  color: #f8f8ff;
+  font-weight: 500;
+}
+
+.other-navbar .nav-link-modern a.nav-active::after {
+  width: 100%;
 }
 
 .other-navbar a {
   text-decoration: none;
-}
-
-.other-navbar .hover-line a {
-  color: #f8f8ff;
-  z-index: 100;
-}
-
-.other-navbar .underline {
-  display: block;
-  content: "";
-  border-bottom: solid 2px #d7b686;
-}
-
-.other-navbar .hover-line:after {
-  display: block;
-  content: "";
-  border-bottom: solid 2px #d7b686;
-  transform: scaleX(0);
-  transition: transform 250ms ease-in-out;
-}
-
-.other-navbar .hover-line:hover:after {
-  transform: scaleX(1);
-}
-
-.other-navbar div.hover-line:after {
-  transform-origin: 0% 50%;
 }
 
 

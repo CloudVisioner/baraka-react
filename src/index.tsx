@@ -19,6 +19,7 @@ import ContextProvider from "./app/context/ContextProvider";
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
+
 // Global Integration
 root.render(
   <React.StrictMode>
