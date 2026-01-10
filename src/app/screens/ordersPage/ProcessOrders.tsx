@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrieveProcessOrders } from "./selector";
 import { Product } from "../../../lib/types/product";
-import { Messages, serverApi } from "../../../lib/config";
+import { Messages, normalizeImagePath } from "../../../lib/config";
 import { Order, OrderItem, OrderUpdateInput } from "../../../lib/types/orders";
 import { useGlobals } from "../../hooks/useGlobal";
 import { T } from "../../../lib/types/common";
@@ -66,7 +66,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                   const product: Product = order.productData.filter(
                     (ele: Product) => item.productId === ele._id
                   )[0];
-                  const imagePath = `${serverApi}/${product.productImages[0]}`;
+                  const imagePath = normalizeImagePath(product.productImages?.[0]);
                   return (
                     <Box key={item._id} className={"orders-name-price"}>
                       <img src={imagePath} className={"order-dish-img"} />

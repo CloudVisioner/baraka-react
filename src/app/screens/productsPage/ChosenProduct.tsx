@@ -21,7 +21,7 @@ import { useParams } from "react-router-dom";
 import ProductService from "../../services/ProductService";
 import MemberService from "../../services/MemberService";
 import { Member } from "../../../lib/types/member";
-import { serverApi } from "../../../lib/config";
+import { normalizeImagePath } from "../../../lib/config";
 import { CartItem } from "../../../lib/types/search";
 
 /** REDUX SLICE & SELECTOR */
@@ -84,10 +84,10 @@ export default function ChosenProduct(props: ChosenProductProps) {
             className="swiper-area"
           >
             {chosenProduct?.productImages.map((ele: string, index: number) => {
-              const imagePath = `${serverApi}/${ele}`;
+              const imagePath = normalizeImagePath(ele);
               return (
                 <SwiperSlide key={index}>
-                  <img className="slider-image" src={imagePath} />
+                  <img className="slider-image" src={imagePath} alt={chosenProduct?.productName} />
                 </SwiperSlide>
               );
             })}
@@ -128,7 +128,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                     quantity: 1,
                     name: chosenProduct.productName,
                     price: chosenProduct.productPrice,
-                    image: chosenProduct.productImages[0],
+                    image: normalizeImagePath(chosenProduct.productImages?.[0]) || "",
                   });
                   e.stopPropagation();
                 }}

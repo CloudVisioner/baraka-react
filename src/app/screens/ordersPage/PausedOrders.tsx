@@ -8,7 +8,7 @@ import { createSelector } from "reselect";
 import { retrievePausedOrders } from "./selector";
 import { Product } from "../../../lib/types/product";
 import { ProductCollection } from "../../../lib/enums/product.enum";
-import { Messages, serverApi } from "../../../lib/config";
+import { Messages, normalizeImagePath } from "../../../lib/config";
 import { Order, OrderItem, OrderUpdateInput } from "../../../lib/types/orders";
 import { T } from "../../../lib/types/common";
 import { sweetErrorHandling } from "../../../lib/sweetAlert";
@@ -92,7 +92,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                     (ele: Product) => item.productId === ele._id
                   )[0];
                   if (!product || !product.productImages?.length) return null;
-                  const imagePath = `${serverApi}/${product.productImages[0]}`;
+                  const imagePath = normalizeImagePath(product.productImages?.[0]);
                   return (
                     <Box key={item._id} className={"orders-name-price"}>
                       <img src={imagePath} className={"order-dish-img"} />

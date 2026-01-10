@@ -15,7 +15,7 @@ class MemberService {
     this.path = serverApi;
     // Debug: Log the API path being used
     if (!this.path || this.path === "undefined" || this.path.includes("undefined")) {
-      console.error("❌ Invalid API URL detected:", this.path);
+      console.error("Invalid API URL detected:", this.path);
       console.error("Please check your .env file and ensure REACT_APP_API_URL is set correctly");
     } else {
       console.log("🔗 MemberService initialized with API URL:", this.path);

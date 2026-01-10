@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { Product } from "../../../lib/types/product";
 import { ProductCollection } from "../../../lib/enums/product.enum";
-import { serverApi } from "../../../lib/config";
+import { normalizeImagePath } from "../../../lib/config";
 
 
 /** REDUX SLICE & SELECTOR */
@@ -36,7 +36,7 @@ export default function NewDishes() {
             <CssVarsProvider>
               {newDishes.length !== 0 ? (
                 newDishes.map((product: Product) => {
-                  const imagePath = `${serverApi}/${product.productImages[0]}`;
+                  const imagePath = normalizeImagePath(product.productImages?.[0]);
                   const sizeVolume = product.productCollection === ProductCollection.DRINK ? product.productVolume + "l" : product.productSize + "size"
                   return (
                     <Card key={product._id} variant="outlined" className={"card"}>

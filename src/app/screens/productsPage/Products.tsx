@@ -25,7 +25,7 @@ import { retrieveProducts } from "./selector";
 import { Product, ProductInquiry } from "../../../lib/types/product";
 import ProductService from "../../services/ProductService";
 import { ProductCollection } from "../../../lib/enums/product.enum";
-import { serverApi } from "../../../lib/config";
+import { normalizeImagePath } from "../../../lib/config";
 import { Typography } from "@mui/joy";
 import { useHistory } from "react-router-dom";
 import { CartItem } from "../../../lib/types/search";
@@ -230,7 +230,7 @@ export default function Products(props: ProductPageProps) {
           <Stack className="product-wrapper">
             {products.length !== 0 ? (
               products.map((product, index) => {
-                const imagePath = `${serverApi}/${product.productImages[0]}`;
+                const imagePath = normalizeImagePath(product.productImages?.[0]);
                 const sizeVolume =
                   product.productCollection === ProductCollection.DRINK
                     ? product.productVolume + "litre"
@@ -255,7 +255,7 @@ export default function Products(props: ProductPageProps) {
                             quantity: 1,
                             name: product.productName,
                             price: product.productPrice,
-                            image: product.productImages[0],
+                            image: normalizeImagePath(product.productImages?.[0]) || "",
                           });
                           e.stopPropagation();
                         }}
