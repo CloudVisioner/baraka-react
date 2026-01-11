@@ -100,7 +100,7 @@ export default function OrdersPage() {
                 <img
                   src={
                     authMember?.memberImage
-                      ? `${serverApi}/${authMember.memberImage}`
+                      ? `${serverApi}/uploads/${authMember.memberImage}`
                       : "/icons/default-user.svg"
                   }
                   className={"order-user-avatar"}

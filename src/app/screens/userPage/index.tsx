@@ -39,7 +39,7 @@ export default function UserPage() {
                   <img
                     src={
                       authMember?.memberImage
-                        ? `${serverApi}/${authMember.memberImage}`
+                        ? `${serverApi}/uploads/${authMember.memberImage}`
                         : "/icons/default-user.svg"
                     }
                     className={"order-user-avatar"}

@@ -1,89 +1,280 @@
 import React from "react";
-import { Box, Container, Stack } from "@mui/material";
+import { Box, Container, Typography, Divider } from "@mui/material";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { useGlobals } from "../../hooks/useGlobal";
 
-const Footers = styled.div`
-  width: 100%;
-  height: 590px;
-  display: flex;
-  background: #343434;
-  background-size: cover;
-`;
+const appleFont = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif";
+
+interface FooterLink {
+  label: string;
+  to: string;
+  requireAuth?: boolean;
+}
+
+interface FooterColumn {
+  title: string;
+  links: FooterLink[];
+}
 
 export default function Footer() {
-  const authMember = null;
+  const { authMember } = useGlobals();
+
+  const footerColumns: FooterColumn[] = [
+    {
+      title: "Shop",
+      links: [
+        { label: "Browse Books", to: "/products" },
+        { label: "Bestsellers", to: "/products" },
+        { label: "New Arrivals", to: "/products" },
+      ],
+    },
+    {
+      title: "Account",
+      links: [
+        { label: "My Account", to: authMember ? "/member-page" : "/", requireAuth: true },
+        { label: "My Orders", to: authMember ? "/orders" : "/", requireAuth: true },
+      ],
+    },
+    {
+      title: "Support",
+      links: [
+        { label: "Help Center", to: "/help-page" },
+        { label: "Contact Us", to: "/help-page" },
+      ],
+    },
+  ];
 
   return (
-    <Footers>
-      <Container>
-        <Stack flexDirection={"row"} sx={{ mt: "94px" }}>
-          <Stack flexDirection={"column"} style={{ width: "340px" }}>
-            <Box>
-              <img width={"100px"} src={"/icons/burak.svg"} />
-            </Box>
-            <Box className={"foot-desc-txt"}>
-              Focusing on the gourmet Turkish breakfast as well as the youth
-              society, CZN Burak Gurme aims to bring Turkish cuisine back. CZN
-              Burak Gurme creates an illusion with its cuisine.
-            </Box>
-            <Box className="sns-context">
-              <img src={"/icons/facebook.svg"} />
-              <img src={"/icons/twitter.svg"} />
-              <img src={"/icons/instagram.svg"} />
-              <img src={"/icons/youtube.svg"} />
-            </Box>
-          </Stack>
-          <Stack sx={{ ml: "288px" }} flexDirection={"row"}>
-            <Stack>
-              <Box>
-                <Box className={"foot-category-title"}>Bo'limlar</Box>
-                <Box className={"foot-category-link"}>
-                  <Link to="/">Home</Link>
-                  <Link to="/products">Products</Link>
-                  {authMember && <Link to="/orders">Orders</Link>}
-                  <Link to="/help">Help</Link>
-                </Box>
+    <Box
+      component="footer"
+      sx={{
+        width: "100%",
+        backgroundColor: "#1d1d1f",
+        paddingTop: { xs: "40px", md: "60px" },
+        paddingBottom: { xs: "32px", md: "40px" },
+      }}
+    >
+      <Container maxWidth="lg">
+        {/* Main Footer Content */}
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "1fr",
+              sm: "repeat(2, 1fr)",
+              md: "repeat(4, 1fr)",
+            },
+            gap: { xs: "32px", md: "24px" },
+            marginBottom: { xs: "40px", md: "48px" },
+          }}
+        >
+          {/* Company Info Column */}
+          <Box
+            sx={{
+              gridColumn: { xs: "1 / -1", sm: "1 / -1", md: "1" },
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: appleFont,
+                fontSize: "1.5rem",
+                fontWeight: 600,
+                letterSpacing: "-0.02em",
+                color: "#f5f5f7",
+                marginBottom: "12px",
+              }}
+            >
+              BARAKA
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: appleFont,
+                fontSize: "0.875rem",
+                fontWeight: 400,
+                lineHeight: 1.6,
+                color: "#86868b",
+                marginBottom: "20px",
+                maxWidth: "280px",
+              }}
+            >
+              Your premier destination for books. Discover curated collections and join literary events.
+            </Typography>
+            {/* Social Media Links */}
+            <Box
+              sx={{
+                display: "flex",
+                gap: "16px",
+                marginTop: "24px",
+              }}
+            >
+              <Box
+                component="a"
+                href="#"
+                sx={{
+                  width: "32px",
+                  height: "32px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  transition: "all 0.3s",
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.2)",
+                    transform: "scale(1.1)",
+                  },
+                }}
+              >
+                <img src="/icons/facebook.svg" alt="Facebook" style={{ width: "16px", height: "16px", filter: "brightness(0) invert(1)" }} />
               </Box>
-            </Stack>
-            <Stack sx={{ ml: "100px" }}>
-              <Box>
-                <Box className={"foot-category-title"}>Find us</Box>
-                <Box
-                  flexDirection={"column"}
-                  sx={{ mt: "20px" }}
-                  className={"foot-category-link"}
-                  justifyContent={"space-between"}
-                >
-                  <Box flexDirection={"row"} className={"find-us"}>
-                    <span>L.</span>
-                    <div>Downtown, Dubai</div>
-                  </Box>
-                  <Box className={"find-us"}>
-                    <span>P.</span>
-                    <div>+971 4 554 7777</div>
-                  </Box>
-                  <Box className={"find-us"}>
-                    <span>E.</span>
-                    <div>devexuz@gmail.com</div>
-                  </Box>
-                  <Box className={"find-us"}>
-                    <span>H.</span>
-                    <div>Visit 24 hours</div>
-                  </Box>
-                </Box>
+              <Box
+                component="a"
+                href="#"
+                sx={{
+                  width: "32px",
+                  height: "32px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  transition: "all 0.3s",
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.2)",
+                    transform: "scale(1.1)",
+                  },
+                }}
+              >
+                <img src="/icons/twitter.svg" alt="Twitter" style={{ width: "16px", height: "16px", filter: "brightness(0) invert(1)" }} />
               </Box>
-            </Stack>
-          </Stack>
-        </Stack>
-        <Stack
-          style={{ border: "1px solid #C5C8C9", width: "100%", opacity: "0.2" }}
-          sx={{ mt: "80px" }}
-        ></Stack>
-        <Stack className={"copyright-txt"}>
-          © Copyright Devex Global, All rights reserved.
-        </Stack>
+              <Box
+                component="a"
+                href="#"
+                sx={{
+                  width: "32px",
+                  height: "32px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  transition: "all 0.3s",
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.2)",
+                    transform: "scale(1.1)",
+                  },
+                }}
+              >
+                <img src="/icons/instagram.svg" alt="Instagram" style={{ width: "16px", height: "16px", filter: "brightness(0) invert(1)" }} />
+              </Box>
+              <Box
+                component="a"
+                href="#"
+                sx={{
+                  width: "32px",
+                  height: "32px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  transition: "all 0.3s",
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.2)",
+                    transform: "scale(1.1)",
+                  },
+                }}
+              >
+                <img src="/icons/youtube.svg" alt="YouTube" style={{ width: "16px", height: "16px", filter: "brightness(0) invert(1)" }} />
+              </Box>
+            </Box>
+          </Box>
+
+          {/* Link Columns */}
+          {footerColumns.map((column, index) => (
+            <Box key={index}>
+              <Typography
+                sx={{
+                  fontFamily: appleFont,
+                  fontSize: "0.75rem",
+                  fontWeight: 600,
+                  letterSpacing: "0.01em",
+                  color: "#f5f5f7",
+                  marginBottom: "12px",
+                }}
+              >
+                {column.title}
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                }}
+              >
+                {column.links.map((link, linkIndex) => {
+                  if (link.requireAuth && !authMember) return null;
+                  return (
+                    <Link
+                      key={linkIndex}
+                      to={link.to}
+                      style={{
+                        textDecoration: "none",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontFamily: appleFont,
+                          fontSize: "0.75rem",
+                          fontWeight: 400,
+                          color: "#86868b",
+                          transition: "color 0.2s",
+                          "&:hover": {
+                            color: "#f5f5f7",
+                            textDecoration: "underline",
+                          },
+                        }}
+                      >
+                        {link.label}
+                      </Typography>
+                    </Link>
+                  );
+                })}
+              </Box>
+            </Box>
+          ))}
+        </Box>
+
+        {/* Divider */}
+        <Divider
+          sx={{
+            borderColor: "rgba(255, 255, 255, 0.1)",
+            marginBottom: { xs: "24px", md: "32px" },
+          }}
+        />
+
+        {/* Copyright */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            alignItems: { xs: "flex-start", sm: "center" },
+            gap: "16px",
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: appleFont,
+              fontSize: "0.75rem",
+              fontWeight: 400,
+              color: "#86868b",
+            }}
+          >
+            Copyright © {new Date().getFullYear()} BARAKA. All rights reserved.
+          </Typography>
+        </Box>
       </Container>
-    </Footers>
+    </Box>
   );
 }

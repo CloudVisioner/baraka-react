@@ -166,13 +166,13 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                       py: 0.75,
                       borderRadius: '20px',
                       textTransform: 'none',
-                      background: 'linear-gradient(135deg, #d7b586 0%, #c9a570 100%)',
-                      boxShadow: '0 2px 12px rgba(215, 181, 134, 0.25)',
+                      backgroundColor: '#007AFF',
+                      boxShadow: '0 2px 12px rgba(0, 122, 255, 0.25)',
                       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                       '&:hover': {
                         transform: 'translateY(-1px)',
-                        boxShadow: '0 4px 16px rgba(215, 181, 134, 0.35)',
-                        background: 'linear-gradient(135deg, #e0c196 0%, #d7b586 100%)'
+                        boxShadow: '0 4px 16px rgba(0, 122, 255, 0.35)',
+                        backgroundColor: '#0051D5'
                       }
                     }}
                   >
@@ -185,7 +185,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                   component="img"
                   src={
                     authMember?.memberImage
-                      ? `${serverApi}/${authMember?.memberImage}`
+                      ? `${serverApi}/uploads/${authMember?.memberImage}`
                       : "/icons/default-user.svg"
                   }
                   onClick={handleLogoutClick}

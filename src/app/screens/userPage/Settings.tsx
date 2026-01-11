@@ -16,7 +16,7 @@ export function Settings() {
   const { authMember, setAuthMember } = useGlobals();
   const [memberImage, setMemberImage] = useState<string>(
     authMember?.memberImage
-      ? `${serverApi}/${authMember.memberImage}`
+      ? `${serverApi}/uploads/${authMember.memberImage}`
       : "/icons/default-user.svg"
   );
   const [memberUpdateInput, setMemberUpdateInput] = useState<MemberUpdateInput>(

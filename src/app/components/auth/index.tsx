@@ -171,9 +171,16 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 onKeyDown={handlePasswordKeyDown}
               />
               <Fab
-                sx={{ marginTop: "30px", width: "120px" }}
+                sx={{ 
+                  marginTop: "30px", 
+                  width: "120px",
+                  backgroundColor: "#007AFF",
+                  color: "#FFFFFF",
+                  "&:hover": {
+                    backgroundColor: "#0051D5"
+                  }
+                }}
                 variant="extended"
-                color="primary"
                 onClick={handleSignupRequest}
               >
                 <LoginIcon sx={{ mr: 1 }} />
