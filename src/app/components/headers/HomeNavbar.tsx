@@ -69,47 +69,48 @@ export default function HomeNavbar(props: HomeNavbarProps) {
       {/* Glassmorphism Navigation Bar */}
       <Box className="navbar-glass">
         <Container maxWidth="xl" sx={{ py: 0 }}>
-          <Stack 
-            direction="row" 
-            justifyContent="space-between" 
-            alignItems="center"
-            sx={{ 
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: '1fr 2fr 1fr' },
+              alignItems: 'center',
               height: '64px',
-              px: { xs: 2, sm: 3, md: 4 }
+              px: { xs: 2, sm: 3, md: 4 },
+              position: 'relative'
             }}
           >
             {/* Brand Logo */}
-            <NavLink to="/" style={{ textDecoration: 'none' }}>
-              <Box 
-                className="brand-logo-modern"
-                sx={{ 
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
-                  fontSize: '20px',
-                  fontWeight: 600,
-                  color: '#f8f8ff',
-                  letterSpacing: '-0.3px',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  cursor: 'pointer',
-                  '&:hover': {
-                    color: '#d7b586',
-                    transform: 'scale(1.02)'
-                  }
-                }}
-              >
-                BARAKA
-              </Box>
-            </NavLink>
+            <Box>
+              <NavLink to="/" style={{ textDecoration: 'none' }}>
+                <Box 
+                  className="brand-logo-modern"
+                  sx={{ 
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
+                    fontSize: '20px',
+                    fontWeight: 600,
+                    color: '#f8f8ff',
+                    letterSpacing: '-0.3px',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    cursor: 'pointer',
+                    '&:hover': {
+                      color: '#d7b586',
+                      transform: 'scale(1.02)'
+                    }
+                  }}
+                >
+                  BARAKA
+                </Box>
+              </NavLink>
+            </Box>
 
-            {/* Navigation Links */}
+            {/* Navigation Links - Centered */}
             <Stack 
               direction="row" 
               spacing={4} 
               alignItems="center"
+              justifyContent="center"
               sx={{ 
-                display: { xs: 'none', md: 'flex' },
-                flex: 1,
-                justifyContent: 'center',
-                ml: 4
+                display: { xs: 'none', md: 'flex' }
               }}
             >
               <Box className="nav-link-modern">
@@ -144,7 +145,8 @@ export default function HomeNavbar(props: HomeNavbarProps) {
             </Stack>
 
             {/* Right Side Actions */}
-            <Stack direction="row" spacing={2} alignItems="center">
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Stack direction="row" spacing={2} alignItems="center">
               <Basket
                 cartItems={cartItems}
                 onAdd={onAdd}
@@ -282,8 +284,9 @@ export default function HomeNavbar(props: HomeNavbarProps) {
                   Logout
                 </MenuItem>
               </Menu>
-            </Stack>
-          </Stack>
+              </Stack>
+            </Box>
+          </Box>
         </Container>
       </Box>
 

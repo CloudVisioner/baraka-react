@@ -54,7 +54,8 @@ export default function Events() {
                 key={index}
                 elevation={0}
                 sx={{
-                  borderRadius: "32px",
+                  borderRadius: "24px",
+                  border: "1px solid rgba(0, 0, 0, 0.05)",
                   backgroundColor: "#FFFFFF",
                   overflow: "hidden",
                   width: "100%",
@@ -68,12 +69,12 @@ export default function Events() {
                   },
                 }}
               >
-                {/* Left Side - Image (40%) */}
+                {/* Image Section - Smaller, Square Aspect */}
                 <Box
                   sx={{
-                    width: { xs: "100%", md: "40%" },
-                    height: { xs: "200px", md: "auto" },
-                    minHeight: { md: "220px" },
+                    width: { xs: "100%", md: "280px" },
+                    height: { xs: "200px", md: "280px" },
+                    flexShrink: 0,
                     overflow: "hidden",
                     backgroundColor: "#F5F5F7",
                   }}
@@ -89,68 +90,73 @@ export default function Events() {
                   />
                 </Box>
 
-                {/* Right Side - Info (60%) */}
+                {/* Content Section - Better Structured */}
                 <Box
                   sx={{
-                    width: { xs: "100%", md: "60%" },
-                    padding: { xs: "20px", md: "24px" },
+                    flex: 1,
                     display: "flex",
                     flexDirection: "column",
+                    padding: { xs: "20px", md: "28px" },
                     justifyContent: "space-between",
                   }}
                 >
+                  {/* Top Section */}
                   <Box>
-                    {/* Top: BOOK READING Label */}
+                    {/* Category Badge */}
                     <Typography
                       sx={{
                         fontFamily: appleFont,
                         fontSize: "0.625rem",
                         fontWeight: 700,
                         textTransform: "uppercase",
-                        letterSpacing: "0.15em",
+                        letterSpacing: "0.12em",
                         color: "#007AFF",
-                        marginBottom: "16px",
+                        marginBottom: "12px",
+                        display: "inline-block",
+                        padding: "4px 10px",
+                        backgroundColor: "rgba(0, 122, 255, 0.1)",
+                        borderRadius: "6px",
                       }}
                     >
                       BOOK READING
                     </Typography>
 
-                    {/* Middle: Event Name */}
+                    {/* Event Title */}
                     <Typography
                       variant="h4"
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: { xs: "1.5rem", md: "1.75rem" },
+                        fontSize: { xs: "1.375rem", md: "1.625rem" },
                         fontWeight: 700,
                         letterSpacing: "-0.02em",
                         color: "#1D1D1F",
-                        lineHeight: 1.3,
+                        lineHeight: 1.25,
                         marginBottom: "12px",
                       }}
                     >
                       {event.title}
                     </Typography>
 
-                    {/* Author Information */}
+                    {/* Author */}
                     {event.author && (
                       <Box
                         sx={{
                           display: "flex",
                           alignItems: "center",
-                          gap: "6px",
-                          marginBottom: "12px",
+                          gap: "8px",
+                          marginBottom: "16px",
                         }}
                       >
                         <PersonIcon
                           sx={{
-                            fontSize: "16px",
+                            fontSize: "18px",
                             color: "#6E6E73",
                           }}
                         />
                         <Typography
                           sx={{
                             fontFamily: appleFont,
-                            fontSize: "0.875rem",
+                            fontSize: "0.9375rem",
                             fontWeight: 500,
                             color: "#6E6E73",
                           }}
@@ -167,20 +173,29 @@ export default function Events() {
                         fontSize: "0.9375rem",
                         fontWeight: 400,
                         color: "#6E6E73",
-                        lineHeight: 1.5,
+                        lineHeight: 1.6,
                         marginBottom: "20px",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
                       }}
                     >
                       {event.desc}
                     </Typography>
+                  </Box>
 
-                    {/* Date and Location with Calendar Icon */}
+                  {/* Bottom Section */}
+                  <Box>
+                    {/* Date and Location */}
                     <Box
                       sx={{
                         display: "flex",
                         alignItems: "center",
                         gap: "8px",
-                        marginBottom: "24px",
+                        marginBottom: "20px",
+                        paddingBottom: "20px",
+                        borderBottom: "1px solid #D2D2D7",
                       }}
                     >
                       <CalendarTodayIcon
@@ -200,31 +215,38 @@ export default function Events() {
                         {event.date} • {event.location}
                       </Typography>
                     </Box>
-                  </Box>
 
-                  {/* Attend Reading Button */}
-                  <Button
-                    variant="contained"
-                    sx={{
-                      fontFamily: appleFont,
-                      fontSize: "0.9375rem",
-                      fontWeight: 600,
-                      letterSpacing: "-0.01em",
-                      backgroundColor: "#007AFF",
-                      color: "#FFFFFF",
-                      borderRadius: "24px",
-                      padding: "12px 32px",
-                      textTransform: "none",
-                      alignSelf: { xs: "stretch", md: "flex-start" },
-                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                      "&:hover": {
-                        backgroundColor: "#0051D5",
-                        transform: "scale(1.02)",
-                      },
-                    }}
-                  >
-                    Attend Reading
-                  </Button>
+                    {/* CTA Button - Right Aligned */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: { xs: "stretch", md: "flex-end" },
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        sx={{
+                          fontFamily: appleFont,
+                          fontSize: "0.9375rem",
+                          fontWeight: 600,
+                          letterSpacing: "-0.01em",
+                          backgroundColor: "#007AFF",
+                          color: "#FFFFFF",
+                          borderRadius: "20px",
+                          padding: "12px 28px",
+                          textTransform: "none",
+                          width: { xs: "100%", md: "auto" },
+                          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                          "&:hover": {
+                            backgroundColor: "#0051D5",
+                            transform: "scale(1.02)",
+                          },
+                        }}
+                      >
+                        Attend Reading
+                      </Button>
+                    </Box>
+                  </Box>
                 </Box>
               </Paper>
             );

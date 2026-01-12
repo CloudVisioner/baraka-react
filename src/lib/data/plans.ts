@@ -5,7 +5,7 @@ export const plans = [
 		author: 'Chef Deming',
 		date: '30 min ago',
 		location: 'Turkey, Istambul',
-		img: '/img/discount.webp',
+		img: '/img/1dbe2415185a55d2ec24e1b4dfcb4971.jpg',
 	},
 	{
 		title: 'Coming Soon',
@@ -13,7 +13,7 @@ export const plans = [
 		author: 'Belissimo Arthur',
 		date: '2 days ago',
 		location: 'Turkey, Istambul',
-		img: '/img/fresh.webp',
+		img: '/img/18ce181b0e85ea113340f82ecccbc1b9.jpg',
 	},
 	{
 		title: 'New Project Lunch',
@@ -21,7 +21,7 @@ export const plans = [
 		author: 'Morgan News',
 		date: '5 days ago',
 		location: 'USA, Florida',
-		img: '/img/coming.webp',
+		img: '/img/a48f782218aaf4ba319089c14124086d.jpg',
 	},
 	{
 		title: 'Join us on sns',
@@ -29,6 +29,6 @@ export const plans = [
 		author: 'Belissimo Agent',
 		date: 'A week ago',
 		location: 'Europe, France',
-		img: '/img/food-city.webp',
+		img: '/img/dbee530c454f72978b21ebef9d669136.jpg',
 	},
 ];
