@@ -326,9 +326,6 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               ) : null}
             </Box>
           </Stack>
-          <Box className={"logo-frame"}>
-            <div className={"logo-img"}></div>
-          </Box>
         </Stack>
       </Container>
     </div>

@@ -27,7 +27,11 @@ export default function ActiveUsers() {
         <Box
           sx={{
             marginBottom: { xs: "48px", md: "64px" },
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             textAlign: "center",
+            width: "100%",
           }}
         >
           <Typography
@@ -38,6 +42,7 @@ export default function ActiveUsers() {
               fontWeight: 600,
               letterSpacing: "-0.02em",
               color: "#1D1D1F",
+              textAlign: "center",
             }}
           >
             Active Users
@@ -144,15 +149,19 @@ export default function ActiveUsers() {
           ) : (
             <Box
               sx={{
+                gridColumn: { xs: "1 / -1", sm: "1 / -1", md: "1 / -1" },
                 width: "100%",
-                height: "300px",
+                minHeight: "400px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 fontFamily: appleFont,
-                fontSize: "1.125rem",
-                color: "#6E6E73",
-                gridColumn: { md: "1 / -1" },
+                fontSize: "1.375rem",
+                fontWeight: 500,
+                color: "#86868B",
+                letterSpacing: "-0.02em",
+                textAlign: "center",
+                padding: "60px 24px",
               }}
             >
               No Active Users!
