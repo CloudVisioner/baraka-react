@@ -12,7 +12,7 @@ import { setNewDishes, setPopularDishes, setTopUsers } from "./slice";
 import { retrievePopularDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
 import ProductService from "../../services/ProductService";
-import { ProductCollection } from "../../../lib/enums/product.enum";
+import { ProductType } from "../../../lib/enums/product.enum";
 import { Member } from "../../../lib/types/member";
 import MemberService from "../../services/MemberService";
 
@@ -37,7 +37,7 @@ export default function HomePage() {
         page: 1,
         limit: 4,
         order: "productViews",
-        productCollection: ProductCollection.DISH,
+        productType: ProductType.FICTION,
       })
       .then((data) => {
         setPopularDishes(data);
@@ -49,7 +49,7 @@ export default function HomePage() {
         page: 1,
         limit: 4,
         order: "createdAt",
-        productCollection: ProductCollection.DISH,
+        productType: ProductType.FICTION,
       })
       .then((data) => setNewDishes(data))
       .catch((err) => console.log(err));

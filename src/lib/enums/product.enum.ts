@@ -1,29 +1,25 @@
-export enum ProductSize {
-    SMALL = "SMALL",
-    NORMAL = "NORMAL",
-    LARGE = "LARGE",
-    SET = "SET",
-}
-
-export enum ProductVolume {
-    HALF = 0.5,
-    ONE = 1,
-    ONE_POINT_TWO = 1.2,
-    ONE_POINT_FIVW = 1.5,
-    TWO = 2,
+export enum ProductFormat {
+  HARDCOPY = "HARDCOPY",
+  PAPERBACK = "PAPERBACK",
 }
 
 export enum ProductStatus {
-    PAUSE = 'PAUSE',
-    PROCESS = 'PROCESS',
-    DELETE = 'DELETE',
+  PAUSE = "PAUSE",
+  PROCESS = "PROCESS",
+  DELETE = "DELETE",
 }
 
-export enum ProductCollection {
-    DISH = 'DISH',
-    SALAD = 'SALAD',
-    DRINK = "DRINK",
-    DESSERT = 'DESSERT',
-    OTHER = 'OTHER',
 
+
+export enum ProductType {
+  FICTION = "FICTION",
+  NON_FICTION = "NON_FICTION",
+  ACADEMIC = "ACADEMIC",
+  COMICS = "COMICS",
+  OTHER = "OTHER"
 }
+// export enum ProductVolume {
+//   SINGLE = "SINGLE",
+//   PART = "PART",
+//   COLLECTION = "COLLECTION",
+// }

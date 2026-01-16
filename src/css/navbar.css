@@ -181,7 +181,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url("/public/img/banner.webp");
+  background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url("/public/img/Untitled design (2).webp");
   background-size: cover;
   background-position: center;
 }

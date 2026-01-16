@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrieveNewDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
-import { ProductCollection } from "../../../lib/enums/product.enum";
+import { ProductType } from "../../../lib/enums/product.enum";
 import { normalizeImagePath } from "../../../lib/config";
 
 const appleFont = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif";
@@ -16,13 +16,13 @@ const newDishesRetriever = createSelector(
   (newDishes) => ({ newDishes })
 );
 
-const getCategoryLabel = (collection: ProductCollection): string => {
-  const labels: Record<ProductCollection, string> = {
-    [ProductCollection.DISH]: "FICTION",
-    [ProductCollection.SALAD]: "ACADEMIC",
-    [ProductCollection.DRINK]: "REFERENCE",
-    [ProductCollection.DESSERT]: "LITERATURE",
-    [ProductCollection.OTHER]: "NEW ARRIVAL",
+const getCategoryLabel = (collection: ProductType): string => {
+  const labels: Record<ProductType, string> = {
+    [ProductType.FICTION]: "FICTION",
+    [ProductType.ACADEMIC]: "ACADEMIC",
+    [ProductType.NON_FICTION]: "NON_FICTION",
+    [ProductType.COMICS]: "COMICS",
+    [ProductType.OTHER]: "OTHER",
   };
   return labels[collection] || "NEW ARRIVAL";
 };
@@ -79,7 +79,7 @@ export default function NewDishes() {
           {newDishes.length !== 0 ? (
             newDishes.map((product: Product) => {
               const imagePath = normalizeImagePath(product.productImages?.[0]);
-              const categoryLabel = getCategoryLabel(product.productCollection);
+              const categoryLabel = getCategoryLabel(product.productType);
 
               return (
                 <Paper

@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrieveFinishedOrders, retrievePausedOrders } from "./selector";
 import { Product } from "../../../lib/types/product";
-import { ProductCollection } from "../../../lib/enums/product.enum";
 import { normalizeImagePath } from "../../../lib/config";
 import { Order, OrderItem } from "../../../lib/types/orders";
 

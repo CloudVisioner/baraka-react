@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrievePopularDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
-import { ProductCollection } from "../../../lib/enums/product.enum";
+import { ProductType } from "../../../lib/enums/product.enum";
 import { normalizeImagePath } from "../../../lib/config";
 
 const appleFont = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif";
@@ -16,13 +16,13 @@ const popularDishesRetriever = createSelector(
   (popularDishes) => ({ popularDishes })
 );
 
-const getCategoryLabel = (collection: ProductCollection): string => {
-  const labels: Record<ProductCollection, string> = {
-    [ProductCollection.DISH]: "FICTION",
-    [ProductCollection.SALAD]: "ACADEMIC",
-    [ProductCollection.DRINK]: "REFERENCE",
-    [ProductCollection.DESSERT]: "LITERATURE",
-    [ProductCollection.OTHER]: "BESTSELLER",
+const getCategoryLabel = (collection: ProductType): string => {
+  const labels: Record<ProductType, string> = {
+    [ProductType.FICTION]: "FICTION",
+    [ProductType.ACADEMIC]: "ACADEMIC",
+    [ProductType.NON_FICTION]: "NON_FICTION",
+    [ProductType.COMICS]: "COMICS",
+    [ProductType.OTHER]: "OTHER",
   };
   return labels[collection] || "BESTSELLER";
 };
@@ -79,7 +79,7 @@ export default function PopularDishes() {
           {popularDishes.length !== 0 ? (
             popularDishes.map((product: Product) => {
               const imagePath = normalizeImagePath(product.productImages?.[0]);
-              const categoryLabel = getCategoryLabel(product.productCollection);
+              const categoryLabel = getCategoryLabel(product.productType);
 
               return (
                 <Paper

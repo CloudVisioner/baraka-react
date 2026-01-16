@@ -24,7 +24,7 @@ import { createSelector } from "reselect";
 import { retrieveProducts } from "./selector";
 import { Product, ProductInquiry } from "../../../lib/types/product";
 import ProductService from "../../services/ProductService";
-import { ProductCollection } from "../../../lib/enums/product.enum";
+import { ProductType } from "../../../lib/enums/product.enum";
 import { normalizeImagePath } from "../../../lib/config";
 import { Typography } from "@mui/joy";
 import { useHistory } from "react-router-dom";
@@ -51,7 +51,7 @@ export default function Products(props: ProductPageProps) {
     page: 1,
     limit: 8,
     order: "createdAt",
-    productCollection: ProductCollection.DISH,
+    productType: ProductType.FICTION,
     search: "",
   });
   const [searchText, setSearchText] = useState<string>("");
@@ -75,9 +75,9 @@ export default function Products(props: ProductPageProps) {
   // });
 
   /** HANDLERS */
-  const searchCollectionHandler = (collection: ProductCollection) => {
+  const searchCollectionHandler = (collection: ProductType) => {
     productSearch.page = 1;
-    productSearch.productCollection = collection;
+    productSearch.productType = collection;
     setProductSearch({ ...productSearch });
   };
 
@@ -174,55 +174,59 @@ export default function Products(props: ProductPageProps) {
               <Button
                 variant={"contained"}
                 color={
-                  productSearch.productCollection === ProductCollection.OTHER
+                productSearch.productType === ProductType.OTHER
                     ? "primary"
                     : "secondary"
                 }
-                onClick={() => searchCollectionHandler(ProductCollection.OTHER)}
+                onClick={() => searchCollectionHandler(ProductType.OTHER)}
               >
                 Other
               </Button>
               <Button
                 variant={"contained"}
                 color={
-                  productSearch.productCollection === ProductCollection.DESSERT
+                productSearch.productType === ProductType.NON_FICTION
                     ? "primary"
                     : "secondary"
                 }
                 onClick={() =>
-                  searchCollectionHandler(ProductCollection.DESSERT)
+                  searchCollectionHandler(ProductType.NON_FICTION)
                 }
               >
-                Dessert
-              </Button>
-              <Button
-                variant={"contained"}
-                color={"secondary"}
-                onClick={() => searchCollectionHandler(ProductCollection.DRINK)}
-              >
-                Drink
+                Non-Fiction
               </Button>
               <Button
                 variant={"contained"}
                 color={
-                  productSearch.productCollection === ProductCollection.SALAD
+                productSearch.productType === ProductType.ACADEMIC
                     ? "primary"
                     : "secondary"
                 }
-                onClick={() => searchCollectionHandler(ProductCollection.SALAD)}
+                onClick={() => searchCollectionHandler(ProductType.ACADEMIC)}
               >
-                Salad
+                Academic
               </Button>
               <Button
                 variant={"contained"}
                 color={
-                  productSearch.productCollection === ProductCollection.DISH
+                productSearch.productType === ProductType.COMICS
                     ? "primary"
                     : "secondary"
                 }
-                onClick={() => searchCollectionHandler(ProductCollection.DISH)}
+                onClick={() => searchCollectionHandler(ProductType.COMICS)}
               >
-                Dish
+                Comics
+              </Button>
+              <Button
+                variant={"contained"}
+                color={
+                productSearch.productType === ProductType.FICTION
+                    ? "primary"
+                    : "secondary"
+                }
+                onClick={() => searchCollectionHandler(ProductType.FICTION)}
+              >
+                Fiction
               </Button>
             </div>
           </Stack>
@@ -232,9 +236,7 @@ export default function Products(props: ProductPageProps) {
               products.map((product, index) => {
                 const imagePath = normalizeImagePath(product.productImages?.[0]);
                 const sizeVolume =
-                  product.productCollection === ProductCollection.DRINK
-                    ? product.productVolume + "litre"
-                    : product.productSize + "size";
+                  product.productType === ProductType.ACADEMIC
                 return (
                   <Stack
                     key={index}
