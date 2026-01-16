@@ -104,63 +104,91 @@ export default function Products(props: ProductPageProps) {
   return (
     <div className={"products"}>
       <Container>
-        <Stack flexDirection={"column"} alignItems={"center"}>
-          <Stack className="first">
-            <Box className={"res-name"}>Burak Restaurant</Box>
-            <Stack className="search-wrapper">
-              <Stack className="search" direction="row" alignItems="center">
-                <input
-                  id="myInput"
-                  type="text"
-                  className="search-input"
-                  placeholder="Type here"
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") searchProductHandler();
-                  }}
-                />
-                <Button
-                  variant="contained"
-                  className="search-button"
-                  onClick={() => searchProductHandler()}
-                >
-                  SEARCH
-                  <img className="user-avatar" src="/icons/Vector.svg" />
-                </Button>
-              </Stack>
-            </Stack>
+        <Stack className="products-header-section">
+          <Box className={"res-name"}>Burak Restaurant</Box>
+        </Stack>
+
+        <Stack className="search-section">
+          <Stack className="search" direction="row" alignItems="center">
+            <SearchIcon className="search-icon" />
+            <input
+              id="myInput"
+              type="text"
+              className="search-input"
+              placeholder="Search products..."
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") searchProductHandler();
+              }}
+            />
+            <Button
+              variant="contained"
+              className="search-button"
+              onClick={() => searchProductHandler()}
+            >
+              Search
+            </Button>
           </Stack>
         </Stack>
 
-        <Stack className={"dishes-filter-section"}>
-          <Stack className="dishes-filter-box">
+        <Stack className="controls-section">
+          <Stack className="category-filters">
             <Button
-              variant={"contained"}
-              color={
-                productSearch.order === "createdAt" ? "primary" : "secondary"
-              }
-              className={"order"}
+              variant={productSearch.productType === ProductType.OTHER ? "contained" : "outlined"}
+              className={`category-btn ${productSearch.productType === ProductType.OTHER ? "active" : ""}`}
+              onClick={() => searchCollectionHandler(ProductType.OTHER)}
+            >
+              Other
+            </Button>
+            <Button
+              variant={productSearch.productType === ProductType.NON_FICTION ? "contained" : "outlined"}
+              className={`category-btn ${productSearch.productType === ProductType.NON_FICTION ? "active" : ""}`}
+              onClick={() => searchCollectionHandler(ProductType.NON_FICTION)}
+            >
+              Non-Fiction
+            </Button>
+            <Button
+              variant={productSearch.productType === ProductType.ACADEMIC ? "contained" : "outlined"}
+              className={`category-btn ${productSearch.productType === ProductType.ACADEMIC ? "active" : ""}`}
+              onClick={() => searchCollectionHandler(ProductType.ACADEMIC)}
+            >
+              Academic
+            </Button>
+            <Button
+              variant={productSearch.productType === ProductType.COMICS ? "contained" : "outlined"}
+              className={`category-btn ${productSearch.productType === ProductType.COMICS ? "active" : ""}`}
+              onClick={() => searchCollectionHandler(ProductType.COMICS)}
+            >
+              Comics
+            </Button>
+            <Button
+              variant={productSearch.productType === ProductType.FICTION ? "contained" : "outlined"}
+              className={`category-btn ${productSearch.productType === ProductType.FICTION ? "active" : ""}`}
+              onClick={() => searchCollectionHandler(ProductType.FICTION)}
+            >
+              Fiction
+            </Button>
+          </Stack>
+
+          <Stack className="sort-filters">
+            <Button
+              variant={productSearch.order === "createdAt" ? "contained" : "outlined"}
+              className={`order-btn ${productSearch.order === "createdAt" ? "active" : ""}`}
               onClick={() => searchOrderHandler("createdAt")}
             >
               New
             </Button>
             <Button
-              variant={"contained"}
-              color={
-                productSearch.order === "productPrice" ? "primary" : "secondary"
-              }
-              className={"order"}
+              variant={productSearch.order === "productPrice" ? "contained" : "outlined"}
+              className={`order-btn ${productSearch.order === "productPrice" ? "active" : ""}`}
               onClick={() => searchOrderHandler("productPrice")}
             >
               Price
             </Button>
             <Button
-              variant={"contained"}
-              color={
-                productSearch.order === "productViews" ? "primary" : "secondary"
-              }
-              className={"order"}
+              variant={productSearch.order === "productViews" ? "contained" : "outlined"}
+              className={`order-btn ${productSearch.order === "productViews" ? "active" : ""}`}
               onClick={() => searchOrderHandler("productViews")}
             >
               Views
@@ -168,69 +196,7 @@ export default function Products(props: ProductPageProps) {
           </Stack>
         </Stack>
 
-        <Stack className="list-category-section">
-          <Stack className="product-category">
-            <div className="category-main">
-              <Button
-                variant={"contained"}
-                color={
-                productSearch.productType === ProductType.OTHER
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() => searchCollectionHandler(ProductType.OTHER)}
-              >
-                Other
-              </Button>
-              <Button
-                variant={"contained"}
-                color={
-                productSearch.productType === ProductType.NON_FICTION
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() =>
-                  searchCollectionHandler(ProductType.NON_FICTION)
-                }
-              >
-                Non-Fiction
-              </Button>
-              <Button
-                variant={"contained"}
-                color={
-                productSearch.productType === ProductType.ACADEMIC
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() => searchCollectionHandler(ProductType.ACADEMIC)}
-              >
-                Academic
-              </Button>
-              <Button
-                variant={"contained"}
-                color={
-                productSearch.productType === ProductType.COMICS
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() => searchCollectionHandler(ProductType.COMICS)}
-              >
-                Comics
-              </Button>
-              <Button
-                variant={"contained"}
-                color={
-                productSearch.productType === ProductType.FICTION
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() => searchCollectionHandler(ProductType.FICTION)}
-              >
-                Fiction
-              </Button>
-            </div>
-          </Stack>
-
+        <Stack className="products-section">
           <Stack className="product-wrapper">
             {products.length !== 0 ? (
               products.map((product, index) => {
