@@ -9,9 +9,7 @@ import {
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import Badge from "@mui/material/Badge";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -105,7 +103,7 @@ export default function Products(props: ProductPageProps) {
     <div className={"products"}>
       <Container>
         <Stack className="products-header-section">
-          <Box className={"res-name"}>Burak Restaurant</Box>
+          <Box className={"res-name"}>Baraka Bookstore</Box>
         </Stack>
 
         <Stack className="search-section">
@@ -201,8 +199,6 @@ export default function Products(props: ProductPageProps) {
             {products.length !== 0 ? (
               products.map((product, index) => {
                 const imagePath = normalizeImagePath(product.productImages?.[0]);
-                const sizeVolume =
-                  product.productType === ProductType.ACADEMIC
                 return (
                   <Stack
                     key={index}
@@ -213,8 +209,6 @@ export default function Products(props: ProductPageProps) {
                       className="product-img"
                       sx={{ backgroundImage: `url(${imagePath})` }}
                     >
-                      <div className="product-sale">{sizeVolume}</div>
-
                       <Button
                         className="shop-btn"
                         onClick={(e) => {
@@ -235,30 +229,30 @@ export default function Products(props: ProductPageProps) {
                         />
                       </Button>
 
-                      <Button className="view-btn" sx={{ right: "36px" }}>
-                        <Badge
-                          badgeContent={product.productViews}
-                          color="secondary"
-                        >
-                          <RemoveRedEyeIcon
-                            sx={{
-                              color:
-                                product.productViews === 0 ? "gray" : "white",
-                            }}
-                          />
-                        </Badge>
-                      </Button>
                     </Stack>
 
-                    <Box className="product-desc">
+                    <Box className="product-info">
                       <span className="product-title">
                         {product.productName}
                       </span>
+                      
+                      {product.productDesc && (
+                        <p className="product-description">
+                          {product.productDesc}
+                        </p>
+                      )}
 
-                      <div className="product-desc">
-                        <MonetizationOnIcon />
-                        {product.productPrice}
-                      </div>
+                      <Stack className="product-footer" direction="row" justifyContent="space-between" alignItems="center">
+                        <Stack className="product-views" direction="row" alignItems="center" spacing={0.5}>
+                          <RemoveRedEyeIcon className="views-icon" />
+                          <span className="views-count">{product.productViews || 0}</span>
+                        </Stack>
+                        
+                        <Stack className="product-price" direction="row" alignItems="center" spacing={0.5}>
+                          <span className="price-currency">$</span>
+                          <span className="price-value">{product.productPrice}</span>
+                        </Stack>
+                      </Stack>
                     </Box>
                   </Stack>
                 );
@@ -282,7 +276,6 @@ export default function Products(props: ProductPageProps) {
                       next: ArrowForwardIcon,
                     }}
                     {...item}
-                    color={"secondary"}
                   />
                 )}
                 onChange={paginationHandler}
