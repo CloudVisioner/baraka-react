@@ -1,18 +1,15 @@
 import React, { useEffect } from "react";
-import PopularDishes from "./PopularDishes";
-import NewDishes from "./NewDishes";
+import BookCollections from "./BookCollections";
 import Advertisement from "./Advertisement";
 import AcitveUsers from "./AcitveUsers";
 import Events from "./Events";
 import Statistics from "./Statistic";
 import "../../../css/home.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setNewDishes, setPopularDishes, setTopUsers } from "./slice";
-import { retrievePopularDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
 import ProductService from "../../services/ProductService";
-import { ProductType } from "../../../lib/enums/product.enum";
 import { Member } from "../../../lib/types/member";
 import MemberService from "../../services/MemberService";
 
@@ -35,9 +32,8 @@ export default function HomePage() {
     product
       .getProducts({
         page: 1,
-        limit: 4,
+        limit: 8,
         order: "productViews",
-        productType: ProductType.FICTION,
       })
       .then((data) => {
         setPopularDishes(data);
@@ -47,9 +43,8 @@ export default function HomePage() {
     product
       .getProducts({
         page: 1,
-        limit: 4,
+        limit: 8,
         order: "createdAt",
-        productType: ProductType.FICTION,
       })
       .then((data) => setNewDishes(data))
       .catch((err) => console.log(err));
@@ -64,8 +59,7 @@ export default function HomePage() {
   return (
     <div className={"homepage"}>
       <Statistics />
-      <PopularDishes />
-      <NewDishes />
+      <BookCollections />
       <Advertisement />
       <AcitveUsers />
       <Events />

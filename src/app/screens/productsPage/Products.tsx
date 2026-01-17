@@ -203,7 +203,6 @@ export default function Products(props: ProductPageProps) {
                   <Stack
                     key={index}
                     className="product-card"
-                    onClick={() => chooseDishHandler(product._id)}
                   >
                     <Stack
                       className="product-img"
@@ -212,14 +211,8 @@ export default function Products(props: ProductPageProps) {
                       <Button
                         className="shop-btn"
                         onClick={(e) => {
-                          onAdd({
-                            _id: product._id,
-                            quantity: 1,
-                            name: product.productName,
-                            price: product.productPrice,
-                            image: normalizeImagePath(product.productImages?.[0]) || "",
-                          });
                           e.stopPropagation();
+                          chooseDishHandler(product._id);
                         }}
                       >
                         <img

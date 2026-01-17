@@ -1,4 +1,5 @@
-import { Box, Container, Card, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Container, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrieveTopUsers } from "./selector";
@@ -14,41 +15,61 @@ const topUsersRetriever = createSelector(retrieveTopUsers, (topUsers) => ({
 
 export default function ActiveUsers() {
   const { topUsers } = useSelector(topUsersRetriever);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 4;
+  
+  // Pagination logic
+  const totalPages = Math.ceil(topUsers.length / itemsPerPage);
+  const displayedUsers = topUsers.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
 
   return (
     <Box
       sx={{
         width: "100%",
-        backgroundColor: "#F5F5F7",
-        padding: { xs: "80px 24px", md: "120px 0" },
+        backgroundColor: "#FBFBFB",
+        padding: { xs: "80px 24px", md: "120px 40px" },
       }}
     >
       <Container maxWidth="lg">
+        {/* Header Section */}
         <Box
           sx={{
             marginBottom: { xs: "48px", md: "64px" },
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
             textAlign: "center",
-            width: "100%",
           }}
         >
           <Typography
-            variant="h3"
             sx={{
               fontFamily: appleFont,
-              fontSize: { xs: "2rem", md: "2.5rem" },
-              fontWeight: 600,
-              letterSpacing: "-0.02em",
+              fontSize: { xs: "2rem", md: "2.75rem" },
+              fontWeight: 700,
+              letterSpacing: "-0.03em",
               color: "#1D1D1F",
-              textAlign: "center",
+              marginBottom: "16px",
             }}
           >
-            Active Users
+            TOP READERS
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: appleFont,
+              fontSize: { xs: "15px", md: "17px" },
+              fontWeight: 400,
+              color: "#86868b",
+              letterSpacing: "-0.01em",
+              lineHeight: 1.5,
+              maxWidth: "700px",
+              margin: "0 auto",
+            }}
+          >
+            Discover our most active readers who are exploring our diverse collection of books and sharing their insights with the community.
           </Typography>
         </Box>
 
+        {/* Profile Cards Grid */}
         <Box
           sx={{
             display: "grid",
@@ -59,30 +80,35 @@ export default function ActiveUsers() {
             },
             gap: "24px",
             width: "100%",
+            marginBottom: "50px",
           }}
         >
-          {topUsers.length !== 0 ? (
-            topUsers.map((member: Member) => {
+          {displayedUsers.length > 0 ? (
+            displayedUsers.map((member: Member) => {
               const imagePath = member.memberImage
                 ? `${serverApi}/uploads/${member.memberImage}`
                 : "/icons/default-user.svg";
 
+              const booksRead = member.memberPoints || 0;
+
               return (
-                <Card
+                <Box
                   key={member._id}
-                  elevation={0}
                   sx={{
-                    borderRadius: "32px",
+                    borderRadius: "20px",
                     backgroundColor: "#FFFFFF",
                     overflow: "hidden",
                     width: "100%",
                     display: "flex",
                     flexDirection: "column",
-                    transition: "transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), box-shadow 0.4s",
+                    transition: "all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                     cursor: "pointer",
+                    border: "1px solid rgba(0, 0, 0, 0.04)",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.08)",
                     "&:hover": {
-                      transform: "scale(1.03)",
-                      boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)",
+                      transform: "translateY(-8px) scale(1.02)",
+                      boxShadow: "0 12px 32px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.1)",
+                      borderColor: "rgba(0, 0, 0, 0.08)",
                     },
                   }}
                 >
@@ -93,7 +119,7 @@ export default function ActiveUsers() {
                       width: "100%",
                       aspectRatio: "1",
                       overflow: "hidden",
-                      backgroundColor: "#F5F5F7",
+                      backgroundColor: "#007AFF",
                     }}
                   >
                     <img
@@ -115,6 +141,7 @@ export default function ActiveUsers() {
                       flexDirection: "column",
                       alignItems: "center",
                       textAlign: "center",
+                      gap: "8px",
                     }}
                   >
                     <Typography
@@ -129,27 +156,24 @@ export default function ActiveUsers() {
                     >
                       {member.memberNick}
                     </Typography>
-                    {member.memberPoints && (
-                      <Typography
-                        sx={{
-                          fontFamily: appleFont,
-                          fontSize: "0.875rem",
-                          fontWeight: 400,
-                          color: "#6E6E73",
-                          marginTop: "8px",
-                        }}
-                      >
-                        {member.memberPoints} points
-                      </Typography>
-                    )}
+                    <Typography
+                      sx={{
+                        fontFamily: appleFont,
+                        fontSize: "0.875rem",
+                        fontWeight: 400,
+                        color: "#86868b",
+                      }}
+                    >
+                      {booksRead} {booksRead === 1 ? "Book Read" : "Books Read"}
+                    </Typography>
                   </Box>
-                </Card>
+                </Box>
               );
             })
           ) : (
             <Box
               sx={{
-                gridColumn: { xs: "1 / -1", sm: "1 / -1", md: "1 / -1" },
+                gridColumn: "1 / -1",
                 width: "100%",
                 minHeight: "400px",
                 display: "flex",
@@ -164,10 +188,46 @@ export default function ActiveUsers() {
                 padding: "60px 24px",
               }}
             >
-              No Active Users!
+              No Top Readers Available
             </Box>
           )}
         </Box>
+
+        {/* Pagination Dots */}
+        {totalPages > 1 && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            {Array.from({ length: totalPages }, (_, index) => (
+              <Box
+                key={index}
+                onClick={() => setCurrentPage(index)}
+                sx={{
+                  width: index === currentPage ? "32px" : "8px",
+                  height: "8px",
+                  borderRadius: "4px",
+                  backgroundColor:
+                    index === currentPage
+                      ? "#007AFF"
+                      : "rgba(0, 0, 0, 0.2)",
+                  transition: "all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                  cursor: "pointer",
+                  "&:hover": {
+                    backgroundColor:
+                      index === currentPage
+                        ? "#0051D5"
+                        : "rgba(0, 0, 0, 0.3)",
+                  },
+                }}
+              />
+            ))}
+          </Box>
+        )}
       </Container>
     </Box>
   );
