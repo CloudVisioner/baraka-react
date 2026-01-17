@@ -156,16 +156,16 @@ export default function ActiveUsers() {
                     >
                       {member.memberNick}
                     </Typography>
-                    <Typography
-                      sx={{
-                        fontFamily: appleFont,
-                        fontSize: "0.875rem",
-                        fontWeight: 400,
+                      <Typography
+                        sx={{
+                          fontFamily: appleFont,
+                          fontSize: "0.875rem",
+                          fontWeight: 400,
                         color: "#86868b",
-                      }}
-                    >
+                        }}
+                      >
                       {booksRead} {booksRead === 1 ? "Book Read" : "Books Read"}
-                    </Typography>
+                      </Typography>
                   </Box>
                 </Box>
               );
@@ -182,7 +182,7 @@ export default function ActiveUsers() {
                 fontFamily: appleFont,
                 fontSize: "1.375rem",
                 fontWeight: 500,
-                color: "#86868B",
+                color: "#1D1D1F",
                 letterSpacing: "-0.02em",
                 textAlign: "center",
                 padding: "60px 24px",

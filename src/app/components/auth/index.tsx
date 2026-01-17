@@ -1,42 +1,24 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
-import { Fab, Stack, TextField } from "@mui/material";
-import styled from "styled-components";
-import LoginIcon from "@mui/icons-material/Login";
+import {
+  Box,
+  Button,
+  Dialog,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { T } from "../../../lib/types/common";
-import { Message } from "@mui/icons-material";
 import { Messages } from "../../../lib/config";
 import { LoginInput, MemberInput } from "../../../lib/types/member";
 import MemberService from "../../services/MemberService";
-import { sign } from "crypto";
 import { sweetErrorHandling } from "../../../lib/sweetAlert";
 import { useGlobals } from "../../hooks/useGlobal";
 
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 2, 2),
-  },
-}));
-
-const ModalImg = styled.img`
-  width: 62%;
-  height: 100%;
-  border-radius: 10px;
-  background: #000;
-  margin-top: 9px;
-  margin-left: 10px;
-`;
+const appleFont = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif';
 
 interface AuthenticationModalProps {
   signupOpen: boolean;
@@ -47,7 +29,7 @@ interface AuthenticationModalProps {
 
 export default function AuthenticationModal(props: AuthenticationModalProps) {
   const { signupOpen, loginOpen, handleSignupClose, handleLoginClose } = props;
-  const classes = useStyles();
+  const theme = useTheme();
   const [memberNick, setMemberNick] = useState<string>("");
   const [memberPhone, setMemberPhone] = useState<string>("");
   const [memberPassword, setMemberPassword] = useState<string>("");
@@ -93,6 +75,9 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
       // Saving Authenticated user
       setAuthMember(result);
+      setMemberNick("");
+      setMemberPhone("");
+      setMemberPassword("");
       handleSignupClose();
     } catch (err) {
       console.log(err);
@@ -116,6 +101,8 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
       // Saving Authenticated user
       setAuthMember(result);
+      setMemberNick("");
+      setMemberPassword("");
       handleLoginClose();
     } catch (err) {
       console.log(err);
@@ -126,128 +113,364 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
   return (
     <div>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
+      {/* Signup Modal */}
+      <Dialog
         open={signupOpen}
-        disableEnforceFocus
-        disableAutoFocus
         onClose={handleSignupClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: "24px",
+            boxShadow: "0 12px 48px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(0, 0, 0, 0.1)",
+            maxWidth: "480px",
+            margin: theme.spacing(2),
+            backgroundColor: "#FFFFFF",
+            overflow: "hidden",
+          },
+        }}
         BackdropProps={{
-          timeout: 500,
+          sx: {
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+          },
         }}
       >
-        <Fade in={signupOpen}>
-          <Stack
-            className={classes.paper}
-            direction={"row"}
-            sx={{ width: "800px" }}
+        <Box sx={{ position: "relative", padding: theme.spacing(5, 4, 4) }}>
+          {/* Close Button */}
+          <IconButton
+            onClick={handleSignupClose}
+            sx={{
+              position: "absolute",
+              top: theme.spacing(2),
+              right: theme.spacing(2),
+              color: "#86868B",
+              "&:hover": {
+                backgroundColor: "rgba(0, 0, 0, 0.04)",
+                color: "#1D1D1F",
+              },
+            }}
           >
-            <ModalImg src={"/img/auth.webp"} alt="camera" />
-            <Stack sx={{ marginLeft: "69px", alignItems: "center" }}>
-              <h2>Signup Form</h2>
-              <TextField
-                sx={{ marginTop: "7px" }}
-                id="outlined-basic"
-                label="username"
-                variant="outlined"
-                onChange={handleUsername}
-              />
-              <TextField
-                sx={{ my: "17px" }}
-                id="outlined-basic"
-                label="phone number"
-                variant="outlined"
-                onChange={handlePhone}
-              />
-              <TextField
-                id="outlined-basic"
-                label="password"
-                variant="outlined"
-                onChange={handlePassword}
-                onKeyDown={handlePasswordKeyDown}
-              />
-              <Fab
-                sx={{ 
-                  marginTop: "30px", 
-                  width: "120px",
-                  backgroundColor: "#007AFF",
-                  color: "#FFFFFF",
-                  "&:hover": {
-                    backgroundColor: "#0051D5"
-                  }
-                }}
-                variant="extended"
-                onClick={handleSignupRequest}
-              >
-                <LoginIcon sx={{ mr: 1 }} />
-                Signup
-              </Fab>
-            </Stack>
-          </Stack>
-        </Fade>
-      </Modal>
+            <CloseIcon />
+          </IconButton>
 
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
+          {/* Title */}
+          <Typography
+            sx={{
+              fontFamily: appleFont,
+              fontSize: "28px",
+              fontWeight: 600,
+              letterSpacing: "-0.02em",
+              color: "#1D1D1F",
+              marginBottom: theme.spacing(4),
+              textAlign: "center",
+            }}
+          >
+            Sign Up
+          </Typography>
+
+          {/* Form Fields */}
+          <Stack spacing={3} sx={{ marginBottom: theme.spacing(4) }}>
+            <TextField
+              label="Username"
+              variant="outlined"
+              value={memberNick}
+              onChange={handleUsername}
+              fullWidth
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "12px",
+                  fontFamily: appleFont,
+                  "& fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.1)",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.2)",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#007AFF",
+                    borderWidth: "2px",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  fontFamily: appleFont,
+                  color: "#86868B",
+                  "&.Mui-focused": {
+                    color: "#007AFF",
+                  },
+                },
+              }}
+            />
+            <TextField
+              label="Phone Number"
+              variant="outlined"
+              value={memberPhone}
+              onChange={handlePhone}
+              fullWidth
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "12px",
+                  fontFamily: appleFont,
+                  "& fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.1)",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.2)",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#007AFF",
+                    borderWidth: "2px",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  fontFamily: appleFont,
+                  color: "#86868B",
+                  "&.Mui-focused": {
+                    color: "#007AFF",
+                  },
+                },
+              }}
+            />
+            <TextField
+              label="Password"
+              type="password"
+              variant="outlined"
+              value={memberPassword}
+              onChange={handlePassword}
+              onKeyDown={handlePasswordKeyDown}
+              fullWidth
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "12px",
+                  fontFamily: appleFont,
+                  "& fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.1)",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.2)",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#007AFF",
+                    borderWidth: "2px",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  fontFamily: appleFont,
+                  color: "#86868B",
+                  "&.Mui-focused": {
+                    color: "#007AFF",
+                  },
+                },
+              }}
+            />
+          </Stack>
+
+          {/* Signup Button */}
+          <Button
+            variant="contained"
+            onClick={handleSignupRequest}
+            fullWidth
+            endIcon={<ArrowForwardIcon />}
+            sx={{
+              height: "48px",
+              borderRadius: "12px",
+              fontFamily: appleFont,
+              fontSize: "16px",
+              fontWeight: 500,
+              textTransform: "none",
+              letterSpacing: "-0.01em",
+              background: "#1D1D1F",
+              color: "#FFFFFF",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+              border: "none",
+              transition: theme.transitions.create(
+                ["background-color", "box-shadow", "transform"],
+                {
+                  duration: theme.transitions.duration.standard,
+                  easing: theme.transitions.easing.easeOut,
+                }
+              ),
+              "&:hover": {
+                background: "#2D2D2F",
+                boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
+                transform: "translateY(-1px)",
+              },
+              "&:active": {
+                transform: "translateY(0)",
+                background: "#1D1D1F",
+              },
+            }}
+          >
+            Sign Up
+          </Button>
+        </Box>
+      </Dialog>
+
+      {/* Login Modal */}
+      <Dialog
         open={loginOpen}
-        disableEnforceFocus
-        disableAutoFocus
         onClose={handleLoginClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: "24px",
+            boxShadow: "0 12px 48px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(0, 0, 0, 0.1)",
+            maxWidth: "480px",
+            margin: theme.spacing(2),
+            backgroundColor: "#FFFFFF",
+            overflow: "hidden",
+          },
+        }}
         BackdropProps={{
-          timeout: 500,
+          sx: {
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+          },
         }}
       >
-        <Fade in={loginOpen}>
-          <Stack
-            className={classes.paper}
-            direction={"row"}
-            sx={{ width: "700px" }}
+        <Box sx={{ position: "relative", padding: theme.spacing(5, 4, 4) }}>
+          {/* Close Button */}
+          <IconButton
+            onClick={handleLoginClose}
+            sx={{
+              position: "absolute",
+              top: theme.spacing(2),
+              right: theme.spacing(2),
+              color: "#86868B",
+              "&:hover": {
+                backgroundColor: "rgba(0, 0, 0, 0.04)",
+                color: "#1D1D1F",
+              },
+            }}
           >
-            <ModalImg src={"/img/auth.webp"} alt="camera" />
-            <Stack
+            <CloseIcon />
+          </IconButton>
+
+          {/* Title */}
+          <Typography
+            sx={{
+              fontFamily: appleFont,
+              fontSize: "28px",
+              fontWeight: 600,
+              letterSpacing: "-0.02em",
+              color: "#1D1D1F",
+              marginBottom: theme.spacing(4),
+              textAlign: "center",
+            }}
+          >
+            Login
+          </Typography>
+
+          {/* Form Fields */}
+          <Stack spacing={3} sx={{ marginBottom: theme.spacing(4) }}>
+            <TextField
+              label="Username"
+              variant="outlined"
+              value={memberNick}
+              onChange={handleUsername}
+              fullWidth
+              autoFocus
               sx={{
-                marginLeft: "65px",
-                marginTop: "25px",
-                alignItems: "center",
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "12px",
+                  fontFamily: appleFont,
+                  "& fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.1)",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.2)",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#007AFF",
+                    borderWidth: "2px",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  fontFamily: appleFont,
+                  color: "#86868B",
+                  "&.Mui-focused": {
+                    color: "#007AFF",
+                  },
+                },
               }}
-            >
-              <h2>Login Form</h2>
-              <TextField
-                id="outlined-basic"
-                label="username"
-                variant="outlined"
-                sx={{ my: "10px" }}
-                onChange={handleUsername}
-              />
-              <TextField
-                id={"outlined-basic"}
-                label={"password"}
-                variant={"outlined"}
-                type={"password"}
-                onChange={handlePassword}
-                onKeyDown={handlePasswordKeyDown}
-              />
-              <Fab
-                sx={{ marginTop: "27px", width: "120px" }}
-                variant={"extended"}
-                color={"primary"}
-                onClick={handleLoginRequest}
-              >
-                <LoginIcon sx={{ mr: 1 }} />
-                Login
-              </Fab>
-            </Stack>
+            />
+            <TextField
+              label="Password"
+              type="password"
+              variant="outlined"
+              value={memberPassword}
+              onChange={handlePassword}
+              onKeyDown={handlePasswordKeyDown}
+              fullWidth
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "12px",
+                  fontFamily: appleFont,
+                  "& fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.1)",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.2)",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#007AFF",
+                    borderWidth: "2px",
+                  },
+                },
+                "& .MuiInputLabel-root": {
+                  fontFamily: appleFont,
+                  color: "#86868B",
+                  "&.Mui-focused": {
+                    color: "#007AFF",
+                  },
+                },
+              }}
+            />
           </Stack>
-        </Fade>
-      </Modal>
+
+          {/* Login Button */}
+          <Button
+            variant="contained"
+            onClick={handleLoginRequest}
+            fullWidth
+            endIcon={<ArrowForwardIcon />}
+            sx={{
+              height: "48px",
+              borderRadius: "12px",
+              fontFamily: appleFont,
+              fontSize: "16px",
+              fontWeight: 500,
+              textTransform: "none",
+              letterSpacing: "-0.01em",
+              background: "#1D1D1F",
+              color: "#FFFFFF",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+              border: "none",
+              transition: theme.transitions.create(
+                ["background-color", "box-shadow", "transform"],
+                {
+                  duration: theme.transitions.duration.standard,
+                  easing: theme.transitions.easing.easeOut,
+                }
+              ),
+              "&:hover": {
+                background: "#2D2D2F",
+                boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
+                transform: "translateY(-1px)",
+              },
+              "&:active": {
+                transform: "translateY(0)",
+                background: "#1D1D1F",
+              },
+            }}
+          >
+            Login
+          </Button>
+        </Box>
+      </Dialog>
     </div>
   );
 }

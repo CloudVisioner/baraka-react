@@ -95,7 +95,7 @@ export default function Statistics() {
                   className="stat-icon"
                   sx={{
                     fontSize: "40px",
-                    color: "#6E6E73",
+                    color: "#1D1D1F",
                     marginBottom: "20px",
                     transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
@@ -122,7 +122,7 @@ export default function Statistics() {
                     fontWeight: 600,
                     textTransform: "uppercase",
                     letterSpacing: "0.1em",
-                    color: "#6E6E73",
+                    color: "#1D1D1F",
                   }}
                 >
                   {stat.label}

@@ -165,7 +165,7 @@ export default function NewDishes() {
                         fontWeight: 600,
                         textTransform: "uppercase",
                         letterSpacing: "0.15em",
-                        color: "#6E6E73",
+                        color: "#1D1D1F",
                       }}
                     >
                       {categoryLabel}
@@ -196,7 +196,7 @@ export default function NewDishes() {
                           fontFamily: appleFont,
                           fontSize: "0.875rem",
                           fontWeight: 400,
-                          color: "#6E6E73",
+                          color: "#1D1D1F",
                           lineHeight: 1.4,
                           display: "-webkit-box",
                           WebkitLineClamp: 2,
@@ -224,7 +224,7 @@ export default function NewDishes() {
                           fontFamily: appleFont,
                           fontSize: "0.875rem",
                           fontWeight: 400,
-                          color: "#6E6E73",
+                          color: "#1D1D1F",
                         }}
                       >
                         {product.productViews}
@@ -232,7 +232,7 @@ export default function NewDishes() {
                       <VisibilityIcon
                         sx={{
                           fontSize: "18px",
-                          color: "#6E6E73",
+                          color: "#1D1D1F",
                         }}
                       />
                     </Box>
@@ -252,7 +252,7 @@ export default function NewDishes() {
                 fontFamily: appleFont,
                 fontSize: "1.375rem",
                 fontWeight: 500,
-                color: "#86868B",
+                color: "#1D1D1F",
                 letterSpacing: "-0.02em",
                 textAlign: "center",
                 padding: "60px 24px",

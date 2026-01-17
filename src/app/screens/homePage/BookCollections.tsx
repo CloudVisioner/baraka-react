@@ -63,6 +63,8 @@ export default function BookCollections() {
 
   const handleExploreAll = () => {
     history.push("/products");
+    // Scroll to top after navigation
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -136,18 +138,18 @@ export default function BookCollections() {
               transition: "all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
               border: "1.5px solid rgba(0, 0, 0, 0.08)",
               background:
-                activeTab === "new" ? "#34C759" : "#ffffff",
+                activeTab === "new" ? "#007AFF" : "#ffffff",
               color: activeTab === "new" ? "#ffffff" : "#1d1d1f",
               boxShadow:
                 activeTab === "new"
-                  ? "0 2px 10px rgba(52, 199, 89, 0.3)"
+                  ? "0 2px 10px rgba(0, 122, 255, 0.3)"
                   : "0 1px 3px rgba(0, 0, 0, 0.05)",
               "&:hover": {
-                background: activeTab === "new" ? "#30D158" : "#f5f5f7",
-                borderColor: activeTab === "new" ? "#34C759" : "rgba(0, 0, 0, 0.12)",
+                background: activeTab === "new" ? "#0051D5" : "#f5f5f7",
+                borderColor: activeTab === "new" ? "#007AFF" : "rgba(0, 0, 0, 0.12)",
                 boxShadow:
                   activeTab === "new"
-                    ? "0 4px 16px rgba(52, 199, 89, 0.35)"
+                    ? "0 4px 16px rgba(0, 122, 255, 0.35)"
                     : "0 2px 8px rgba(0, 0, 0, 0.08)",
                 transform: "translateY(-1px) scale(1.02)",
               },
@@ -172,18 +174,18 @@ export default function BookCollections() {
               transition: "all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
               border: "1.5px solid rgba(0, 0, 0, 0.08)",
               background:
-                activeTab === "bestseller" ? "#34C759" : "#ffffff",
+                activeTab === "bestseller" ? "#007AFF" : "#ffffff",
               color: activeTab === "bestseller" ? "#ffffff" : "#1d1d1f",
               boxShadow:
                 activeTab === "bestseller"
-                  ? "0 2px 10px rgba(52, 199, 89, 0.3)"
+                  ? "0 2px 10px rgba(0, 122, 255, 0.3)"
                   : "0 1px 3px rgba(0, 0, 0, 0.05)",
               "&:hover": {
-                background: activeTab === "bestseller" ? "#30D158" : "#f5f5f7",
-                borderColor: activeTab === "bestseller" ? "#34C759" : "rgba(0, 0, 0, 0.12)",
+                background: activeTab === "bestseller" ? "#0051D5" : "#f5f5f7",
+                borderColor: activeTab === "bestseller" ? "#007AFF" : "rgba(0, 0, 0, 0.12)",
                 boxShadow:
                   activeTab === "bestseller"
-                    ? "0 4px 16px rgba(52, 199, 89, 0.35)"
+                    ? "0 4px 16px rgba(0, 122, 255, 0.35)"
                     : "0 2px 8px rgba(0, 0, 0, 0.08)",
                 transform: "translateY(-1px) scale(1.02)",
               },
@@ -208,18 +210,18 @@ export default function BookCollections() {
               transition: "all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
               border: "1.5px solid rgba(0, 0, 0, 0.08)",
               background:
-                activeTab === "featured" ? "#34C759" : "#ffffff",
+                activeTab === "featured" ? "#007AFF" : "#ffffff",
               color: activeTab === "featured" ? "#ffffff" : "#1d1d1f",
               boxShadow:
                 activeTab === "featured"
-                  ? "0 2px 10px rgba(52, 199, 89, 0.3)"
+                  ? "0 2px 10px rgba(0, 122, 255, 0.3)"
                   : "0 1px 3px rgba(0, 0, 0, 0.05)",
               "&:hover": {
-                background: activeTab === "featured" ? "#30D158" : "#f5f5f7",
-                borderColor: activeTab === "featured" ? "#34C759" : "rgba(0, 0, 0, 0.12)",
+                background: activeTab === "featured" ? "#0051D5" : "#f5f5f7",
+                borderColor: activeTab === "featured" ? "#007AFF" : "rgba(0, 0, 0, 0.12)",
                 boxShadow:
                   activeTab === "featured"
-                    ? "0 4px 16px rgba(52, 199, 89, 0.35)"
+                    ? "0 4px 16px rgba(0, 122, 255, 0.35)"
                     : "0 2px 8px rgba(0, 0, 0, 0.08)",
                 transform: "translateY(-1px) scale(1.02)",
               },
@@ -337,7 +339,7 @@ export default function BookCollections() {
                         fontWeight: 600,
                         textTransform: "uppercase",
                         letterSpacing: "0.15em",
-                        color: "#6E6E73",
+                        color: "#1D1D1F",
                       }}
                     >
                       {categoryLabel}
@@ -369,7 +371,7 @@ export default function BookCollections() {
                           fontFamily: appleFont,
                           fontSize: "0.875rem",
                           fontWeight: 400,
-                          color: "#6E6E73",
+                          color: "#1D1D1F",
                           lineHeight: 1.4,
                           display: "-webkit-box",
                           WebkitLineClamp: 2,
@@ -398,7 +400,7 @@ export default function BookCollections() {
                           fontFamily: appleFont,
                           fontSize: "0.875rem",
                           fontWeight: 400,
-                          color: "#6E6E73",
+                          color: "#1D1D1F",
                         }}
                       >
                         {product.productViews}
@@ -406,7 +408,7 @@ export default function BookCollections() {
                       <VisibilityIcon
                         sx={{
                           fontSize: "18px",
-                          color: "#6E6E73",
+                          color: "#1D1D1F",
                         }}
                       />
                     </Box>
@@ -444,13 +446,13 @@ export default function BookCollections() {
               textTransform: "none",
               letterSpacing: "-0.01em",
               padding: "0 32px",
-              background: "#34C759",
+              background: "#007AFF",
               color: "#ffffff",
-              boxShadow: "0 2px 10px rgba(52, 199, 89, 0.3)",
+              boxShadow: "0 2px 10px rgba(0, 122, 255, 0.3)",
               transition: "all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
               "&:hover": {
-                background: "#30D158",
-                boxShadow: "0 4px 16px rgba(52, 199, 89, 0.35)",
+                background: "#0051D5",
+                boxShadow: "0 4px 16px rgba(0, 122, 255, 0.35)",
                 transform: "translateY(-2px) scale(1.02)",
               },
               "&:active": {

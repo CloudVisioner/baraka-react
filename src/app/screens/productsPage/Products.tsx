@@ -1,11 +1,16 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
+  Card,
+  CardContent,
   Container,
   IconButton,
+  Rating,
   Stack,
   TextField,
+  Typography,
+  useTheme,
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
@@ -14,6 +19,10 @@ import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import StarIcon from "@mui/icons-material/Star";
 
 import { Dispatch } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,7 +33,6 @@ import { Product, ProductInquiry } from "../../../lib/types/product";
 import ProductService from "../../services/ProductService";
 import { ProductType } from "../../../lib/enums/product.enum";
 import { normalizeImagePath } from "../../../lib/config";
-import { Typography } from "@mui/joy";
 import { useHistory } from "react-router-dom";
 import { CartItem } from "../../../lib/types/search";
 
@@ -53,7 +61,16 @@ export default function Products(props: ProductPageProps) {
     search: "",
   });
   const [searchText, setSearchText] = useState<string>("");
+  const [editorPicks, setEditorPicks] = useState<Product[]>([]);
+  const [animatingItem, setAnimatingItem] = useState<{ id: string; from: { x: number; y: number }; to: { x: number; y: number } } | null>(null);
+  const cartIconRef = useRef<HTMLElement | null>(null);
   const history = useHistory();
+  const theme = useTheme();
+
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []); // componentDidMount
 
   useEffect(() => {
     console.log("data Arrived");
@@ -64,6 +81,20 @@ export default function Products(props: ProductPageProps) {
       .then((data) => setProducts(data))
       .catch((err) => console.log(err));
   }, [productSearch]); // conmponentDidUpdate
+
+  // Fetch Editor's Picks (most viewed products)
+  useEffect(() => {
+    const product = new ProductService();
+    product
+      .getProducts({
+        page: 1,
+        limit: 4,
+        order: "productViews",
+        search: "",
+      })
+      .then((data) => setEditorPicks(data.slice(0, 4)))
+      .catch((err) => console.log(err));
+  }, []);
 
   // useEffect(() => {
   //   if (searchText === "") {
@@ -99,34 +130,175 @@ export default function Products(props: ProductPageProps) {
     history.push(`/products/${id}`);
   };
 
+  const handleAddToBasket = (product: Product, event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    
+    // Get button position
+    const buttonRect = event.currentTarget.getBoundingClientRect();
+    const fromX = buttonRect.left + buttonRect.width / 2;
+    const fromY = buttonRect.top + buttonRect.height / 2;
+    
+    // Get cart icon position
+    const cartIcon = document.querySelector('[aria-label="cart"]') as HTMLElement;
+    if (cartIcon) {
+      const cartRect = cartIcon.getBoundingClientRect();
+      const toX = cartRect.left + cartRect.width / 2;
+      const toY = cartRect.top + cartRect.height / 2;
+      
+      // Create animation
+      setAnimatingItem({
+        id: product._id,
+        from: { x: fromX, y: fromY },
+        to: { x: toX, y: toY },
+      });
+      
+      // Add to basket after animation completes
+      setTimeout(() => {
+        const cartItem: CartItem = {
+          _id: product._id,
+          quantity: 1,
+          name: product.productName,
+          price: product.productPrice,
+          image: product.productImages?.[0] || "",
+        };
+        onAdd(cartItem);
+        setAnimatingItem(null);
+      }, 1000); // Match animation duration
+    } else {
+      // Fallback if cart icon not found
+      const cartItem: CartItem = {
+        _id: product._id,
+        quantity: 1,
+        name: product.productName,
+        price: product.productPrice,
+        image: product.productImages?.[0] || "",
+      };
+      onAdd(cartItem);
+    }
+  };
+
+  const handleCardClick = (id: string) => {
+    history.push(`/products/${id}`);
+  };
+
+  const handleEditorPickClick = (id: string) => {
+    history.push(`/products/${id}`);
+  };
+
+  // Extract author from product description or use a default
+  const getAuthor = (product: Product): string => {
+    // Try to extract from description or use a placeholder
+    if (product.productDesc) {
+      const authorMatch = product.productDesc.match(/by\s+([^.]+)/i);
+      if (authorMatch) return authorMatch[1].trim();
+    }
+    return "Featured Author"; // Placeholder
+  };
+
+  // Generate editorial note (max 12 words)
+  const getEditorialNote = (product: Product): string => {
+    const notes = [
+      "A timeless classic that deserves a place on every shelf.",
+      "Thought-provoking narrative that challenges conventional wisdom.",
+      "Beautifully written with rich character development throughout.",
+      "Essential reading for anyone interested in contemporary literature.",
+      "An engaging story that keeps readers turning pages.",
+      "Masterfully crafted with attention to detail and depth.",
+    ];
+    return notes[Math.floor(Math.random() * notes.length)];
+  };
+
   return (
     <div className={"products"}>
+      {/* Flying Cart Icon Animation */}
+      {animatingItem && (
+        <>
+          <style>{`
+            @keyframes flyToCart {
+              0% {
+                left: ${animatingItem.from.x}px;
+                top: ${animatingItem.from.y}px;
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2) rotate(0deg);
+              }
+              50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1) rotate(180deg);
+              }
+              100% {
+                left: ${animatingItem.to.x}px;
+                top: ${animatingItem.to.y}px;
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(0.8) rotate(360deg);
+              }
+            }
+          `}</style>
+          <Box
+            sx={{
+              position: "fixed",
+              left: `${animatingItem.from.x}px`,
+              top: `${animatingItem.from.y}px`,
+              width: "48px",
+              height: "48px",
+              zIndex: 9999,
+              pointerEvents: "none",
+              animation: "flyToCart 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
+              filter: "drop-shadow(0 4px 8px rgba(0, 122, 255, 0.4))",
+            }}
+          >
+            <Box
+              sx={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                backgroundColor: "#007AFF",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 4px 16px rgba(0, 122, 255, 0.3)",
+              }}
+            >
+              <img
+                src="/icons/shopping-cart.svg"
+                alt=""
+                style={{
+                  width: "60%",
+                  height: "60%",
+                  filter: "brightness(0) invert(1)",
+                  display: "block",
+                }}
+              />
+            </Box>
+          </Box>
+        </>
+      )}
+
       <Container>
         <Stack className="products-header-section">
           <Box className={"res-name"}>Baraka Bookstore</Box>
         </Stack>
 
         <Stack className="search-section">
-          <Stack className="search" direction="row" alignItems="center">
+              <Stack className="search" direction="row" alignItems="center">
             <SearchIcon className="search-icon" />
-            <input
-              id="myInput"
-              type="text"
-              className="search-input"
+                <input
+                  id="myInput"
+                  type="text"
+                  className="search-input"
               placeholder="Search products..."
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") searchProductHandler();
-              }}
-            />
-            <Button
-              variant="contained"
-              className="search-button"
-              onClick={() => searchProductHandler()}
-            >
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") searchProductHandler();
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  className="search-button"
+                  onClick={() => searchProductHandler()}
+                >
               Search
-            </Button>
+                </Button>
           </Stack>
         </Stack>
 
@@ -194,15 +366,48 @@ export default function Products(props: ProductPageProps) {
           </Stack>
         </Stack>
 
-        <Stack className="products-section">
-          <Stack className="product-wrapper">
-            {products.length !== 0 ? (
-              products.map((product, index) => {
+        {/* Products Grid Section */}
+        <Box className="products-section" sx={{ width: "100%", marginBottom: theme.spacing(6) }}>
+          {products.length !== 0 ? (
+            <Container maxWidth="lg">
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  gap: { xs: theme.spacing(2), sm: theme.spacing(3), md: theme.spacing(3), lg: theme.spacing(4) },
+                  width: "100%",
+                  margin: 0,
+                }}
+              >
+                {products.map((product, index) => {
                 const imagePath = normalizeImagePath(product.productImages?.[0]);
                 return (
+                    <Box
+                      key={product._id || index}
+                      sx={{
+                        // Grid breakpoints: xs={12} sm={6} md={4} lg={3}
+                        width: { xs: "100%", sm: "calc(50% - 12px)", md: "calc(33.333% - 16px)", lg: "calc(25% - 18px)" },
+                        maxWidth: "280px",
+                        minWidth: "260px",
+                        display: "flex",
+                        justifyContent: "center",
+                        flexGrow: 0,
+                        flexShrink: 0,
+                      }}
+                    >
                   <Stack
-                    key={index}
                     className="product-card"
+                    onClick={() => handleCardClick(product._id)}
+                    sx={{
+                      width: "100%",
+                      maxWidth: "280px",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      flexGrow: 0,
+                      cursor: "pointer",
+                    }}
                   >
                     <Stack
                       className="product-img"
@@ -210,10 +415,7 @@ export default function Products(props: ProductPageProps) {
                     >
                       <Button
                         className="shop-btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          chooseDishHandler(product._id);
-                        }}
+                        onClick={(e) => handleAddToBasket(product, e)}
                       >
                         <img
                           src="/icons/shopping-cart.svg"
@@ -221,40 +423,73 @@ export default function Products(props: ProductPageProps) {
                           alt="cart"
                         />
                       </Button>
-
                     </Stack>
 
-                    <Box className="product-info">
+                      <Box className="product-info" sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
                       <span className="product-title">
                         {product.productName}
                       </span>
-                      
-                      {product.productDesc && (
-                        <p className="product-description">
-                          {product.productDesc}
-                        </p>
-                      )}
 
-                      <Stack className="product-footer" direction="row" justifyContent="space-between" alignItems="center">
-                        <Stack className="product-views" direction="row" alignItems="center" spacing={0.5}>
-                          <RemoveRedEyeIcon className="views-icon" />
-                          <span className="views-count">{product.productViews || 0}</span>
+                        {product.productDesc && (
+                          <p className="product-description">
+                            {product.productDesc}
+                          </p>
+                        )}
+
+                        <Stack 
+                          className="product-footer" 
+                          direction="row" 
+                          justifyContent="space-between" 
+                          alignItems="center"
+                          sx={{ marginTop: "auto" }}
+                        >
+                          <Stack className="product-views" direction="row" alignItems="center" spacing={0.5}>
+                            <RemoveRedEyeIcon className="views-icon" />
+                            <span className="views-count">{product.productViews || 0}</span>
+                          </Stack>
+                          
+                          <Stack className="product-price" direction="row" alignItems="center" spacing={0.5}>
+                            <span className="price-currency">$</span>
+                            <span className="price-value">{product.productPrice}</span>
+                          </Stack>
                         </Stack>
-                        
-                        <Stack className="product-price" direction="row" alignItems="center" spacing={0.5}>
-                          <span className="price-currency">$</span>
-                          <span className="price-value">{product.productPrice}</span>
-                        </Stack>
-                      </Stack>
+                      </Box>
+                    </Stack>
                     </Box>
-                  </Stack>
-                );
-              })
-            ) : (
-              <Box className="no-data">Products are not available!</Box>
-            )}
+                  );
+                })}
+              </Box>
+            </Container>
+          ) : (
+            <Box
+              className="no-data"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                minHeight: "400px",
+                textAlign: "center",
+              }}
+            >
+              Products are not available!
+            </Box>
+          )}
+        </Box>
 
-            <Stack className={"pagination-section"}>
+        {/* Pagination Section - Outside Grid, Always Visible, Stable */}
+        <Box
+          className="pagination-section"
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: theme.spacing(4, 0),
+            minHeight: "80px",
+            position: "relative",
+          }}
+        >
               <Pagination
                 count={
                   products.length !== 0
@@ -272,64 +507,693 @@ export default function Products(props: ProductPageProps) {
                   />
                 )}
                 onChange={paginationHandler}
+            className="products-pagination"
               />
-            </Stack>
-          </Stack>
-        </Stack>
+        </Box>
       </Container>
 
-      <div className="family-brands-section">
-        <Typography className="family-title">Our Family Brands</Typography>
+      {/* Editor's Picks Section */}
+      <Box
+        sx={{
+          width: "100%",
+          backgroundColor: "#FBFBFB",
+          padding: { xs: theme.spacing(10, 2), md: theme.spacing(15, 4) },
+          marginTop: theme.spacing(8),
+        }}
+      >
+        <Container maxWidth="lg">
+          {/* Header */}
+          <Box
+            sx={{
+              textAlign: "center",
+              marginBottom: { xs: theme.spacing(6), md: theme.spacing(8) },
+            }}
+          >
+            <Typography
+              variant="h3"
+              sx={{
+                fontFamily:
+                  '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
+                fontSize: { xs: "2rem", md: "2.5rem" },
+                fontWeight: 600,
+                letterSpacing: "-0.02em",
+                color: "#1D1D1F",
+                marginBottom: theme.spacing(2),
+              }}
+            >
+              Editor's Picks
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily:
+                  '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                fontSize: { xs: "15px", md: "17px" },
+                fontWeight: 400,
+                color: "#1D1D1F",
+                letterSpacing: "-0.01em",
+                lineHeight: 1.6,
+                maxWidth: "600px",
+                margin: "0 auto",
+              }}
+            >
+              Handpicked selections from our editorial team, featuring standout titles
+              that inspire, educate, and entertain.
+            </Typography>
+          </Box>
 
-        <Stack className="brands-wrapper">
-          <Box className="brand-card">
-            <img
-              src="/img/gurme.webp"
-              alt="Burak Gurme"
-              className="brand-img"
+          {/* Scrollable Book Cards */}
+          <Box
+            sx={{
+              display: "flex",
+              gap: theme.spacing(3),
+              overflowX: "auto",
+              overflowY: "hidden",
+              paddingBottom: theme.spacing(2),
+              scrollBehavior: "smooth",
+              scrollbarWidth: "thin",
+              scrollbarColor: "#D0D0D0 transparent",
+              "&::-webkit-scrollbar": {
+                height: "8px",
+              },
+              "&::-webkit-scrollbar-track": {
+                background: "transparent",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#D0D0D0",
+                borderRadius: "4px",
+                "&:hover": {
+                  backgroundColor: "#A0A0A0",
+                },
+              },
+              // Responsive grid on desktop
+              [theme.breakpoints.up("md")]: {
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: theme.spacing(4),
+                overflowX: "visible",
+              },
+            }}
+          >
+            {editorPicks.map((product) => {
+              const imagePath = normalizeImagePath(product.productImages?.[0]);
+              const author = getAuthor(product);
+              const editorialNote = getEditorialNote(product);
+              // Calculate rating based on views (normalize to 0-5)
+              const rating = Math.min(5, Math.max(4, (product.productViews / 100) + 4));
+
+              return (
+                <Card
+                  key={product._id}
+                  elevation={0}
+                  onClick={() => handleEditorPickClick(product._id)}
+                  sx={{
+                    minWidth: { xs: "280px", sm: "300px" },
+                    maxWidth: { xs: "280px", sm: "300px" },
+                    backgroundColor: "#FFFFFF",
+                    borderRadius: "16px",
+                    cursor: "pointer",
+                    border: "1px solid rgba(0, 0, 0, 0.06)",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06)",
+                    transition: theme.transitions.create(
+                      ["transform", "box-shadow"],
+                      {
+                        duration: theme.transitions.duration.standard,
+                        easing: theme.transitions.easing.easeOut,
+                      }
+                    ),
+                    "&:hover": {
+                      transform: "translateY(-4px)",
+                      boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08)",
+                    },
+                    [theme.breakpoints.up("md")]: {
+                      minWidth: "100%",
+                      maxWidth: "100%",
+                    },
+                  }}
+                >
+                  {/* Book Cover Image */}
+                  <Box
+                    sx={{
+                      width: "100%",
+                      aspectRatio: "2/3",
+                      overflow: "hidden",
+                      borderRadius: "16px 16px 0 0",
+                      backgroundColor: "#F5F5F7",
+                      position: "relative",
+                    }}
+                  >
+                    <img
+                      src={imagePath}
+                      alt={product.productName}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
             />
           </Box>
 
-          <Box className="brand-card">
-            <img
-              src="/img/seafood.webp"
-              alt="Burak Seafood"
-              className="brand-img"
-            />
+                  <CardContent
+                    sx={{
+                      padding: theme.spacing(3),
+                      "&:last-child": {
+                        paddingBottom: theme.spacing(3),
+                      },
+                    }}
+                  >
+                    {/* Title */}
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
+                        fontSize: "1.125rem",
+                        fontWeight: 600,
+                        color: "#1D1D1F",
+                        marginBottom: theme.spacing(0.5),
+                        lineHeight: 1.3,
+                        letterSpacing: "-0.01em",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {product.productName}
+                    </Typography>
+
+                    {/* Author */}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                        fontSize: "0.875rem",
+                        fontWeight: 400,
+                        color: "#1D1D1F",
+                        marginBottom: theme.spacing(1.5),
+                        letterSpacing: "-0.01em",
+                      }}
+                    >
+                      {author}
+                    </Typography>
+
+                    {/* Star Rating */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: theme.spacing(1),
+                        marginBottom: theme.spacing(1.5),
+                      }}
+                    >
+                      <Rating
+                        value={rating}
+                        readOnly
+                        precision={0.5}
+                        size="small"
+                        sx={{
+                          "& .MuiRating-iconFilled": {
+                            color: "#1D1D1F",
+                          },
+                          "& .MuiRating-iconEmpty": {
+                            color: "#D0D0D0",
+                          },
+                        }}
+                      />
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                          fontSize: "0.75rem",
+                          color: "#1D1D1F",
+                          fontWeight: 400,
+                        }}
+                      >
+                        {rating.toFixed(1)}
+                      </Typography>
+                    </Box>
+
+                    {/* Editorial Note */}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                        fontSize: "0.875rem",
+                        fontWeight: 400,
+                        color: "#1D1D1F",
+                        lineHeight: 1.5,
+                        marginBottom: theme.spacing(2),
+                        letterSpacing: "-0.01em",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {editorialNote}
+                    </Typography>
+
+                    {/* CTA Button */}
+                    <Button
+                      variant="text"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEditorPickClick(product._id);
+                      }}
+                      sx={{
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                        fontSize: "0.875rem",
+                        fontWeight: 500,
+                        color: "#1D1D1F",
+                        textTransform: "none",
+                        padding: theme.spacing(0.75, 2),
+                        borderRadius: "8px",
+                        letterSpacing: "-0.01em",
+                        transition: theme.transitions.create("background-color"),
+                        "&:hover": {
+                          backgroundColor: "rgba(0, 0, 0, 0.04)",
+                        },
+                      }}
+                    >
+                      Learn more
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </Box>
 
-          <Box className="brand-card">
-            <img
-              src="/img/sweets.webp"
-              alt="Burak Sweets"
-              className="brand-img"
-            />
+          {/* Empty State */}
+          {editorPicks.length === 0 && (
+            <Box
+              sx={{
+                textAlign: "center",
+                padding: theme.spacing(8, 2),
+                color: "#1D1D1F",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                  fontSize: "1rem",
+                  fontWeight: 400,
+                }}
+              >
+                No editor's picks available at the moment.
+              </Typography>
+            </Box>
+          )}
+        </Container>
           </Box>
 
-          <Box className="brand-card">
-            <img
-              src="/img/doner.webp"
-              alt="Burak Doner"
-              className="brand-img"
-            />
+      {/* Delivery Info Panel Section */}
+      <Box
+        sx={{
+          width: "100%",
+          backgroundColor: "#FFFFFF",
+          padding: { xs: theme.spacing(8, 2), md: theme.spacing(12, 4), lg: theme.spacing(15, 4) },
+          marginTop: theme.spacing(8),
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", lg: "row" },
+              gap: { xs: theme.spacing(6), lg: theme.spacing(8) },
+              alignItems: { lg: "flex-start" },
+            }}
+          >
+            {/* Left Side: Content Panel */}
+            <Box
+              sx={{
+                flex: { lg: "1 1 0%" },
+                display: "flex",
+                flexDirection: "column",
+                maxWidth: { lg: "500px" },
+              }}
+            >
+              {/* Headline */}
+              <Typography
+                variant="h2"
+                sx={{
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
+                  fontSize: { xs: "2rem", md: "2.5rem", lg: "3rem" },
+                  fontWeight: 600,
+                  letterSpacing: "-0.03em",
+                  color: "#1D1D1F",
+                  marginBottom: theme.spacing(2),
+                  lineHeight: 1.1,
+                }}
+              >
+                Books, delivered where you are.
+              </Typography>
+
+              {/* Subtext */}
+              <Typography
+                sx={{
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                  fontSize: { xs: "15px", md: "17px" },
+                  fontWeight: 400,
+                  color: "#1D1D1F",
+                  letterSpacing: "-0.01em",
+                  lineHeight: 1.6,
+                  marginBottom: theme.spacing(6),
+                }}
+              >
+                Fast, reliable delivery from our regional hubs.
+              </Typography>
+
+              {/* Info Blocks */}
+              <Stack
+                spacing={4}
+                sx={{
+                  marginBottom: theme.spacing(6),
+                }}
+              >
+                {/* Coverage Block */}
+                <Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: theme.spacing(2),
+                      marginBottom: theme.spacing(1),
+                    }}
+                  >
+                    <LocationOnIcon
+                      sx={{
+                        color: "#1D1D1F",
+                        fontSize: "24px",
+                        marginTop: "2px",
+                      }}
+                    />
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
+                          fontSize: "18px",
+                          fontWeight: 600,
+                          color: "#1D1D1F",
+                          letterSpacing: "-0.01em",
+                          marginBottom: theme.spacing(0.5),
+                        }}
+                      >
+                        Coverage
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                          fontSize: "15px",
+                          fontWeight: 400,
+                          color: "#1D1D1F",
+                          letterSpacing: "-0.01em",
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        Available in 40+ cities
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                          fontSize: "15px",
+                          fontWeight: 400,
+                          color: "#1D1D1F",
+                          letterSpacing: "-0.01em",
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        Nationwide & selected international shipping
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+
+                {/* Delivery Speed Block */}
+                <Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: theme.spacing(2),
+                      marginBottom: theme.spacing(1),
+                    }}
+                  >
+                    <AccessTimeIcon
+                      sx={{
+                        color: "#1D1D1F",
+                        fontSize: "24px",
+                        marginTop: "2px",
+                      }}
+                    />
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
+                          fontSize: "18px",
+                          fontWeight: 600,
+                          color: "#1D1D1F",
+                          letterSpacing: "-0.01em",
+                          marginBottom: theme.spacing(0.5),
+                        }}
+                      >
+                        Delivery Speed
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                          fontSize: "15px",
+                          fontWeight: 400,
+                          color: "#1D1D1F",
+                          letterSpacing: "-0.01em",
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        Standard: 2–4 business days
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                          fontSize: "15px",
+                          fontWeight: 400,
+                          color: "#1D1D1F",
+                          letterSpacing: "-0.01em",
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        Express: Next-day in major cities
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+
+                {/* Availability Block */}
+                <Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: theme.spacing(2),
+                      marginBottom: theme.spacing(1),
+                    }}
+                  >
+                    <CheckCircleIcon
+                      sx={{
+                        color: "#1D1D1F",
+                        fontSize: "24px",
+                        marginTop: "2px",
+                      }}
+                    />
+                    <Box>
+                      <Typography
+                        sx={{
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
+                          fontSize: "18px",
+                          fontWeight: 600,
+                          color: "#1D1D1F",
+                          letterSpacing: "-0.01em",
+                          marginBottom: theme.spacing(0.5),
+                        }}
+                      >
+                        Availability
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                          fontSize: "15px",
+                          fontWeight: 400,
+                          color: "#1D1D1F",
+                          letterSpacing: "-0.01em",
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        Real-time stock by region
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                          fontSize: "15px",
+                          fontWeight: 400,
+                          color: "#1D1D1F",
+                          letterSpacing: "-0.01em",
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        Local hubs reduce delivery time
+                      </Typography>
+                    </Box>
+                  </Box>
           </Box>
         </Stack>
-      </div>
 
-      <div className="address">
-        <Container>
-          <Stack className="address-area">
-            <Box className={"title"}>Our address</Box>
+              {/* Trust Signal */}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: theme.spacing(1),
+                  marginBottom: theme.spacing(5),
+                  paddingTop: theme.spacing(2),
+                  borderTop: "1px solid rgba(0, 0, 0, 0.08)",
+                }}
+              >
+                <StarIcon
+                  sx={{
+                    color: "#1D1D1F",
+                    fontSize: "18px",
+                  }}
+                />
+                <Typography
+                  sx={{
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                    fontSize: "15px",
+                    fontWeight: 400,
+                    color: "#1D1D1F",
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  Trusted by 50,000+ readers
+                </Typography>
+              </Box>
+
+              {/* CTA Button */}
+              <Button
+                variant="contained"
+                onClick={() => {
+                  window.open("https://maps.app.goo.gl/Q5dwZ44Ghv6iMqFB8", "_blank", "noopener,noreferrer");
+                }}
+                sx={{
+                  alignSelf: { xs: "stretch", sm: "flex-start" },
+                  minWidth: "180px",
+                  height: "48px",
+                  borderRadius: "24px",
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                  fontSize: "16px",
+                  fontWeight: 500,
+                  textTransform: "none",
+                  letterSpacing: "-0.01em",
+                  padding: theme.spacing(0, 3),
+                  background: "#007AFF",
+                  color: "#FFFFFF",
+                  boxShadow: "0 2px 8px rgba(0, 122, 255, 0.25)",
+                  transition: theme.transitions.create(
+                    ["background-color", "box-shadow", "transform"],
+                    {
+                      duration: theme.transitions.duration.standard,
+                      easing: theme.transitions.easing.easeOut,
+                    }
+                  ),
+                  "&:hover": {
+                    background: "#0051D5",
+                    boxShadow: "0 4px 12px rgba(0, 122, 255, 0.35)",
+                    transform: "translateY(-1px)",
+                  },
+                  "&:active": {
+                    transform: "translateY(0)",
+                  },
+                }}
+              >
+                Check availability
+              </Button>
+            </Box>
+
+            {/* Right Side: Map (Supporting Element) */}
+            <Box
+              id="delivery-map"
+              onClick={() => {
+                window.open("https://maps.app.goo.gl/Q5dwZ44Ghv6iMqFB8", "_blank", "noopener,noreferrer");
+              }}
+              sx={{
+                flex: { lg: "1 1 0%" },
+                width: "100%",
+                borderRadius: "12px",
+                overflow: "hidden",
+                backgroundColor: "#F5F5F7",
+                height: { xs: "400px", md: "500px", lg: "600px" },
+                maxWidth: { lg: "100%" },
+                position: "relative",
+                scrollMarginTop: theme.spacing(4),
+                cursor: "pointer",
+                "&:hover": {
+                  "&::after": {
+                    content: '""',
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: "rgba(0, 0, 0, 0.02)",
+                    zIndex: 1,
+                    transition: theme.transitions.create("background-color"),
+                  },
+                },
+              }}
+            >
             <iframe
-              style={{ marginTop: "60px" }}
+                // To get the correct embed URL:
+                // 1. Open https://maps.app.goo.gl/Q5dwZ44Ghv6iMqFB8 in your browser
+                // 2. Click "Share" → "Embed a map"
+                // 3. Copy the src URL from the iframe code
+                // 4. Replace the src below with that URL
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1509.683087045884!2d29.008657870843044!3d41.04724859690466!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab80b0afff1af%3A0x5cb1a4b5332e5310!2sCZN%20Burak%20Hazal%20Restaurant!5e0!3m2!1sen!2skw!4v1706368536124!5m2!1sen!2skw"
-              width="1300"
-              height="567"
+                width="100%"
+                height="100%"
+                style={{ 
+                  border: "none", 
+                  display: "block",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  pointerEvents: "none",
+                }}
               referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </Stack>
+                title="Delivery Coverage Map"
+                loading="lazy"
+                allowFullScreen
+              />
+            </Box>
+          </Box>
         </Container>
-      </div>
+      </Box>
     </div>
   );
 }
