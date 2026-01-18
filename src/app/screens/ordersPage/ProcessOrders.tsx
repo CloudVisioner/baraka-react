@@ -25,11 +25,9 @@ import { useGlobals } from "../../hooks/useGlobal";
 import { T } from "../../../lib/types/common";
 import { OrderStatus } from "../../../lib/enums/order.enum";
 import OrderService from "../../services/OrderService";
-import { sweetErrorHandling } from "../../../lib/sweetAlert";
+import { sweetErrorHandling, sweetConfirmDialog } from "../../../lib/sweetAlert";
 
 const appleFont = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif';
-
-/** REDUX SLICE & SELECTOR */
 const processdOrdersRetriever = createSelector(
   retrieveProcessOrders,
   (processOrders) => ({ processOrders }) // just selcted data name
@@ -48,16 +46,20 @@ export default function PausedOrders(props: PausedOrdersProps) {
   const finishOrderHandler = async (e: T) => {
     try {
       if (!authMember) throw new Error(Messages.error2);
-      // PAYMENT PROCESS
 
-      const orderId = e.target.value;
-      const input: OrderUpdateInput = {
-        orderId: orderId,
-        orderStatus: OrderStatus.FINISH,
-      };
+      const confirmed = await sweetConfirmDialog(
+        "Mark as Received?",
+        "Have you received your order? This will mark the order as completed.",
+        "Yes, Received",
+        "Cancel"
+      );
 
-      const confirmation = window.confirm("Have you received your order?");
-      if (confirmation) {
+      if (confirmed) {
+        const orderId = e.target.value;
+        const input: OrderUpdateInput = {
+          orderId: orderId,
+          orderStatus: OrderStatus.FINISH,
+        };
         const order = new OrderService();
         await order.updateOrder(input);
         setValue("3");
@@ -92,7 +94,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
                 }}
               >
                 <CardContent sx={{ padding: theme.spacing(4) }}>
-                  {/* Status Badge */}
                   <Box
                     sx={{
                       display: "flex",
@@ -106,7 +107,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       label="Processing"
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "13px",
+                        fontSize: "17px",
                         fontWeight: 500,
                         backgroundColor: "#FFF4E6",
                         color: "#E67E22",
@@ -117,7 +118,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                     <Typography
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "13px",
+                        fontSize: "17px",
                         fontWeight: 500,
                         color: "#1D1D1F",
                         marginLeft: "auto",
@@ -127,7 +128,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
                     </Typography>
                   </Box>
 
-                  {/* Order Items */}
                   <Stack spacing={2} sx={{ marginBottom: theme.spacing(3) }}>
                     {order?.orderItems?.map((item: OrderItem) => {
                       const product: Product = order.productData.filter(
@@ -176,7 +176,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                             <Typography
                               sx={{
                                 fontFamily: appleFont,
-                                fontSize: "14px",
+                                fontSize: "16px",
                                 fontWeight: 400,
                                 color: "#1D1D1F",
                               }}
@@ -201,7 +201,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
 
                   <Divider sx={{ marginBottom: theme.spacing(3) }} />
 
-                  {/* Order Summary */}
                   <Box
                     sx={{
                       display: "flex",
@@ -220,7 +219,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "14px",
+                          fontSize: "16px",
                           fontWeight: 500,
                           color: "#1D1D1F",
                         }}
@@ -230,7 +229,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "15px",
+                          fontSize: "17px",
                           fontWeight: 500,
                           color: "#1D1D1F",
                         }}
@@ -248,7 +247,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "14px",
+                          fontSize: "16px",
                           fontWeight: 500,
                           color: "#1D1D1F",
                         }}
@@ -258,7 +257,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "15px",
+                          fontSize: "17px",
                           fontWeight: 500,
                           color: "#1D1D1F",
                         }}
@@ -298,7 +297,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
                     </Box>
                   </Box>
 
-                  {/* Action Button */}
                   <Box
                     sx={{
                       display: "flex",
@@ -312,7 +310,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       onClick={finishOrderHandler}
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "15px",
+                        fontSize: "17px",
                         fontWeight: 600,
                         textTransform: "none",
                         borderRadius: "12px",
@@ -364,7 +362,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
             <Typography
               sx={{
                 fontFamily: appleFont,
-                fontSize: "15px",
+                fontSize: "17px",
                 fontWeight: 400,
                 color: "#1D1D1F",
               }}

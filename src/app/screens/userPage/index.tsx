@@ -197,7 +197,7 @@ export default function UserPage() {
                 <Typography
                   sx={{
                     fontFamily: appleFont,
-                    fontSize: "14px",
+                    fontSize: "16px",
                     fontWeight: 400,
                     color: "#1D1D1F",
                     textTransform: "capitalize",
@@ -232,7 +232,7 @@ export default function UserPage() {
                   <Typography
                     sx={{
                       fontFamily: appleFont,
-                      fontSize: "14px",
+                      fontSize: "16px",
                       fontWeight: 500,
                       color: "#1D1D1F",
                       lineHeight: 1.5,
@@ -314,7 +314,7 @@ export default function UserPage() {
                     <Typography
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "14px",
+                        fontSize: "16px",
                         fontWeight: 400,
                         color: "#1D1D1F",
                         lineHeight: 1.6,

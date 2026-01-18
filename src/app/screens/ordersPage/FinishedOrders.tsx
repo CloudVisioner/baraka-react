@@ -68,7 +68,7 @@ export default function FinishedOrders() {
                       label="Completed"
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "13px",
+                        fontSize: "17px",
                         fontWeight: 500,
                         backgroundColor: "#E8F5E9",
                         color: "#2E7D32",
@@ -79,7 +79,7 @@ export default function FinishedOrders() {
                     <Typography
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "13px",
+                        fontSize: "17px",
                         fontWeight: 500,
                         color: "#1D1D1F",
                         marginLeft: "auto",
@@ -138,7 +138,7 @@ export default function FinishedOrders() {
                             <Typography
                               sx={{
                                 fontFamily: appleFont,
-                                fontSize: "14px",
+                                fontSize: "16px",
                                 fontWeight: 400,
                                 color: "#1D1D1F",
                               }}
@@ -181,7 +181,7 @@ export default function FinishedOrders() {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "14px",
+                          fontSize: "16px",
                           fontWeight: 500,
                           color: "#1D1D1F",
                         }}
@@ -191,7 +191,7 @@ export default function FinishedOrders() {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "15px",
+                          fontSize: "17px",
                           fontWeight: 500,
                           color: "#1D1D1F",
                         }}
@@ -209,7 +209,7 @@ export default function FinishedOrders() {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "14px",
+                          fontSize: "16px",
                           fontWeight: 500,
                           color: "#1D1D1F",
                         }}
@@ -219,7 +219,7 @@ export default function FinishedOrders() {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "15px",
+                          fontSize: "17px",
                           fontWeight: 500,
                           color: "#1D1D1F",
                         }}
@@ -293,7 +293,7 @@ export default function FinishedOrders() {
             <Typography
               sx={{
                 fontFamily: appleFont,
-                fontSize: "15px",
+                fontSize: "17px",
                 fontWeight: 400,
                 color: "#1D1D1F",
               }}

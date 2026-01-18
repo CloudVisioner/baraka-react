@@ -187,7 +187,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
               <Typography
                 sx={{
                   fontFamily: appleFont,
-                  fontSize: "15px",
+                  fontSize: "17px",
                   fontWeight: 400,
                   color: "#86868b",
                 }}
@@ -201,7 +201,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                 <Typography
                   sx={{
                     fontFamily: appleFont,
-                    fontSize: "15px",
+                    fontSize: "17px",
                     fontWeight: 400,
                     color: "#86868b",
                   }}
@@ -293,7 +293,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                 <Typography
                   sx={{
                     fontFamily: appleFont,
-                    fontSize: "14px",
+                    fontSize: "16px",
                     fontWeight: 500,
                     color: "#1D1D1F",
                   }}
@@ -350,7 +350,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                 <Typography
                   sx={{
                     fontFamily: appleFont,
-                    fontSize: "14px",
+                    fontSize: "16px",
                     fontWeight: 500,
                     color: "#1D1D1F",
                   }}
@@ -406,7 +406,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                 height: "44px",
                 borderRadius: "12px 12px 0 0",
                 fontFamily: appleFont,
-                fontSize: "15px",
+                fontSize: "17px",
                 fontWeight: activeTab === "details" ? 600 : 500,
                 textTransform: "none",
                 letterSpacing: "-0.01em",
@@ -431,7 +431,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                 height: "44px",
                 borderRadius: "12px 12px 0 0",
                 fontFamily: appleFont,
-                fontSize: "15px",
+                fontSize: "17px",
                 fontWeight: activeTab === "info" ? 600 : 500,
                 textTransform: "none",
                 letterSpacing: "-0.01em",
@@ -553,7 +553,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                             <Typography
                               sx={{
                                 fontFamily: appleFont,
-                                fontSize: "13px",
+                                fontSize: "17px",
                                 fontWeight: 500,
                                 color: "#1D1D1F",
                                 marginBottom: theme.spacing(0.5),
@@ -600,7 +600,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                             <Typography
                               sx={{
                                 fontFamily: appleFont,
-                                fontSize: "13px",
+                                fontSize: "17px",
                                 fontWeight: 500,
                                 color: "#1D1D1F",
                                 marginBottom: theme.spacing(0.5),
@@ -647,7 +647,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                             <Typography
                               sx={{
                                 fontFamily: appleFont,
-                                fontSize: "13px",
+                                fontSize: "17px",
                                 fontWeight: 500,
                                 color: "#1D1D1F",
                                 marginBottom: theme.spacing(1),
@@ -662,7 +662,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                               label={chosenProduct.productLanguage}
                               sx={{
                                 fontFamily: appleFont,
-                                fontSize: "14px",
+                                fontSize: "16px",
                                 fontWeight: 500,
                                 backgroundColor: "#F5F5F7",
                                 color: "#1D1D1F",
@@ -695,7 +695,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                             <Typography
                               sx={{
                                 fontFamily: appleFont,
-                                fontSize: "13px",
+                                fontSize: "17px",
                                 fontWeight: 500,
                                 color: "#1D1D1F",
                                 marginBottom: theme.spacing(0.5),

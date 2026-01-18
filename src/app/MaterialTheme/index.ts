@@ -39,7 +39,22 @@ const light = {
 		MuiCssBaseline: {
 			styleOverrides: {
 				html: { height: '100%' },
-				body: { background: '#f4f6f8', height: '100%', minHeight: '100%' },
+				body: { 
+					background: '#f4f6f8', 
+					height: '100%', 
+					minHeight: '100%',
+					fontSize: '17px',
+				},
+			},
+		},
+		MuiTypography: {
+			styleOverrides: {
+				body1: {
+					fontSize: '17px',
+				},
+				body2: {
+					fontSize: '15px',
+				},
 			},
 		},
 	},

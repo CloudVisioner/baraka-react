@@ -92,7 +92,7 @@ export default function HelpPage() {
               sx={{
                 "& .MuiTab-root": {
                   fontFamily: appleFont,
-                  fontSize: "15px",
+                  fontSize: "17px",
                   fontWeight: 500,
                   textTransform: "none",
                   letterSpacing: "-0.01em",
@@ -276,7 +276,7 @@ export default function HelpPage() {
                           <Typography
                             sx={{
                               fontFamily: appleFont,
-                              fontSize: "15px",
+                              fontSize: "17px",
                               fontWeight: 400,
                               color: "#1D1D1F",
                               lineHeight: 1.7,
@@ -321,7 +321,7 @@ export default function HelpPage() {
                     <Typography
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "15px",
+                        fontSize: "17px",
                         fontWeight: 400,
                         color: "#1D1D1F",
                         letterSpacing: "-0.01em",
@@ -346,7 +346,7 @@ export default function HelpPage() {
                         <Typography
                           sx={{
                             fontFamily: appleFont,
-                            fontSize: "14px",
+                            fontSize: "16px",
                             fontWeight: 500,
                             color: "#1D1D1F",
                             marginBottom: theme.spacing(1.5),
@@ -363,7 +363,7 @@ export default function HelpPage() {
                           sx={{
                             "& .MuiOutlinedInput-root": {
                               fontFamily: appleFont,
-                              fontSize: "15px",
+                              fontSize: "17px",
                               borderRadius: "12px",
                               backgroundColor: "#F5F5F7",
                               "& fieldset": {
@@ -390,7 +390,7 @@ export default function HelpPage() {
                         <Typography
                           sx={{
                             fontFamily: appleFont,
-                            fontSize: "14px",
+                            fontSize: "16px",
                             fontWeight: 500,
                             color: "#1D1D1F",
                             marginBottom: theme.spacing(1.5),
@@ -408,7 +408,7 @@ export default function HelpPage() {
                           sx={{
                             "& .MuiOutlinedInput-root": {
                               fontFamily: appleFont,
-                              fontSize: "15px",
+                              fontSize: "17px",
                               borderRadius: "12px",
                               backgroundColor: "#F5F5F7",
                               "& fieldset": {
@@ -435,7 +435,7 @@ export default function HelpPage() {
                         <Typography
                           sx={{
                             fontFamily: appleFont,
-                            fontSize: "14px",
+                            fontSize: "16px",
                             fontWeight: 500,
                             color: "#1D1D1F",
                             marginBottom: theme.spacing(1.5),
@@ -454,7 +454,7 @@ export default function HelpPage() {
                           sx={{
                             "& .MuiOutlinedInput-root": {
                               fontFamily: appleFont,
-                              fontSize: "15px",
+                              fontSize: "17px",
                               borderRadius: "12px",
                               backgroundColor: "#F5F5F7",
                               "& fieldset": {
@@ -490,7 +490,7 @@ export default function HelpPage() {
                           startIcon={<SendIcon />}
                           sx={{
                             fontFamily: appleFont,
-                            fontSize: "15px",
+                            fontSize: "17px",
                             fontWeight: 600,
                             textTransform: "none",
                             borderRadius: "12px",

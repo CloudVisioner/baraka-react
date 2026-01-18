@@ -1,9 +1,0 @@
-/* Modern Apple-style User Page CSS */
-/* Most styling is now handled by MUI components with inline styles */
-
-.user-page {
-  /* Legacy class - kept for compatibility, but styles are now in MUI */
-}
-
-/* Remove old styles - using MUI components instead */
-/* All styling is now handled through Material-UI's sx prop for consistency */

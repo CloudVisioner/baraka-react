@@ -12,10 +12,12 @@ import {
   Divider,
   TextField,
   useTheme,
+  Chip,
 } from "@mui/material";
 import TabContext from "@mui/lab/TabContext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import PersonIcon from "@mui/icons-material/Person";
 import PausedOrders from "./PausedOrders";
 import ProcessOrders from "./ProcessOrders";
 import FinishedOrders from "./FinishedOrders";
@@ -32,9 +34,7 @@ import { serverApi } from "../../../lib/config";
 
 const appleFont = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif';
 
-/** REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
-  // reducer ga beryapmiz
   setPausedOrders: (data: Order[]) => dispatch(setPausedOrders(data)),
   setProcessOrders: (data: Order[]) => dispatch(setProcessOrders(data)),
   setFinishedOrders: (data: Order[]) => dispatch(setFinishedOrders(data)),
@@ -78,6 +78,9 @@ export default function OrdersPage() {
   const theme = useTheme();
 
   if (!authMember) history.push("/");
+  
+  const hasAddress = authMember?.memberAddress && authMember.memberAddress.trim() !== "" && authMember.memberAddress !== "No address provided";
+
   return (
     <Box
       sx={{
@@ -89,7 +92,6 @@ export default function OrdersPage() {
       }}
     >
       <Container maxWidth="lg">
-        {/* Page Header */}
         <Box
           sx={{
             marginBottom: { xs: theme.spacing(4), md: theme.spacing(6) },
@@ -110,7 +112,7 @@ export default function OrdersPage() {
           <Typography
             sx={{
               fontFamily: appleFont,
-              fontSize: { xs: "15px", md: "17px" },
+              fontSize: { xs: "16px", md: "18px" },
               fontWeight: 400,
               color: "#1D1D1F",
               letterSpacing: "-0.01em",
@@ -123,311 +125,289 @@ export default function OrdersPage() {
 
         <Box
           sx={{
-            display: "flex",
-            flexDirection: { xs: "column", lg: "row" },
-            gap: { xs: theme.spacing(4), lg: theme.spacing(5) },
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+            gap: theme.spacing(3),
+            marginBottom: theme.spacing(5),
           }}
         >
-          {/* Main Content - Orders List */}
-          <Box
+          <Card
+            elevation={0}
             sx={{
-              flex: 1,
-              minWidth: 0,
+              borderRadius: "24px",
+              backgroundColor: "#FFFFFF",
+              padding: theme.spacing(4),
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.06)",
+              border: "0.5px solid rgba(0, 0, 0, 0.05)",
             }}
           >
-            <TabContext value={value}>
-              {/* Tabs */}
-              <Box
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: theme.spacing(3),
+              }}
+            >
+              <Avatar
+                src={
+                  authMember?.memberImage
+                    ? `${serverApi}/uploads/${authMember.memberImage}`
+                    : "/icons/default-user.svg"
+                }
                 sx={{
-                  borderBottom: "1px solid rgba(0, 0, 0, 0.08)",
-                  marginBottom: theme.spacing(4),
+                  width: 72,
+                  height: 72,
+                  border: "3px solid #F5F5F7",
                 }}
-              >
-                <Tabs
-                  value={value}
-                  onChange={handleChange}
-                  sx={{
-                    "& .MuiTab-root": {
-                      fontFamily: appleFont,
-                      fontSize: "15px",
-                      fontWeight: 500,
-                      textTransform: "none",
-                      letterSpacing: "-0.01em",
-                      color: "#1D1D1F",
-                      opacity: 0.7,
-                      minHeight: "48px",
-                      padding: theme.spacing(1.5, 3),
-                      "&.Mui-selected": {
-                        color: "#1D1D1F",
-                        fontWeight: 600,
-                        opacity: 1,
-                      },
-                    },
-                    "& .MuiTabs-indicator": {
-                      backgroundColor: "#1D1D1F",
-                      height: "2px",
-                    },
-                  }}
-                >
-                  <Tab label="Pending" value={"1"} />
-                  <Tab label="Processing" value={"2"} />
-                  <Tab label="Completed" value={"3"} />
-                </Tabs>
-              </Box>
-
-              {/* Tab Panels */}
-              <Box>
-                <PausedOrders setValue={setValue} />
-                <ProcessOrders setValue={setValue} />
-                <FinishedOrders />
-              </Box>
-            </TabContext>
-          </Box>
-
-          {/* Sidebar - User Info & Payment */}
-          <Box
-            sx={{
-              width: { xs: "100%", lg: "380px" },
-              flexShrink: 0,
-            }}
-          >
-            <Stack spacing={3}>
-              {/* User Profile Card */}
-              <Card
-                elevation={0}
-                sx={{
-                  borderRadius: "20px",
-                  backgroundColor: "#FFFFFF",
-                  padding: theme.spacing(4),
-                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
-                }}
-              >
+              />
+              <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Box
                   sx={{
                     display: "flex",
-                    flexDirection: "column",
                     alignItems: "center",
-                    textAlign: "center",
+                    gap: theme.spacing(1),
+                    marginBottom: theme.spacing(1),
                   }}
                 >
-                  <Avatar
-                    src={
-                      authMember?.memberImage
-                        ? `${serverApi}/uploads/${authMember.memberImage}`
-                        : "/icons/default-user.svg"
-                    }
-                    sx={{
-                      width: { xs: 80, md: 100 },
-                      height: { xs: 80, md: 100 },
-                      marginBottom: theme.spacing(2),
-                      border: "3px solid #F5F5F7",
-                    }}
-                  />
+                  <PersonIcon sx={{ fontSize: "20px", color: "#6E6E73", opacity: 0.8 }} />
                   <Typography
                     sx={{
                       fontFamily: appleFont,
-                      fontSize: "22px",
+                      fontSize: "20px",
                       fontWeight: 600,
                       letterSpacing: "-0.02em",
                       color: "#1D1D1F",
-                      marginBottom: theme.spacing(0.5),
                     }}
                   >
                     {authMember?.memberNick || "Guest"}
                   </Typography>
-                  <Typography
-                    sx={{
-                      fontFamily: appleFont,
-                      fontSize: "14px",
-                      fontWeight: 400,
-                      color: "#1D1D1F",
-                      textTransform: "capitalize",
-                      marginBottom: theme.spacing(3),
-                    }}
-                  >
-                    {authMember?.memberType || "Member"}
-                  </Typography>
-
-                  <Divider sx={{ width: "100%", marginBottom: theme.spacing(3) }} />
-
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      width: "100%",
-                      gap: theme.spacing(1),
-                    }}
-                  >
-                    <LocationOnIcon
-                      sx={{
-                        fontSize: "20px",
-                        color: "#1D1D1F",
-                        marginTop: "2px",
-                        opacity: 0.7,
-                      }}
-                    />
-                    <Typography
-                      sx={{
-                        fontFamily: appleFont,
-                        fontSize: "14px",
-                        fontWeight: 500,
-                        color: "#1D1D1F",
-                        lineHeight: 1.5,
-                        flex: 1,
-                      }}
-                    >
-                      {authMember?.memberAddress || "No address provided"}
-                    </Typography>
-                  </Box>
                 </Box>
-              </Card>
-
-              {/* Payment Card */}
-              <Card
-                elevation={0}
-                sx={{
-                  borderRadius: "20px",
-                  backgroundColor: "#FFFFFF",
-                  padding: theme.spacing(4),
-                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
-                }}
-              >
-                <Box
+                <Chip
+                  label={authMember?.memberType || "Member"}
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: theme.spacing(1.5),
-                    marginBottom: theme.spacing(3),
+                    fontFamily: appleFont,
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    backgroundColor: "#F5F5F7",
+                    color: "#1D1D1F",
+                    textTransform: "capitalize",
+                    height: "24px",
+                  }}
+                />
+              </Box>
+            </Box>
+
+            <Divider sx={{ marginY: theme.spacing(3) }} />
+
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: theme.spacing(1.5),
+              }}
+            >
+              <LocationOnIcon
+                sx={{
+                  fontSize: "22px",
+                  color: hasAddress ? "#34C759" : "#FF3B30",
+                  marginTop: "2px",
+                  flexShrink: 0,
+                }}
+              />
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Typography
+                  sx={{
+                    fontFamily: appleFont,
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    color: "#6E6E73",
+                    marginBottom: theme.spacing(0.5),
+                    textTransform: "uppercase",
+                    letterSpacing: "0.5px",
                   }}
                 >
-                  <CreditCardIcon
-                    sx={{
-                      fontSize: "24px",
-                      color: "#1D1D1F",
-                      opacity: 0.9,
-                    }}
-                  />
+                  Delivery Address
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: appleFont,
+                    fontSize: "17px",
+                    fontWeight: hasAddress ? 500 : 400,
+                    color: hasAddress ? "#1D1D1F" : "#FF3B30",
+                    lineHeight: 1.5,
+                    fontStyle: hasAddress ? "normal" : "italic",
+                  }}
+                >
+                  {authMember?.memberAddress || "No address provided"}
+                </Typography>
+                {!hasAddress && (
                   <Typography
                     sx={{
                       fontFamily: appleFont,
-                      fontSize: "18px",
-                      fontWeight: 600,
-                      letterSpacing: "-0.02em",
-                      color: "#1D1D1F",
+                      fontSize: "15px",
+                      fontWeight: 400,
+                      color: "#6E6E73",
+                      marginTop: theme.spacing(1),
+                      fontStyle: "normal",
                     }}
                   >
-                    Payment Method
+                    Please add your address to proceed with orders
                   </Typography>
-                </Box>
+                )}
+              </Box>
+            </Box>
+          </Card>
 
-                <Stack spacing={2}>
-                  <TextField
-                    fullWidth
-                    placeholder="Card number"
-                    variant="outlined"
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        fontFamily: appleFont,
-                        fontSize: "15px",
-                        borderRadius: "12px",
-                        backgroundColor: "#F5F5F7",
-                        "& fieldset": {
-                          borderColor: "rgba(0, 0, 0, 0.08)",
-                        },
-                        "&:hover fieldset": {
-                          borderColor: "rgba(0, 0, 0, 0.12)",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#1D1D1F",
-                          borderWidth: "1px",
-                        },
+          <Card
+            elevation={0}
+            sx={{
+              borderRadius: "24px",
+              backgroundColor: "#FFFFFF",
+              padding: theme.spacing(4),
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.06)",
+              border: "0.5px solid rgba(0, 0, 0, 0.05)",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: theme.spacing(1.5),
+                marginBottom: theme.spacing(3),
+              }}
+            >
+              <CreditCardIcon
+                sx={{
+                  fontSize: "24px",
+                  color: "#1D1D1F",
+                  opacity: 0.9,
+                }}
+              />
+              <Typography
+                sx={{
+                  fontFamily: appleFont,
+                  fontSize: "20px",
+                  fontWeight: 600,
+                  letterSpacing: "-0.02em",
+                  color: "#1D1D1F",
+                }}
+              >
+                Payment Method
+              </Typography>
+            </Box>
+
+            <Stack spacing={2.5}>
+              <TextField
+                fullWidth
+                placeholder="Card number"
+                variant="outlined"
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontFamily: appleFont,
+                    fontSize: "17px",
+                    borderRadius: "14px",
+                    backgroundColor: "#F5F5F7",
+                    "& fieldset": {
+                      borderColor: "rgba(0, 0, 0, 0.08)",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "rgba(0, 0, 0, 0.12)",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#1D1D1F",
+                      borderWidth: "2px",
+                    },
+                  },
+                  "& .MuiInputBase-input::placeholder": {
+                    color: "#86868B",
+                    opacity: 1,
+                  },
+                }}
+              />
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: theme.spacing(2),
+                }}
+              >
+                <TextField
+                  fullWidth
+                  placeholder="MM/YY"
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontFamily: appleFont,
+                      fontSize: "17px",
+                      borderRadius: "14px",
+                      backgroundColor: "#F5F5F7",
+                      "& fieldset": {
+                        borderColor: "rgba(0, 0, 0, 0.08)",
                       },
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: theme.spacing(2),
-                    }}
-                  >
-                    <TextField
-                      fullWidth
-                      placeholder="MM/YY"
-                      variant="outlined"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          fontFamily: appleFont,
-                          fontSize: "15px",
-                          borderRadius: "12px",
-                          backgroundColor: "#F5F5F7",
-                          "& fieldset": {
-                            borderColor: "rgba(0, 0, 0, 0.08)",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "rgba(0, 0, 0, 0.12)",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "#1D1D1F",
-                            borderWidth: "1px",
-                          },
-                        },
-                      }}
-                    />
-                    <TextField
-                      fullWidth
-                      placeholder="CVV"
-                      variant="outlined"
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          fontFamily: appleFont,
-                          fontSize: "15px",
-                          borderRadius: "12px",
-                          backgroundColor: "#F5F5F7",
-                          "& fieldset": {
-                            borderColor: "rgba(0, 0, 0, 0.08)",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "rgba(0, 0, 0, 0.12)",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "#1D1D1F",
-                            borderWidth: "1px",
-                          },
-                        },
-                      }}
-                    />
-                  </Box>
-                  <TextField
-                    fullWidth
-                    placeholder="Cardholder name"
-                    variant="outlined"
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        fontFamily: appleFont,
-                        fontSize: "15px",
-                        borderRadius: "12px",
-                        backgroundColor: "#F5F5F7",
-                        "& fieldset": {
-                          borderColor: "rgba(0, 0, 0, 0.08)",
-                        },
-                        "&:hover fieldset": {
-                          borderColor: "rgba(0, 0, 0, 0.12)",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#1D1D1F",
-                          borderWidth: "1px",
-                        },
+                      "&:hover fieldset": {
+                        borderColor: "rgba(0, 0, 0, 0.12)",
                       },
-                    }}
-                  />
-                </Stack>
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#1D1D1F",
+                        borderWidth: "2px",
+                      },
+                    },
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  placeholder="CVV"
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontFamily: appleFont,
+                      fontSize: "17px",
+                      borderRadius: "14px",
+                      backgroundColor: "#F5F5F7",
+                      "& fieldset": {
+                        borderColor: "rgba(0, 0, 0, 0.08)",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "rgba(0, 0, 0, 0.12)",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#1D1D1F",
+                        borderWidth: "2px",
+                      },
+                    },
+                  }}
+                />
+              </Box>
+              <TextField
+                fullWidth
+                placeholder="Cardholder name"
+                variant="outlined"
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontFamily: appleFont,
+                    fontSize: "17px",
+                    borderRadius: "14px",
+                    backgroundColor: "#F5F5F7",
+                    "& fieldset": {
+                      borderColor: "rgba(0, 0, 0, 0.08)",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "rgba(0, 0, 0, 0.12)",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#1D1D1F",
+                      borderWidth: "2px",
+                    },
+                  },
+                }}
+              />
+            </Stack>
 
                 <Box
                   sx={{
                     display: "flex",
                     justifyContent: "center",
-                    gap: theme.spacing(2),
-                    marginTop: theme.spacing(3),
+                    gap: theme.spacing(2.5),
+                    marginTop: theme.spacing(4),
                     paddingTop: theme.spacing(3),
                     borderTop: "1px solid rgba(0, 0, 0, 0.08)",
                   }}
@@ -435,46 +415,86 @@ export default function OrdersPage() {
                   <img
                     src={"/icons/visa-card.svg"}
                     alt="Visa"
-                    style={{ height: "24px", opacity: 0.6 }}
+                    style={{ 
+                      height: "36px", 
+                      opacity: 1,
+                      filter: "contrast(1.1) brightness(1)",
+                      imageRendering: "crisp-edges"
+                    }}
                   />
                   <img
                     src={"/icons/master-card.svg"}
                     alt="Mastercard"
-                    style={{ height: "24px", opacity: 0.6 }}
+                    style={{ 
+                      height: "36px", 
+                      opacity: 1,
+                      filter: "contrast(1.1) brightness(1)",
+                      imageRendering: "crisp-edges"
+                    }}
                   />
                   <img
                     src={"/icons/paypal-card.svg"}
                     alt="PayPal"
-                    style={{ height: "24px", opacity: 0.6 }}
+                    style={{ 
+                      height: "36px", 
+                      opacity: 1,
+                      filter: "contrast(1.1) brightness(1)",
+                      imageRendering: "crisp-edges"
+                    }}
                   />
                 </Box>
-              </Card>
-            </Stack>
-          </Box>
+          </Card>
+        </Box>
+
+        <Box>
+          <TabContext value={value}>
+            <Box
+              sx={{
+                borderBottom: "1px solid rgba(0, 0, 0, 0.08)",
+                marginBottom: theme.spacing(4),
+              }}
+            >
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                sx={{
+                  "& .MuiTab-root": {
+                    fontFamily: appleFont,
+                    fontSize: "17px",
+                    fontWeight: 500,
+                    textTransform: "none",
+                    letterSpacing: "-0.01em",
+                    color: "#1D1D1F",
+                    opacity: 0.7,
+                    minHeight: "52px",
+                    padding: theme.spacing(1.5, 4),
+                    "&.Mui-selected": {
+                      color: "#1D1D1F",
+                      fontWeight: 600,
+                      opacity: 1,
+                    },
+                  },
+                  "& .MuiTabs-indicator": {
+                    backgroundColor: "#1D1D1F",
+                    height: "3px",
+                    borderRadius: "3px 3px 0 0",
+                  },
+                }}
+              >
+                <Tab label="Pending" value={"1"} />
+                <Tab label="Processing" value={"2"} />
+                <Tab label="Completed" value={"3"} />
+              </Tabs>
+            </Box>
+
+            <Box>
+              <PausedOrders setValue={setValue} />
+              <ProcessOrders setValue={setValue} />
+              <FinishedOrders />
+            </Box>
+          </TabContext>
         </Box>
       </Container>
     </Box>
   );
 }
-
-// .order-page .order-main-box {
-//   display: flex;
-//   flex-direction: column;
-//   height: auto;
-//   background: red;
-// }
-
-// /* .orders-name-price {
-//   display: flex;
-//   flex-direction: row;
-//   /* width: 244px; */
-//   height: auto;
-//   background-color: yellowgreen;
-// }
-
-// .container-paused .order-main-box .order-box-scroll .orders-name-price {
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   gap: 20px;
-// } */ */

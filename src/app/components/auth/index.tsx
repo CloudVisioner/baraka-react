@@ -15,7 +15,7 @@ import { T } from "../../../lib/types/common";
 import { Messages } from "../../../lib/config";
 import { LoginInput, MemberInput } from "../../../lib/types/member";
 import MemberService from "../../services/MemberService";
-import { sweetErrorHandling } from "../../../lib/sweetAlert";
+import { sweetErrorHandling, sweetTopSuccessAlert } from "../../../lib/sweetAlert";
 import { useGlobals } from "../../hooks/useGlobal";
 
 const appleFont = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif';
@@ -75,6 +75,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
       setMemberPhone("");
       setMemberPassword("");
       handleSignupClose();
+      await sweetTopSuccessAlert("Account created successfully!", 1000);
     } catch (err) {
       handleSignupClose();
       sweetErrorHandling(err).then();
@@ -98,6 +99,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
       setMemberNick("");
       setMemberPassword("");
       handleLoginClose();
+      await sweetTopSuccessAlert("Welcome back!", 1000);
     } catch (err) {
       handleLoginClose();
       sweetErrorHandling(err).then();

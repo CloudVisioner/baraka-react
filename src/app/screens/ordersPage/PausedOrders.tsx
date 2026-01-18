@@ -20,14 +20,13 @@ import { Product } from "../../../lib/types/product";
 import { Messages, normalizeImagePath } from "../../../lib/config";
 import { Order, OrderItem, OrderUpdateInput } from "../../../lib/types/orders";
 import { T } from "../../../lib/types/common";
-import { sweetErrorHandling } from "../../../lib/sweetAlert";
+import { sweetErrorHandling, sweetConfirmDialog } from "../../../lib/sweetAlert";
 import { OrderStatus } from "../../../lib/enums/order.enum";
 import { useGlobals } from "../../hooks/useGlobal";
+import { useHistory } from "react-router-dom";
 import OrderService from "../../services/OrderService";
 
 const appleFont = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif';
-
-/** REDUX SLICE & SELECTOR */
 const pausedOrdersRetriever = createSelector(
   retrievePausedOrders,
   (pausedOrders) => ({ pausedOrders }) // just selcted data name
@@ -41,20 +40,25 @@ export default function PausedOrders(props: PausedOrdersProps) {
   const { setValue } = props;
   const { authMember, setOrderBuilder } = useGlobals();
   const { pausedOrders } = useSelector(pausedOrdersRetriever);
-
-  /** HANDLERS */
+  const history = useHistory();
 
   const deleteOrderHandler = async (e: T) => {
     try {
       if (!authMember) throw new Error(Messages.error2);
       const orderId = e.target.value;
-      const input: OrderUpdateInput = {
-        orderId: orderId,
-        orderStatus: OrderStatus.DELETE,
-      };
+      
+      const confirmed = await sweetConfirmDialog(
+        "Delete Order?",
+        "Are you sure you want to delete this order? This action cannot be undone.",
+        "Delete",
+        "Cancel"
+      );
 
-      const confirmation = window.confirm("Do you want to delete the order?");
-      if (confirmation) {
+      if (confirmed) {
+        const input: OrderUpdateInput = {
+          orderId: orderId,
+          orderStatus: OrderStatus.DELETE,
+        };
         const order = new OrderService();
         await order.updateOrder(input);
         setOrderBuilder(new Date());
@@ -68,16 +72,37 @@ export default function PausedOrders(props: PausedOrdersProps) {
     try {
       if (!authMember) throw new Error(Messages.error2);
 
-      const orderId = e.target.value;
-      const input: OrderUpdateInput = {
-        orderId: orderId,
-        orderStatus: OrderStatus.PROCESS,
-      };
+      const hasAddress = authMember.memberAddress && 
+                        authMember.memberAddress.trim() !== "" && 
+                        authMember.memberAddress !== "No address provided";
 
-      const confirmation = window.confirm(
-        "Do you want to proceed with payment?"
+      if (!hasAddress) {
+        await sweetConfirmDialog(
+          "Address Required",
+          "You need to provide your delivery address before proceeding with payment. Would you like to add your address now?",
+          "Go to My Page",
+          "Cancel"
+        ).then((confirmed) => {
+          if (confirmed) {
+            history.push("/member-page");
+          }
+        });
+        return;
+      }
+
+      const confirmed = await sweetConfirmDialog(
+        "Proceed to Payment?",
+        "Are you sure you want to proceed with payment for this order?",
+        "Proceed",
+        "Cancel"
       );
-      if (confirmation) {
+
+      if (confirmed) {
+        const orderId = e.target.value;
+        const input: OrderUpdateInput = {
+          orderId: orderId,
+          orderStatus: OrderStatus.PROCESS,
+        };
         const order = new OrderService();
         await order.updateOrder(input);
         setValue("2");
@@ -112,7 +137,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
                 }}
               >
                 <CardContent sx={{ padding: theme.spacing(4) }}>
-                  {/* Order Items */}
                   <Stack spacing={2} sx={{ marginBottom: theme.spacing(3) }}>
                     {order?.orderItems?.map((item: OrderItem) => {
                       const product: Product = order.productData.filter(
@@ -161,7 +185,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                             <Typography
                               sx={{
                                 fontFamily: appleFont,
-                                fontSize: "14px",
+                                fontSize: "16px",
                                 fontWeight: 400,
                                 color: "#1D1D1F",
                               }}
@@ -186,7 +210,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
 
                   <Divider sx={{ marginBottom: theme.spacing(3) }} />
 
-                  {/* Order Summary */}
                   <Box
                     sx={{
                       display: "flex",
@@ -205,7 +228,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "14px",
+                          fontSize: "16px",
                           fontWeight: 500,
                           color: "#1D1D1F",
                         }}
@@ -215,7 +238,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "15px",
+                          fontSize: "17px",
                           fontWeight: 500,
                           color: "#1D1D1F",
                         }}
@@ -233,7 +256,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "14px",
+                          fontSize: "16px",
                           fontWeight: 500,
                           color: "#1D1D1F",
                         }}
@@ -243,7 +266,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "15px",
+                          fontSize: "17px",
                           fontWeight: 500,
                           color: "#1D1D1F",
                         }}
@@ -283,7 +306,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
                     </Box>
                   </Box>
 
-                  {/* Action Buttons */}
                   <Box
                     sx={{
                       display: "flex",
@@ -298,7 +320,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       onClick={deleteOrderHandler}
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "15px",
+                        fontSize: "17px",
                         fontWeight: 500,
                         textTransform: "none",
                         borderRadius: "12px",
@@ -320,7 +342,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       onClick={proceedOrderHandler}
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "15px",
+                        fontSize: "17px",
                         fontWeight: 600,
                         textTransform: "none",
                         borderRadius: "12px",
@@ -372,7 +394,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
             <Typography
               sx={{
                 fontFamily: appleFont,
-                fontSize: "15px",
+                fontSize: "17px",
                 fontWeight: 400,
                 color: "#1D1D1F",
               }}

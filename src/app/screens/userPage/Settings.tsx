@@ -76,7 +76,7 @@ export function Settings() {
       const result = await member.updateMember(memberUpdateInput);
       setAuthMember(result);
 
-      await sweetTopSmallSuccessAlert("Modified successfully!", 700);
+      await sweetTopSmallSuccessAlert("Profile updated successfully!", 1000);
     } catch (err) {
       sweetErrorHandling(err).then();
     }
@@ -138,7 +138,7 @@ export function Settings() {
           <Typography
             sx={{
               fontFamily: appleFont,
-              fontSize: "13px",
+              fontSize: "17px",
               fontWeight: 400,
               color: "#1D1D1F",
               marginBottom: theme.spacing(2),
@@ -154,7 +154,7 @@ export function Settings() {
             onChange={handlerImageViewer}
             sx={{
               fontFamily: appleFont,
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: 500,
               textTransform: "none",
               borderRadius: "12px",
@@ -180,7 +180,7 @@ export function Settings() {
           <Typography
             sx={{
               fontFamily: appleFont,
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: 500,
               color: "#1D1D1F",
               marginBottom: theme.spacing(1.5),
@@ -198,7 +198,7 @@ export function Settings() {
             sx={{
               "& .MuiOutlinedInput-root": {
                 fontFamily: appleFont,
-                fontSize: "15px",
+                fontSize: "17px",
                 borderRadius: "12px",
                 backgroundColor: "#F5F5F7",
                 "& fieldset": {
@@ -233,7 +233,7 @@ export function Settings() {
             <Typography
               sx={{
                 fontFamily: appleFont,
-                fontSize: "14px",
+                fontSize: "16px",
                 fontWeight: 500,
                 color: "#1D1D1F",
                 marginBottom: theme.spacing(1.5),
@@ -251,7 +251,7 @@ export function Settings() {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   fontFamily: appleFont,
-                  fontSize: "15px",
+                  fontSize: "17px",
                   borderRadius: "12px",
                   backgroundColor: "#F5F5F7",
                   "& fieldset": {
@@ -278,7 +278,7 @@ export function Settings() {
             <Typography
               sx={{
                 fontFamily: appleFont,
-                fontSize: "14px",
+                fontSize: "16px",
                 fontWeight: 500,
                 color: "#1D1D1F",
                 marginBottom: theme.spacing(1.5),
@@ -298,7 +298,7 @@ export function Settings() {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   fontFamily: appleFont,
-                  fontSize: "15px",
+                  fontSize: "17px",
                   borderRadius: "12px",
                   backgroundColor: "#F5F5F7",
                   "& fieldset": {
@@ -326,7 +326,7 @@ export function Settings() {
           <Typography
             sx={{
               fontFamily: appleFont,
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: 500,
               color: "#1D1D1F",
               marginBottom: theme.spacing(1.5),
@@ -348,7 +348,7 @@ export function Settings() {
             sx={{
               "& .MuiOutlinedInput-root": {
                 fontFamily: appleFont,
-                fontSize: "15px",
+                fontSize: "17px",
                 borderRadius: "12px",
                 backgroundColor: "#F5F5F7",
                 "& fieldset": {
@@ -386,7 +386,7 @@ export function Settings() {
           onClick={handleSubmitButton}
           sx={{
             fontFamily: appleFont,
-            fontSize: "15px",
+            fontSize: "17px",
             fontWeight: 600,
             textTransform: "none",
             borderRadius: "12px",

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Container, Button, Box, Stack, Typography } from "@mui/material";
-import { Link, Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
 import ProductsPages from "./screens/productsPage";
 import OrdersPage from "./screens/ordersPage";
 import HomePage from "./screens/homePage";
@@ -47,7 +46,7 @@ function App() {
     try {
       const member = new MemberService();
       await member.logout();
-      await sweetTopSuccessAlert("success", 700);
+      await sweetTopSuccessAlert("Logged out successfully", 1000);
       setAuthMember(null);
     } catch (err) {
       sweetErrorHandling(Messages.error1);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Container, Typography, Button, Paper } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useSelector } from "react-redux";
@@ -7,7 +7,7 @@ import { retrieveNewDishes, retrievePopularDishes, retrieveFeaturedDishes } from
 import { Product } from "../../../lib/types/product";
 import { ProductType } from "../../../lib/enums/product.enum";
 import { normalizeImagePath } from "../../../lib/config";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const appleFont = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif";
@@ -47,8 +47,29 @@ export default function BookCollections() {
   const { newDishes } = useSelector(newDishesRetriever);
   const { popularDishes } = useSelector(popularDishesRetriever);
   const { featuredDishes } = useSelector(featuredDishesRetriever);
-  const [activeTab, setActiveTab] = useState<TabType>("new");
+  const location = useLocation();
   const history = useHistory();
+  
+  const getInitialTab = (): TabType => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get("tab");
+    if (tab === "bestseller" || tab === "featured") {
+      return tab as TabType;
+    }
+    return "new";
+  };
+
+  const [activeTab, setActiveTab] = useState<TabType>(getInitialTab());
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get("tab");
+    if (tab === "bestseller" || tab === "featured") {
+      setActiveTab(tab as TabType);
+    } else if (tab === "new") {
+      setActiveTab("new");
+    }
+  }, [location.search]);
 
   const getActiveProducts = (): Product[] => {
     switch (activeTab) {
@@ -142,7 +163,7 @@ export default function BookCollections() {
               height: "44px",
               borderRadius: "22px",
               fontFamily: appleFont,
-              fontSize: "15px",
+              fontSize: "17px",
               fontWeight: activeTab === "new" ? 600 : 500,
               textTransform: "none",
               letterSpacing: "-0.01em",
@@ -180,7 +201,7 @@ export default function BookCollections() {
               height: "44px",
               borderRadius: "22px",
               fontFamily: appleFont,
-              fontSize: "15px",
+              fontSize: "17px",
               fontWeight: activeTab === "bestseller" ? 600 : 500,
               textTransform: "none",
               letterSpacing: "-0.01em",
@@ -218,7 +239,7 @@ export default function BookCollections() {
               height: "44px",
               borderRadius: "22px",
               fontFamily: appleFont,
-              fontSize: "15px",
+              fontSize: "17px",
               fontWeight: activeTab === "featured" ? 600 : 500,
               textTransform: "none",
               letterSpacing: "-0.01em",

@@ -140,7 +140,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                     sx={{
                       color: '#f8f8ff',
                       fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
-                      fontSize: '14px',
+                      fontSize: '16px',
                       fontWeight: 400,
                       px: 2.5,
                       py: 0.75,
@@ -162,7 +162,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                     sx={{
                       color: '#ffffff',
                       fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
-                      fontSize: '14px',
+                      fontSize: '16px',
                       fontWeight: 500,
                       px: 2.5,
                       py: 0.75,
@@ -247,7 +247,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                   onClick={handleLogoutRequest}
                   sx={{
                     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
-                    fontSize: '14px',
+                    fontSize: '16px',
                     py: 1.5,
                     '&:hover': {
                       backgroundColor: 'rgba(0, 0, 0, 0.04)'

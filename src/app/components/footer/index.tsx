@@ -34,8 +34,8 @@ export default function Footer() {
       title: "Shop",
       links: [
         { label: "Browse Books", to: "/products" },
-        { label: "Bestsellers", to: "/products" },
-        { label: "New Arrivals", to: "/products" },
+        { label: "Bestsellers", to: "/?tab=bestseller" },
+        { label: "New Arrivals", to: "/?tab=new" },
       ],
     },
     {
@@ -195,7 +195,7 @@ export default function Footer() {
               <Typography
                 sx={{
                   fontFamily: appleFont,
-                  fontSize: "13px",
+                  fontSize: "15px",
                   fontWeight: 600,
                   letterSpacing: "0.05em",
                   textTransform: "uppercase",
@@ -226,7 +226,7 @@ export default function Footer() {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "14px",
+                          fontSize: "16px",
                           fontWeight: 400,
                           color: "#FFFFFF",
                           opacity: 0.8,
@@ -269,7 +269,7 @@ export default function Footer() {
           <Typography
             sx={{
               fontFamily: appleFont,
-              fontSize: "13px",
+              fontSize: "15px",
               fontWeight: 400,
               color: "#FFFFFF",
               opacity: 0.7,

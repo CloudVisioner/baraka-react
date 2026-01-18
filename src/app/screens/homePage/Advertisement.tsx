@@ -81,7 +81,7 @@ export default function Advertisement() {
             <Typography
               sx={{
                 fontFamily: appleFont,
-                fontSize: "13px",
+                fontSize: "15px",
                 fontWeight: 400,
                 color: "#1D1D1F",
                 letterSpacing: "0.04em",
@@ -371,7 +371,7 @@ export default function Advertisement() {
               <Typography
                 sx={{
                   fontFamily: appleFont,
-                  fontSize: "14px",
+                  fontSize: "16px",
                   fontWeight: 400,
                   color: "#1D1D1F",
                   letterSpacing: "-0.01em",
@@ -383,7 +383,7 @@ export default function Advertisement() {
               <Typography
                 sx={{
                   fontFamily: appleFont,
-                  fontSize: "14px",
+                  fontSize: "16px",
                   fontWeight: 400,
                   color: "#1D1D1F",
                   letterSpacing: "-0.01em",
@@ -395,7 +395,7 @@ export default function Advertisement() {
               <Typography
                 sx={{
                   fontFamily: appleFont,
-                  fontSize: "14px",
+                  fontSize: "16px",
                   fontWeight: 400,
                   color: "#1D1D1F",
                   letterSpacing: "-0.01em",
@@ -411,7 +411,7 @@ export default function Advertisement() {
               <Typography
                 sx={{
                   fontFamily: appleFont,
-                  fontSize: "14px",
+                  fontSize: "16px",
                   fontWeight: 600,
                   color: "#1D1D1F",
                   letterSpacing: "-0.01em",
@@ -424,7 +424,7 @@ export default function Advertisement() {
                 <Typography
                   sx={{
                     fontFamily: appleFont,
-                    fontSize: "13px",
+                    fontSize: "15px",
                     fontWeight: 400,
                     color: "#1D1D1F",
                     letterSpacing: "-0.01em",
@@ -435,7 +435,7 @@ export default function Advertisement() {
                 <Typography
                   sx={{
                     fontFamily: appleFont,
-                    fontSize: "13px",
+                    fontSize: "15px",
                     fontWeight: 400,
                     color: "#1D1D1F",
                     letterSpacing: "-0.01em",
@@ -446,7 +446,7 @@ export default function Advertisement() {
                 <Typography
                   sx={{
                     fontFamily: appleFont,
-                    fontSize: "13px",
+                    fontSize: "15px",
                     fontWeight: 400,
                     color: "#1D1D1F",
                     letterSpacing: "-0.01em",

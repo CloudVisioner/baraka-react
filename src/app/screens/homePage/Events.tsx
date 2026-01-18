@@ -221,7 +221,7 @@ export default function Events() {
                 <Typography
                   sx={{
                     fontFamily: appleFont,
-                    fontSize: "14px",
+                    fontSize: "16px",
                     fontWeight: 400,
                     letterSpacing: "-0.01em",
                     color: "#1D1D1F",
@@ -268,7 +268,7 @@ export default function Events() {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "14px",
+                          fontSize: "16px",
                           fontWeight: 400,
                           letterSpacing: "-0.01em",
                           color: "#1D1D1F",
@@ -296,7 +296,7 @@ export default function Events() {
                     <Typography
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "14px",
+                        fontSize: "16px",
                         fontWeight: 400,
                         letterSpacing: "-0.01em",
                         color: "#1D1D1F",
@@ -323,7 +323,7 @@ export default function Events() {
                     <Typography
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "14px",
+                        fontSize: "16px",
                         fontWeight: 400,
                         letterSpacing: "-0.01em",
                         color: "#1D1D1F",
@@ -343,7 +343,7 @@ export default function Events() {
                     height: "40px",
                     borderRadius: "12px",
                     fontFamily: appleFont,
-                    fontSize: "14px",
+                    fontSize: "16px",
                     fontWeight: 500,
                     letterSpacing: "-0.01em",
                     textTransform: "none",
@@ -550,7 +550,7 @@ export default function Events() {
                     <Typography
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "14px",
+                        fontSize: "16px",
                         fontWeight: 400,
                         letterSpacing: "-0.01em",
                         color: "#1D1D1F",
@@ -578,7 +578,7 @@ export default function Events() {
                   <Typography
                     sx={{
                       fontFamily: appleFont,
-                      fontSize: "14px",
+                      fontSize: "16px",
                       fontWeight: 400,
                       letterSpacing: "-0.01em",
                       color: "#1D1D1F",
@@ -605,7 +605,7 @@ export default function Events() {
                   <Typography
                     sx={{
                       fontFamily: appleFont,
-                      fontSize: "14px",
+                      fontSize: "16px",
                       fontWeight: 400,
                       letterSpacing: "-0.01em",
                       color: "#1D1D1F",

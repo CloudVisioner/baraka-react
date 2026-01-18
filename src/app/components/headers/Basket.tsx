@@ -219,7 +219,7 @@ export default function Basket(props: BasketProps) {
                         <Typography
                           sx={{
                             fontFamily: appleFont,
-                            fontSize: "15px",
+                            fontSize: "17px",
                             fontWeight: 600,
                             color: "#1D1D1F",
                             letterSpacing: "-0.01em",
@@ -277,7 +277,7 @@ export default function Basket(props: BasketProps) {
                         <Typography
                           sx={{
                             fontFamily: appleFont,
-                            fontSize: "14px",
+                            fontSize: "16px",
                             fontWeight: 500,
                             color: "#1D1D1F",
                             minWidth: "24px",
@@ -340,7 +340,7 @@ export default function Basket(props: BasketProps) {
                   <Typography
                     sx={{
                       fontFamily: appleFont,
-                      fontSize: "15px",
+                      fontSize: "17px",
                       fontWeight: 400,
                       color: "#6E6E73",
                       letterSpacing: "-0.01em",
@@ -351,7 +351,7 @@ export default function Basket(props: BasketProps) {
                   <Typography
                     sx={{
                       fontFamily: appleFont,
-                      fontSize: "15px",
+                      fontSize: "17px",
                       fontWeight: 600,
                       color: "#1D1D1F",
                       letterSpacing: "-0.01em",
@@ -371,7 +371,7 @@ export default function Basket(props: BasketProps) {
                     <Typography
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "15px",
+                        fontSize: "17px",
                         fontWeight: 400,
                         color: "#6E6E73",
                         letterSpacing: "-0.01em",
@@ -382,7 +382,7 @@ export default function Basket(props: BasketProps) {
                     <Typography
                       sx={{
                         fontFamily: appleFont,
-                        fontSize: "15px",
+                        fontSize: "17px",
                         fontWeight: 600,
                         color: "#1D1D1F",
                         letterSpacing: "-0.01em",

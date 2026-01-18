@@ -91,15 +91,6 @@ export default function Products(props: ProductPageProps) {
       .then((data) => setEditorPicks(data.slice(0, 4)))
       .catch(() => {});
   }, []);
-
-  // useEffect(() => {
-  //   if (searchText === "") {
-  //     productSearch.search = "";
-  //     setProductSearch({ ...productSearch });
-  //   }
-  // });
-
-  /** HANDLERS */
   const searchCollectionHandler = (collection: ProductType) => {
     productSearch.page = 1;
     productSearch.productType = collection;
@@ -129,26 +120,22 @@ export default function Products(props: ProductPageProps) {
   const handleAddToBasket = (product: Product, event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     
-    // Get button position
     const buttonRect = event.currentTarget.getBoundingClientRect();
     const fromX = buttonRect.left + buttonRect.width / 2;
     const fromY = buttonRect.top + buttonRect.height / 2;
     
-    // Get cart icon position
     const cartIcon = document.querySelector('[aria-label="cart"]') as HTMLElement;
     if (cartIcon) {
       const cartRect = cartIcon.getBoundingClientRect();
       const toX = cartRect.left + cartRect.width / 2;
       const toY = cartRect.top + cartRect.height / 2;
       
-      // Create animation
       setAnimatingItem({
         id: product._id,
         from: { x: fromX, y: fromY },
         to: { x: toX, y: toY },
       });
       
-      // Add to basket after animation completes
       setTimeout(() => {
         const cartItem: CartItem = {
           _id: product._id,
@@ -159,9 +146,8 @@ export default function Products(props: ProductPageProps) {
         };
         onAdd(cartItem);
         setAnimatingItem(null);
-      }, 1000); // Match animation duration
+      }, 1000);
     } else {
-      // Fallback if cart icon not found
       const cartItem: CartItem = {
         _id: product._id,
         quantity: 1,
@@ -181,12 +167,10 @@ export default function Products(props: ProductPageProps) {
     history.push(`/products/${id}`);
   };
 
-  // Get author from product or use a fallback
   const getAuthor = (product: Product): string => {
     return product.productAuthor || "Featured Author";
   };
 
-  // Generate editorial note (max 12 words)
   const getEditorialNote = (product: Product): string => {
     const notes = [
       "A timeless classic that deserves a place on every shelf.",
@@ -321,7 +305,7 @@ export default function Products(props: ProductPageProps) {
               className={`category-btn ${productSearch.productType === ProductType.COMIC ? "active" : ""}`}
               onClick={() => searchCollectionHandler(ProductType.COMIC)}
             >
-              Comics
+              Comic
             </Button>
             <Button
               variant={productSearch.productType === ProductType.FICTION ? "contained" : "outlined"}
@@ -456,14 +440,39 @@ export default function Products(props: ProductPageProps) {
               className="no-data"
               sx={{
                 display: "flex",
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
                 width: "100%",
                 minHeight: "400px",
+                padding: theme.spacing(8, 4),
                 textAlign: "center",
               }}
             >
-              Products are not available!
+              <Typography
+                sx={{
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
+                  fontSize: { xs: "28px", md: "36px" },
+                  fontWeight: 600,
+                  color: "#1D1D1F",
+                  marginBottom: theme.spacing(3),
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Products are not available
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
+                  fontSize: { xs: "17px", md: "19px" },
+                  fontWeight: 400,
+                  color: "#6E6E73",
+                  maxWidth: "600px",
+                  lineHeight: 1.6,
+                }}
+              >
+                We couldn't find any products matching your search criteria. Try adjusting your filters or search terms.
+              </Typography>
             </Box>
           )}
         </Box>
@@ -503,7 +512,6 @@ export default function Products(props: ProductPageProps) {
         </Box>
       </Container>
 
-      {/* Editor's Picks Section */}
       <Box
         sx={{
           width: "100%",
@@ -552,7 +560,6 @@ export default function Products(props: ProductPageProps) {
             </Typography>
           </Box>
 
-          {/* Scrollable Book Cards */}
           <Box
             sx={{
               display: "flex",
@@ -576,7 +583,6 @@ export default function Products(props: ProductPageProps) {
                   backgroundColor: "#A0A0A0",
                 },
               },
-              // Responsive grid on desktop
               [theme.breakpoints.up("md")]: {
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
@@ -589,7 +595,6 @@ export default function Products(props: ProductPageProps) {
               const imagePath = normalizeImagePath(product.productImages?.[0]);
               const author = getAuthor(product);
               const editorialNote = getEditorialNote(product);
-              // Calculate rating based on views (normalize to 0-5)
               const rating = Math.min(5, Math.max(4, (product.productViews / 100) + 4));
 
               return (
@@ -622,7 +627,6 @@ export default function Products(props: ProductPageProps) {
                     },
                   }}
                 >
-                  {/* Book Cover Image */}
                   <Box
                     sx={{
                       width: "100%",
@@ -907,7 +911,7 @@ export default function Products(props: ProductPageProps) {
                         sx={{
                           fontFamily:
                             '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
-                          fontSize: "15px",
+                          fontSize: "17px",
                           fontWeight: 400,
                           color: "#1D1D1F",
                           letterSpacing: "-0.01em",
@@ -920,7 +924,7 @@ export default function Products(props: ProductPageProps) {
                         sx={{
                           fontFamily:
                             '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
-                          fontSize: "15px",
+                          fontSize: "17px",
                           fontWeight: 400,
                           color: "#1D1D1F",
                           letterSpacing: "-0.01em",
@@ -968,7 +972,7 @@ export default function Products(props: ProductPageProps) {
                         sx={{
                           fontFamily:
                             '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
-                          fontSize: "15px",
+                          fontSize: "17px",
                           fontWeight: 400,
                           color: "#1D1D1F",
                           letterSpacing: "-0.01em",
@@ -981,7 +985,7 @@ export default function Products(props: ProductPageProps) {
                         sx={{
                           fontFamily:
                             '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
-                          fontSize: "15px",
+                          fontSize: "17px",
                           fontWeight: 400,
                           color: "#1D1D1F",
                           letterSpacing: "-0.01em",
@@ -1029,7 +1033,7 @@ export default function Products(props: ProductPageProps) {
                         sx={{
                           fontFamily:
                             '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
-                          fontSize: "15px",
+                          fontSize: "17px",
                           fontWeight: 400,
                           color: "#1D1D1F",
                           letterSpacing: "-0.01em",
@@ -1042,7 +1046,7 @@ export default function Products(props: ProductPageProps) {
                         sx={{
                           fontFamily:
                             '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
-                          fontSize: "15px",
+                          fontSize: "17px",
                           fontWeight: 400,
                           color: "#1D1D1F",
                           letterSpacing: "-0.01em",
@@ -1077,7 +1081,7 @@ export default function Products(props: ProductPageProps) {
                   sx={{
                     fontFamily:
                       '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
-                    fontSize: "15px",
+                    fontSize: "17px",
                     fontWeight: 400,
                     color: "#1D1D1F",
                     letterSpacing: "-0.01em",
