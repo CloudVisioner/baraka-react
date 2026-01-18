@@ -1,6 +1,7 @@
 import {
   ProductType,
   ProductStatus,
+  ProductLanguage,
 } from "../enums/product.enum";
 
 export interface Product {
@@ -8,6 +9,11 @@ export interface Product {
   productStatus: ProductStatus;
   productType: ProductType;
   productName: string;
+  productAuthor?: string | null;
+  productPublisher?: string | null;
+  productPublicationDate?: string | null;
+  productLanguage?: ProductLanguage | null;
+  productPageCount?: number | null;
   productPrice: number;
   productLeftCount: number;
   productDesc?: string;

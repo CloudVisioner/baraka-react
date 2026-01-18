@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Container, Button, Box, Stack, Typography } from "@mui/material";
 import { Link, Route, Switch, useLocation } from "react-router-dom";
@@ -9,6 +9,7 @@ import UserPage from "./screens/userPage";
 import HomeNavbar from "./components/headers/HomeNavbar";
 import OtherNavbar from "./components/headers/OtherNavbar";
 import Footer from "./components/footer";
+import ScrollToTop from "./components/ScrollToTop";
 import "../css/app.css";
 import "../css/navbar.css";
 import "../css/footer.css";
@@ -26,6 +27,11 @@ import { useGlobals } from "./hooks/useGlobal";
 function App() {
   const location = useLocation();
   const { setAuthMember } = useGlobals();
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
   const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = useBasket();
   const [signupOpen, setSignupOpen] = useState<boolean>(false);
   const [loginOpen, setLoginOpen] = useState<boolean>(false);
@@ -102,6 +108,9 @@ function App() {
         </Route>
       </Switch>
       <Footer />
+
+      {/* Scroll to Top Button */}
+      <ScrollToTop />
 
       <AuthenticationModal
         signupOpen={signupOpen}

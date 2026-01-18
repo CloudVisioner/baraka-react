@@ -3,7 +3,7 @@ import { Box, Container, Typography, Button, Paper } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { retrieveNewDishes, retrievePopularDishes } from "./selector";
+import { retrieveNewDishes, retrievePopularDishes, retrieveFeaturedDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
 import { ProductType } from "../../../lib/enums/product.enum";
 import { normalizeImagePath } from "../../../lib/config";
@@ -17,7 +17,7 @@ const getCategoryLabel = (collection: ProductType): string => {
     [ProductType.FICTION]: "FICTION",
     [ProductType.ACADEMIC]: "ACADEMIC",
     [ProductType.NON_FICTION]: "NON_FICTION",
-    [ProductType.COMICS]: "COMICS",
+    [ProductType.COMIC]: "COMIC",
     [ProductType.OTHER]: "OTHER",
   };
   return labels[collection] || "NEW ARRIVAL";
@@ -34,11 +34,19 @@ const popularDishesRetriever = createSelector(
   })
 );
 
+const featuredDishesRetriever = createSelector(
+  retrieveFeaturedDishes,
+  (featuredDishes) => ({
+    featuredDishes,
+  })
+);
+
 type TabType = "new" | "bestseller" | "featured";
 
 export default function BookCollections() {
   const { newDishes } = useSelector(newDishesRetriever);
   const { popularDishes } = useSelector(popularDishesRetriever);
+  const { featuredDishes } = useSelector(featuredDishesRetriever);
   const [activeTab, setActiveTab] = useState<TabType>("new");
   const history = useHistory();
 
@@ -49,7 +57,7 @@ export default function BookCollections() {
       case "bestseller":
         return popularDishes;
       case "featured":
-        return popularDishes; // For now, use popular dishes
+        return featuredDishes; // Less popular books
       default:
         return newDishes;
     }
@@ -66,6 +74,8 @@ export default function BookCollections() {
     // Scroll to top after navigation
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  // Removed navigation - buttons only filter on the same page
 
   return (
     <Box
@@ -124,7 +134,9 @@ export default function BookCollections() {
         >
           <Button
             variant={activeTab === "new" ? "contained" : "outlined"}
-            onClick={() => setActiveTab("new")}
+            onClick={() => {
+              setActiveTab("new");
+            }}
             sx={{
               minWidth: "140px",
               height: "44px",
@@ -160,7 +172,9 @@ export default function BookCollections() {
 
           <Button
             variant={activeTab === "bestseller" ? "contained" : "outlined"}
-            onClick={() => setActiveTab("bestseller")}
+            onClick={() => {
+              setActiveTab("bestseller");
+            }}
             sx={{
               minWidth: "140px",
               height: "44px",
@@ -196,7 +210,9 @@ export default function BookCollections() {
 
           <Button
             variant={activeTab === "featured" ? "contained" : "outlined"}
-            onClick={() => setActiveTab("featured")}
+            onClick={() => {
+              setActiveTab("featured");
+            }}
             sx={{
               minWidth: "140px",
               height: "44px",
@@ -364,24 +380,19 @@ export default function BookCollections() {
                       {product.productName}
                     </Typography>
 
-                    {/* Description */}
-                    {product.productDesc && (
+                    {/* Author */}
+                    {product.productAuthor && (
                       <Typography
                         sx={{
                           fontFamily: appleFont,
                           fontSize: "0.875rem",
-                          fontWeight: 400,
+                          fontWeight: 500,
                           color: "#1D1D1F",
                           lineHeight: 1.4,
-                          display: "-webkit-box",
-                          WebkitLineClamp: 2,
-                          lineClamp: 2,
-                          WebkitBoxOrient: "vertical",
-                          overflow: "hidden",
-                          flex: 1,
+                          marginTop: "4px",
                         }}
                       >
-                        {product.productDesc}
+                        by {product.productAuthor}
                       </Typography>
                     )}
 

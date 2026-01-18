@@ -1,6 +1,13 @@
-import { Box } from "@mui/material";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import Button from "@mui/material/Button";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Avatar,
+  Stack,
+  useTheme,
+} from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useGlobals } from "../../hooks/useGlobal";
 import { MemberUpdateInput } from "../../../lib/types/member";
 import { useState } from "react";
@@ -11,6 +18,8 @@ import {
 import { Messages, serverApi } from "../../../lib/config";
 import { T } from "../../../lib/types/common";
 import MemberService from "../../services/MemberService";
+
+const appleFont = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif';
 
 export function Settings() {
   const { authMember, setAuthMember } = useGlobals();
@@ -91,77 +100,310 @@ export function Settings() {
 
   };
 
+  const theme = useTheme();
+
   return (
-    <Box className={"settings"}>
-      <Box className={"member-media-frame"}>
-        <img src={memberImage} className={"mb-image"} />
-        <div className={"media-change-box"}>
-          <span>Upload image</span>
-          <p>JPG, JPEG, PNG formats only!</p>
-          <div className={"up-del-box"}>
-            <Button component="label" onChange={handlerImageViewer}>
-              <CloudDownloadIcon />
-              <input type="file" hidden />
-            </Button>
-          </div>
-        </div>
+    <Box>
+      {/* Profile Image Upload */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: theme.spacing(3),
+          marginBottom: theme.spacing(4),
+          padding: theme.spacing(3),
+          borderRadius: "16px",
+          backgroundColor: "#F5F5F7",
+        }}
+      >
+        <Avatar
+          src={memberImage}
+          sx={{
+            width: 100,
+            height: 100,
+            border: "4px solid #FFFFFF",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+          }}
+        />
+        <Box sx={{ flex: 1 }}>
+          <Typography
+            sx={{
+              fontFamily: appleFont,
+              fontSize: "16px",
+              fontWeight: 500,
+              color: "#1D1D1F",
+              marginBottom: theme.spacing(0.5),
+            }}
+          >
+            Profile Picture
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: appleFont,
+              fontSize: "13px",
+              fontWeight: 400,
+              color: "#1D1D1F",
+              marginBottom: theme.spacing(2),
+              opacity: 0.7,
+            }}
+          >
+            JPG, JPEG, PNG formats only (Max 5MB)
+          </Typography>
+          <Button
+            component="label"
+            variant="outlined"
+            startIcon={<CloudUploadIcon />}
+            onChange={handlerImageViewer}
+            sx={{
+              fontFamily: appleFont,
+              fontSize: "14px",
+              fontWeight: 500,
+              textTransform: "none",
+              borderRadius: "12px",
+              padding: theme.spacing(1, 2.5),
+              borderColor: "rgba(0, 0, 0, 0.12)",
+              color: "#1D1D1F",
+              "&:hover": {
+                borderColor: "rgba(0, 0, 0, 0.24)",
+                backgroundColor: "rgba(0, 0, 0, 0.04)",
+              },
+            }}
+          >
+            Upload Image
+            <input type="file" hidden accept="image/jpeg,image/jpg,image/png" />
+          </Button>
+        </Box>
       </Box>
-      <Box className={"input-frame"}>
-        <div className={"long-input"}>
-          <label className={"spec-label"}>Username</label>
-          <input
-            className={"spec-input mb-nick"}
-            type="text"
-            placeholder={authMember?.memberNick}
-            value={memberUpdateInput.memberNick}
+
+      {/* Form Fields */}
+      <Stack spacing={3}>
+        {/* Username */}
+        <Box>
+          <Typography
+            sx={{
+              fontFamily: appleFont,
+              fontSize: "14px",
+              fontWeight: 500,
+              color: "#1D1D1F",
+              marginBottom: theme.spacing(1.5),
+            }}
+          >
+            Username
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder={authMember?.memberNick || "Enter username"}
+            value={memberUpdateInput.memberNick || ""}
             name="memberNick"
             onChange={memberNickHandler}
+            variant="outlined"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                fontFamily: appleFont,
+                fontSize: "15px",
+                borderRadius: "12px",
+                backgroundColor: "#F5F5F7",
+                "& fieldset": {
+                  borderColor: "rgba(0, 0, 0, 0.08)",
+                },
+                "&:hover fieldset": {
+                  borderColor: "rgba(0, 0, 0, 0.12)",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#1D1D1F",
+                  borderWidth: "1px",
+                },
+                "& input": {
+                  color: "#1D1D1F",
+                  padding: theme.spacing(1.5, 2),
+                },
+              },
+            }}
           />
-        </div>
-      </Box>
-      <Box className={"input-frame"}>
-        <div className={"short-input"}>
-          <label className={"spec-label"}>Phone</label>
-          <input
-            className={"spec-input mb-phone"}
-            type="text"
-            placeholder={authMember?.memberPhone ?? "no phone"}
-            value={memberUpdateInput.memberPhone}
-            name="memberPhone"
-            onChange={memberPhoneHandler}
-          />
-        </div>
-        <div className={"short-input"}>
-          <label className={"spec-label"}>Address</label>
-          <input
-            className={"spec-input  mb-address"}
-            type="text"
+        </Box>
+
+        {/* Phone and Address Row */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            gap: theme.spacing(3),
+          }}
+        >
+          {/* Phone */}
+          <Box sx={{ flex: 1 }}>
+            <Typography
+              sx={{
+                fontFamily: appleFont,
+                fontSize: "14px",
+                fontWeight: 500,
+                color: "#1D1D1F",
+                marginBottom: theme.spacing(1.5),
+              }}
+            >
+              Phone
+            </Typography>
+            <TextField
+              fullWidth
+              placeholder={authMember?.memberPhone || "Enter phone number"}
+              value={memberUpdateInput.memberPhone || ""}
+              name="memberPhone"
+              onChange={memberPhoneHandler}
+              variant="outlined"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  fontFamily: appleFont,
+                  fontSize: "15px",
+                  borderRadius: "12px",
+                  backgroundColor: "#F5F5F7",
+                  "& fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.08)",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.12)",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#1D1D1F",
+                    borderWidth: "1px",
+                  },
+                  "& input": {
+                    color: "#1D1D1F",
+                    padding: theme.spacing(1.5, 2),
+                  },
+                },
+              }}
+            />
+          </Box>
+
+          {/* Address */}
+          <Box sx={{ flex: 1 }}>
+            <Typography
+              sx={{
+                fontFamily: appleFont,
+                fontSize: "14px",
+                fontWeight: 500,
+                color: "#1D1D1F",
+                marginBottom: theme.spacing(1.5),
+              }}
+            >
+              Address
+            </Typography>
+            <TextField
+              fullWidth
+              placeholder={
+                authMember?.memberAddress || "Enter your address"
+              }
+              value={memberUpdateInput.memberAddress || ""}
+              name="memberAddress"
+              onChange={memberAddressHandler}
+              variant="outlined"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  fontFamily: appleFont,
+                  fontSize: "15px",
+                  borderRadius: "12px",
+                  backgroundColor: "#F5F5F7",
+                  "& fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.08)",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "rgba(0, 0, 0, 0.12)",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#1D1D1F",
+                    borderWidth: "1px",
+                  },
+                  "& input": {
+                    color: "#1D1D1F",
+                    padding: theme.spacing(1.5, 2),
+                  },
+                },
+              }}
+            />
+          </Box>
+        </Box>
+
+        {/* Description */}
+        <Box>
+          <Typography
+            sx={{
+              fontFamily: appleFont,
+              fontSize: "14px",
+              fontWeight: 500,
+              color: "#1D1D1F",
+              marginBottom: theme.spacing(1.5),
+            }}
+          >
+            Description
+          </Typography>
+          <TextField
+            fullWidth
+            multiline
+            rows={5}
             placeholder={
-              authMember?.memberAddress ? authMember?.memberAddress : "no address"
+              authMember?.memberDesc || "Tell us about yourself..."
             }
-            value={memberUpdateInput.memberAddress}
-            name="memberAddress"
-            onChange={memberAddressHandler}
-          />
-        </div>
-      </Box>
-      <Box className={"input-frame"}>
-        <div className={"long-input"}>
-          <label className={"spec-label"}>Description</label>
-          <textarea
-            className={"spec-textarea mb-description"}
-            placeholder={
-              authMember?.memberDesc ? authMember?.memberDesc : "no description"
-            }
-            value={memberUpdateInput.memberDesc}
+            value={memberUpdateInput.memberDesc || ""}
             name="memberDesc"
             onChange={memberDescriptionHandler}
+            variant="outlined"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                fontFamily: appleFont,
+                fontSize: "15px",
+                borderRadius: "12px",
+                backgroundColor: "#F5F5F7",
+                "& fieldset": {
+                  borderColor: "rgba(0, 0, 0, 0.08)",
+                },
+                "&:hover fieldset": {
+                  borderColor: "rgba(0, 0, 0, 0.12)",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#1D1D1F",
+                  borderWidth: "1px",
+                },
+                "& textarea": {
+                  color: "#1D1D1F",
+                  padding: theme.spacing(1.5, 2),
+                },
+              },
+            }}
           />
-        </div>
-      </Box>
-      <Box className={"save-box"}>
-        <Button variant={"contained"} onClick={handleSubmitButton}>
-          Save
+        </Box>
+      </Stack>
+
+      {/* Save Button */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginTop: theme.spacing(4),
+          paddingTop: theme.spacing(3),
+          borderTop: "1px solid rgba(0, 0, 0, 0.08)",
+        }}
+      >
+        <Button
+          variant="contained"
+          onClick={handleSubmitButton}
+          sx={{
+            fontFamily: appleFont,
+            fontSize: "15px",
+            fontWeight: 600,
+            textTransform: "none",
+            borderRadius: "12px",
+            padding: theme.spacing(1.5, 4),
+            backgroundColor: "#007AFF",
+            color: "#FFFFFF",
+            boxShadow: "none",
+            minWidth: "120px",
+            "&:hover": {
+              backgroundColor: "#0051D5",
+              boxShadow: "0 4px 12px rgba(0, 122, 255, 0.3)",
+            },
+          }}
+        >
+          Save Changes
         </Button>
       </Box>
     </Box>

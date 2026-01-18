@@ -185,14 +185,9 @@ export default function Products(props: ProductPageProps) {
     history.push(`/products/${id}`);
   };
 
-  // Extract author from product description or use a default
+  // Get author from product or use a fallback
   const getAuthor = (product: Product): string => {
-    // Try to extract from description or use a placeholder
-    if (product.productDesc) {
-      const authorMatch = product.productDesc.match(/by\s+([^.]+)/i);
-      if (authorMatch) return authorMatch[1].trim();
-    }
-    return "Featured Author"; // Placeholder
+    return product.productAuthor || "Featured Author";
   };
 
   // Generate editorial note (max 12 words)
@@ -326,9 +321,9 @@ export default function Products(props: ProductPageProps) {
               Academic
             </Button>
             <Button
-              variant={productSearch.productType === ProductType.COMICS ? "contained" : "outlined"}
-              className={`category-btn ${productSearch.productType === ProductType.COMICS ? "active" : ""}`}
-              onClick={() => searchCollectionHandler(ProductType.COMICS)}
+              variant={productSearch.productType === ProductType.COMIC ? "contained" : "outlined"}
+              className={`category-btn ${productSearch.productType === ProductType.COMIC ? "active" : ""}`}
+              onClick={() => searchCollectionHandler(ProductType.COMIC)}
             >
               Comics
             </Button>
@@ -430,9 +425,9 @@ export default function Products(props: ProductPageProps) {
                         {product.productName}
                       </span>
 
-                        {product.productDesc && (
-                          <p className="product-description">
-                            {product.productDesc}
+                        {product.productAuthor && (
+                          <p className="product-description" style={{ color: "#1D1D1F", fontWeight: 500, marginTop: "4px" }}>
+                            by {product.productAuthor}
                           </p>
                         )}
 
@@ -684,20 +679,22 @@ export default function Products(props: ProductPageProps) {
                     </Typography>
 
                     {/* Author */}
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
-                        fontSize: "0.875rem",
-                        fontWeight: 400,
-                        color: "#1D1D1F",
-                        marginBottom: theme.spacing(1.5),
-                        letterSpacing: "-0.01em",
-                      }}
-                    >
-                      {author}
-                    </Typography>
+                    {product.productAuthor && (
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif',
+                          fontSize: "0.875rem",
+                          fontWeight: 500,
+                          color: "#1D1D1F",
+                          marginBottom: theme.spacing(1.5),
+                          letterSpacing: "-0.01em",
+                        }}
+                      >
+                        by {product.productAuthor}
+                      </Typography>
+                    )}
 
                     {/* Star Rating */}
                     <Box

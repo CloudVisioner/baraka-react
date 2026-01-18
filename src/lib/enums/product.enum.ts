@@ -15,8 +15,14 @@ export enum ProductType {
   FICTION = "FICTION",
   NON_FICTION = "NON_FICTION",
   ACADEMIC = "ACADEMIC",
-  COMICS = "COMICS",
+  COMIC = "COMIC",
   OTHER = "OTHER"
+}
+
+export enum ProductLanguage {
+  ENGLISH = "ENGLISH",
+  UZBEK = "UZBEK",
+  RUSSIAN = "RUSSIAN"
 }
 // export enum ProductVolume {
 //   SINGLE = "SINGLE",

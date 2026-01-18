@@ -1,9 +1,13 @@
 import React from "react";
-import { Box, Container, Typography, Divider } from "@mui/material";
+import { Box, Container, Typography, Divider, IconButton, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 import { useGlobals } from "../../hooks/useGlobal";
 
-const appleFont = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif";
+const appleFont = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif';
 
 interface FooterLink {
   label: string;
@@ -18,6 +22,12 @@ interface FooterColumn {
 
 export default function Footer() {
   const { authMember } = useGlobals();
+  const theme = useTheme();
+
+  // Scroll to top handler
+  const handleLinkClick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const footerColumns: FooterColumn[] = [
     {
@@ -49,9 +59,9 @@ export default function Footer() {
       component="footer"
       sx={{
         width: "100%",
-        backgroundColor: "#1d1d1f",
-        paddingTop: { xs: "40px", md: "60px" },
-        paddingBottom: { xs: "32px", md: "40px" },
+        backgroundColor: "#1D1D1F",
+        paddingTop: { xs: theme.spacing(6), md: theme.spacing(8) },
+        paddingBottom: { xs: theme.spacing(4), md: theme.spacing(5) },
       }}
     >
       <Container maxWidth="lg">
@@ -64,8 +74,8 @@ export default function Footer() {
               sm: "repeat(2, 1fr)",
               md: "repeat(4, 1fr)",
             },
-            gap: { xs: "32px", md: "24px" },
-            marginBottom: { xs: "40px", md: "48px" },
+            gap: { xs: theme.spacing(5), md: theme.spacing(4) },
+            marginBottom: { xs: theme.spacing(5), md: theme.spacing(6) },
           }}
         >
           {/* Company Info Column */}
@@ -77,24 +87,26 @@ export default function Footer() {
             <Typography
               sx={{
                 fontFamily: appleFont,
-                fontSize: "1.5rem",
+                fontSize: { xs: "24px", md: "28px" },
                 fontWeight: 600,
                 letterSpacing: "-0.02em",
-                color: "#f5f5f7",
-                marginBottom: "12px",
+                color: "#FFFFFF",
+                marginBottom: theme.spacing(2),
               }}
             >
-              BARAKA
+              Baraka Books
             </Typography>
             <Typography
               sx={{
                 fontFamily: appleFont,
-                fontSize: "0.875rem",
+                fontSize: { xs: "14px", md: "15px" },
                 fontWeight: 400,
                 lineHeight: 1.6,
-                color: "#86868b",
-                marginBottom: "20px",
-                maxWidth: "280px",
+                color: "#FFFFFF",
+                opacity: 0.8,
+                marginBottom: theme.spacing(4),
+                maxWidth: "320px",
+                letterSpacing: "-0.01em",
               }}
             >
               Your premier destination for books. Discover curated collections and join literary events.
@@ -103,90 +115,77 @@ export default function Footer() {
             <Box
               sx={{
                 display: "flex",
-                gap: "16px",
-                marginTop: "24px",
+                gap: theme.spacing(1.5),
               }}
             >
-              <Box
+              <IconButton
                 component="a"
                 href="#"
                 sx={{
-                  width: "32px",
-                  height: "32px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "50%",
+                  width: 40,
+                  height: 40,
                   backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  transition: "all 0.3s",
+                  borderRadius: "50%",
+                  transition: "all 0.3s ease",
                   "&:hover": {
                     backgroundColor: "rgba(255, 255, 255, 0.2)",
-                    transform: "scale(1.1)",
+                    transform: "scale(1.08)",
                   },
                 }}
               >
-                <img src="/icons/facebook.svg" alt="Facebook" style={{ width: "16px", height: "16px", filter: "brightness(0) invert(1)" }} />
-              </Box>
-              <Box
+                <FacebookIcon sx={{ fontSize: "20px", color: "#FFFFFF" }} />
+              </IconButton>
+              <IconButton
                 component="a"
                 href="#"
                 sx={{
-                  width: "32px",
-                  height: "32px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "50%",
+                  width: 40,
+                  height: 40,
                   backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  transition: "all 0.3s",
+                  borderRadius: "50%",
+                  transition: "all 0.3s ease",
                   "&:hover": {
                     backgroundColor: "rgba(255, 255, 255, 0.2)",
-                    transform: "scale(1.1)",
+                    transform: "scale(1.08)",
                   },
                 }}
               >
-                <img src="/icons/twitter.svg" alt="Twitter" style={{ width: "16px", height: "16px", filter: "brightness(0) invert(1)" }} />
-              </Box>
-              <Box
+                <TwitterIcon sx={{ fontSize: "20px", color: "#FFFFFF" }} />
+              </IconButton>
+              <IconButton
                 component="a"
                 href="#"
                 sx={{
-                  width: "32px",
-                  height: "32px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "50%",
+                  width: 40,
+                  height: 40,
                   backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  transition: "all 0.3s",
+                  borderRadius: "50%",
+                  transition: "all 0.3s ease",
                   "&:hover": {
                     backgroundColor: "rgba(255, 255, 255, 0.2)",
-                    transform: "scale(1.1)",
+                    transform: "scale(1.08)",
                   },
                 }}
               >
-                <img src="/icons/instagram.svg" alt="Instagram" style={{ width: "16px", height: "16px", filter: "brightness(0) invert(1)" }} />
-              </Box>
-              <Box
+                <InstagramIcon sx={{ fontSize: "20px", color: "#FFFFFF" }} />
+              </IconButton>
+              <IconButton
                 component="a"
                 href="#"
                 sx={{
-                  width: "32px",
-                  height: "32px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "50%",
+                  width: 40,
+                  height: 40,
                   backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  transition: "all 0.3s",
+                  borderRadius: "50%",
+                  transition: "all 0.3s ease",
                   "&:hover": {
                     backgroundColor: "rgba(255, 255, 255, 0.2)",
-                    transform: "scale(1.1)",
+                    transform: "scale(1.08)",
                   },
                 }}
               >
-                <img src="/icons/youtube.svg" alt="YouTube" style={{ width: "16px", height: "16px", filter: "brightness(0) invert(1)" }} />
-              </Box>
+                <YouTubeIcon sx={{ fontSize: "20px", color: "#FFFFFF" }} />
+              </IconButton>
             </Box>
           </Box>
 
@@ -196,11 +195,12 @@ export default function Footer() {
               <Typography
                 sx={{
                   fontFamily: appleFont,
-                  fontSize: "0.75rem",
+                  fontSize: "13px",
                   fontWeight: 600,
-                  letterSpacing: "0.01em",
-                  color: "#f5f5f7",
-                  marginBottom: "12px",
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                  color: "#FFFFFF",
+                  marginBottom: theme.spacing(2.5),
                 }}
               >
                 {column.title}
@@ -209,7 +209,7 @@ export default function Footer() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "10px",
+                  gap: theme.spacing(1.5),
                 }}
               >
                 {column.links.map((link, linkIndex) => {
@@ -218,6 +218,7 @@ export default function Footer() {
                     <Link
                       key={linkIndex}
                       to={link.to}
+                      onClick={handleLinkClick}
                       style={{
                         textDecoration: "none",
                       }}
@@ -225,13 +226,15 @@ export default function Footer() {
                       <Typography
                         sx={{
                           fontFamily: appleFont,
-                          fontSize: "0.75rem",
+                          fontSize: "14px",
                           fontWeight: 400,
-                          color: "#86868b",
-                          transition: "color 0.2s",
+                          color: "#FFFFFF",
+                          opacity: 0.8,
+                          transition: "all 0.2s ease",
+                          letterSpacing: "-0.01em",
                           "&:hover": {
-                            color: "#f5f5f7",
-                            textDecoration: "underline",
+                            opacity: 1,
+                            color: "#FFFFFF",
                           },
                         }}
                       >
@@ -249,7 +252,7 @@ export default function Footer() {
         <Divider
           sx={{
             borderColor: "rgba(255, 255, 255, 0.1)",
-            marginBottom: { xs: "24px", md: "32px" },
+            marginBottom: { xs: theme.spacing(3), md: theme.spacing(4) },
           }}
         />
 
@@ -260,18 +263,20 @@ export default function Footer() {
             flexDirection: { xs: "column", sm: "row" },
             justifyContent: "space-between",
             alignItems: { xs: "flex-start", sm: "center" },
-            gap: "16px",
+            gap: theme.spacing(2),
           }}
         >
           <Typography
             sx={{
               fontFamily: appleFont,
-              fontSize: "0.75rem",
+              fontSize: "13px",
               fontWeight: 400,
-              color: "#86868b",
+              color: "#FFFFFF",
+              opacity: 0.7,
+              letterSpacing: "-0.01em",
             }}
           >
-            Copyright © {new Date().getFullYear()} BARAKA. All rights reserved.
+            Copyright © {new Date().getFullYear()} Baraka Books. All rights reserved.
           </Typography>
         </Box>
       </Container>

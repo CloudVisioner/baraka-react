@@ -58,11 +58,12 @@ export default function ActiveUsers() {
               fontFamily: appleFont,
               fontSize: { xs: "15px", md: "17px" },
               fontWeight: 400,
-              color: "#86868b",
+              color: "#1D1D1F",
               letterSpacing: "-0.01em",
               lineHeight: 1.5,
               maxWidth: "700px",
               margin: "0 auto",
+              opacity: 0.8,
             }}
           >
             Discover our most active readers who are exploring our diverse collection of books and sharing their insights with the community.
@@ -160,8 +161,8 @@ export default function ActiveUsers() {
                         sx={{
                           fontFamily: appleFont,
                           fontSize: "0.875rem",
-                          fontWeight: 400,
-                        color: "#86868b",
+                          fontWeight: 500,
+                          color: "#1D1D1F",
                         }}
                       >
                       {booksRead} {booksRead === 1 ? "Book Read" : "Books Read"}

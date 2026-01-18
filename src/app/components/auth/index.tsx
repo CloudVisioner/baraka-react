@@ -172,11 +172,11 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
           {/* Form Fields */}
           <Stack spacing={3} sx={{ marginBottom: theme.spacing(4) }}>
-            <TextField
+              <TextField
               label="Username"
-              variant="outlined"
+                variant="outlined"
               value={memberNick}
-              onChange={handleUsername}
+                onChange={handleUsername}
               fullWidth
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -201,12 +201,12 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                   },
                 },
               }}
-            />
-            <TextField
+              />
+              <TextField
               label="Phone Number"
-              variant="outlined"
+                variant="outlined"
               value={memberPhone}
-              onChange={handlePhone}
+                onChange={handlePhone}
               fullWidth
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -231,14 +231,14 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                   },
                 },
               }}
-            />
-            <TextField
+              />
+              <TextField
               label="Password"
               type="password"
-              variant="outlined"
+                variant="outlined"
               value={memberPassword}
-              onChange={handlePassword}
-              onKeyDown={handlePasswordKeyDown}
+                onChange={handlePassword}
+                onKeyDown={handlePasswordKeyDown}
               fullWidth
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -263,7 +263,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                   },
                 },
               }}
-            />
+              />
           </Stack>
 
           {/* Signup Button */}
@@ -272,7 +272,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
             onClick={handleSignupRequest}
             fullWidth
             endIcon={<ArrowForwardIcon />}
-            sx={{
+                sx={{ 
               height: "48px",
               borderRadius: "12px",
               fontFamily: appleFont,
@@ -281,7 +281,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
               textTransform: "none",
               letterSpacing: "-0.01em",
               background: "#1D1D1F",
-              color: "#FFFFFF",
+                  color: "#FFFFFF",
               boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
               border: "none",
               transition: theme.transitions.create(
@@ -291,7 +291,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                   easing: theme.transitions.easing.easeOut,
                 }
               ),
-              "&:hover": {
+                  "&:hover": {
                 background: "#2D2D2F",
                 boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
                 transform: "translateY(-1px)",
@@ -396,14 +396,14 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                   },
                 },
               }}
-            />
-            <TextField
+              />
+              <TextField
               label="Password"
               type="password"
               variant="outlined"
               value={memberPassword}
-              onChange={handlePassword}
-              onKeyDown={handlePasswordKeyDown}
+                onChange={handlePassword}
+                onKeyDown={handlePasswordKeyDown}
               fullWidth
               sx={{
                 "& .MuiOutlinedInput-root": {

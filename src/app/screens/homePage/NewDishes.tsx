@@ -21,7 +21,7 @@ const getCategoryLabel = (collection: ProductType): string => {
     [ProductType.FICTION]: "FICTION",
     [ProductType.ACADEMIC]: "ACADEMIC",
     [ProductType.NON_FICTION]: "NON_FICTION",
-    [ProductType.COMICS]: "COMICS",
+    [ProductType.COMIC]: "COMIC",
     [ProductType.OTHER]: "OTHER",
   };
   return labels[collection] || "NEW ARRIVAL";

@@ -184,9 +184,9 @@ export default function Basket(props: BasketProps) {
               }}
             >
               <Stack spacing={2}>
-                {cartItems.map((item: CartItem) => {
-                  const imagePath = normalizeImagePath(item.image);
-                  return (
+              {cartItems.map((item: CartItem) => {
+                const imagePath = normalizeImagePath(item.image);
+                return (
                     <Box
                       key={item._id}
                       sx={{
@@ -242,7 +242,7 @@ export default function Basket(props: BasketProps) {
                             letterSpacing: "-0.01em",
                           }}
                         >
-                          ${item.price} x {item.quantity}
+                      ${item.price} x {item.quantity}
                         </Typography>
                       </Box>
 
@@ -318,9 +318,9 @@ export default function Basket(props: BasketProps) {
                       >
                         <CloseIcon fontSize="small" />
                       </IconButton>
-                    </Box>
-                  );
-                })}
+                  </Box>
+                );
+              })}
               </Stack>
             </Box>
 
@@ -424,7 +424,7 @@ export default function Basket(props: BasketProps) {
                   >
                     ${totalPrice}
                   </Typography>
-                </Box>
+          </Box>
                 <Button
                   variant="contained"
                   onClick={proceedOrderHandler}
@@ -458,12 +458,12 @@ export default function Basket(props: BasketProps) {
                     },
                   }}
                 >
-                  Order
-                </Button>
+                Order
+              </Button>
               </Stack>
             </Box>
           </>
-        )}
+          )}
       </Menu>
     </Box>
   );

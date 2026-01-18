@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Container, Stack, Box, Typography, Button, TextField } from "@mui/material";
+import { Container, Stack, Box, Typography, Button, TextField, useTheme, Chip, Divider } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import LanguageIcon from "@mui/icons-material/Language";
+import BookIcon from "@mui/icons-material/Book";
+import BusinessIcon from "@mui/icons-material/Business";
 import Rating from "@mui/material/Rating";
+import { ProductLanguage } from "../../../lib/enums/product.enum";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
@@ -56,6 +61,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
   const { restaurant } = useSelector(restaurantRetriever);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<"details" | "info">("details");
+  const theme = useTheme();
 
   useEffect(() => {
     const product = new ProductService();
@@ -135,18 +141,21 @@ export default function ChosenProduct(props: ChosenProductProps) {
               gap: "24px",
             }}
           >
-            {/* Author */}
-            <Typography
-              sx={{
-                fontFamily: appleFont,
-                fontSize: "15px",
-                fontWeight: 500,
-                color: "#86868b",
-                letterSpacing: "-0.01em",
-              }}
-            >
-              By {restaurant?.memberNick || "Author"}
-            </Typography>
+            {/* Author - Above Title */}
+            {chosenProduct.productAuthor && (
+              <Typography
+                sx={{
+                  fontFamily: appleFont,
+                  fontSize: "16px",
+                  fontWeight: 500,
+                  color: "#1D1D1F",
+                  letterSpacing: "-0.01em",
+                  marginBottom: "8px",
+                }}
+              >
+                {chosenProduct.productAuthor}
+              </Typography>
+            )}
 
             {/* Title */}
             <Typography
@@ -215,21 +224,6 @@ export default function ChosenProduct(props: ChosenProductProps) {
               $ {chosenProduct.productPrice.toFixed(2)} USD
             </Typography>
 
-            {/* Description */}
-            {chosenProduct.productDesc && (
-              <Typography
-                sx={{
-                  fontFamily: appleFont,
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  color: "#86868b",
-                  lineHeight: 1.6,
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                {chosenProduct.productDesc}
-              </Typography>
-            )}
 
             {/* Quantity & Add to Cart */}
             <Stack direction="row" alignItems="center" spacing={2}>
@@ -467,121 +461,269 @@ export default function ChosenProduct(props: ChosenProductProps) {
           >
             {activeTab === "details" && (
               <Stack spacing={4}>
-                <Typography
-                  sx={{
-                    fontFamily: appleFont,
-                    fontSize: "16px",
-                    fontWeight: 400,
-                    color: "#1D1D1F",
-                    lineHeight: 1.8,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  {chosenProduct.productDesc ||
-                    "Vector device hand undo asset editor figjam link prototype align. Figjam ellipse ellipse figjam content comment pencil. Vector main star undo stroke bold union. Flatten pixel thumbnail flows clip pen list. Vertical outline layer align library layout prototype mask. Invite list share export clip text select. Rectangle layer prototype stroke edit figma draft horizontal overflow list. Effect edit create frame content image arrange. Underline team slice editor undo editor arrange figma layer. Star export scale main blur arrow list scrolling content."}
-                </Typography>
-                
-                <Typography
-                  sx={{
-                    fontFamily: appleFont,
-                    fontSize: "16px",
-                    fontWeight: 400,
-                    color: "#1D1D1F",
-                    lineHeight: 1.8,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  Arrow list scrolling content. Editor component rotate shadow hand.
-                  Plugin list boolean inspect pixel pen distribute prototype. Export
-                  auto underline line main align. Overflow connection effect duplicate
-                  asset image rectangle fill. Shadow align invite frame connection
-                  blur content layout effect. Component layout main plugin object
-                  thumbnail rectangle pencil follower. Asset undo bold blur project.
-                  Flows text frame fill polygon library distribute list. Undo fill
-                  share text layer vector horizontal subtract.
-                </Typography>
-                
-                {/* Book Image */}
-                {detailImagePath && (
-                  <Box
+                {chosenProduct.productDesc ? (
+                  <>
+                    <Typography
+                      sx={{
+                        fontFamily: appleFont,
+                        fontSize: "16px",
+                        fontWeight: 400,
+                        color: "#1D1D1F",
+                        lineHeight: 1.8,
+                        letterSpacing: "-0.01em",
+                      }}
+                    >
+                      {chosenProduct.productDesc}
+                    </Typography>
+                    
+                    {/* Book Image */}
+                    {detailImagePath && (
+                      <Box
+                        sx={{
+                          width: "100%",
+                          margin: "40px 0",
+                          borderRadius: "12px",
+                          overflow: "hidden",
+                          backgroundColor: "#FBFBFB",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          padding: "20px",
+                        }}
+                      >
+                        <img
+                          src={detailImagePath}
+                          alt={chosenProduct.productName}
+                          style={{
+                            width: "100%",
+                            maxWidth: "100%",
+                            height: "auto",
+                            maxHeight: "500px",
+                            objectFit: "contain",
+                            display: "block",
+                          }}
+                        />
+                      </Box>
+                    )}
+                  </>
+                ) : (
+                  <Typography
                     sx={{
-                      width: "100%",
-                      margin: "40px 0",
-                      borderRadius: "12px",
-                      overflow: "hidden",
-                      backgroundColor: "#FBFBFB",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      padding: "20px",
+                      fontFamily: appleFont,
+                      fontSize: "16px",
+                      fontWeight: 400,
+                      color: "#86868B",
+                      lineHeight: 1.8,
+                      letterSpacing: "-0.01em",
+                      fontStyle: "italic",
                     }}
                   >
-                    <img
-                      src={detailImagePath}
-                      alt={chosenProduct.productName}
-                      style={{
-                        width: "100%",
-                        maxWidth: "100%",
-                        height: "auto",
-                        maxHeight: "500px",
-                        objectFit: "contain",
-                        display: "block",
-                      }}
-                    />
-                  </Box>
+                    No description available for this book.
+                  </Typography>
                 )}
-
-                <Typography
-                  sx={{
-                    fontFamily: appleFont,
-                    fontSize: "16px",
-                    fontWeight: 400,
-                    color: "#1D1D1F",
-                    lineHeight: 1.8,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  Slice comment library clip list edit edit flatten figjam. Arrow pen
-                  line pen flows project pen fill opacity connection. Component team
-                  hand connection team variant vertical reesizing edit. Outline stroke
-                  blur hand shadow overflow background draft. List draft list inspect
-                  flows connection auto. Community figjam figjam follower subtract.
-                </Typography>
-
-                <Typography
-                  sx={{
-                    fontFamily: appleFont,
-                    fontSize: "16px",
-                    fontWeight: 400,
-                    color: "#1D1D1F",
-                    lineHeight: 1.8,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  Image select component editor draft subtract stroke line project
-                  font. Overflow align connection editor main vector vector overflow
-                  rotate pixel. Strikethrough main selection device auto. Scrolling
-                  slice team style background component team plugin. Layout content
-                  duplicate draft group follower. Style project clip stroke image
-                  draft prototype. Figjam align slice comment move horizontal subtract
-                  clip variant. Ellipse flatten edit strikethrough background boolean
-                  ipsum link.
-                </Typography>
               </Stack>
             )}
             {activeTab === "info" && (
-              <Typography
-                sx={{
-                  fontFamily: appleFont,
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  color: "#1D1D1F",
-                  lineHeight: 1.8,
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                Additional information about the product will be displayed here.
-              </Typography>
+              <Box>
+                <Stack spacing={4}>
+                  {/* New Book Details Fields */}
+                  {(chosenProduct.productPublisher ||
+                    chosenProduct.productPublicationDate ||
+                    chosenProduct.productLanguage ||
+                    chosenProduct.productPageCount) && (
+                    <Stack spacing={3}>
+                      {/* Publisher */}
+                      {chosenProduct.productPublisher && (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: theme.spacing(2),
+                          }}
+                        >
+                          <BusinessIcon
+                            sx={{
+                              fontSize: "20px",
+                              color: "#1D1D1F",
+                              marginTop: "2px",
+                              opacity: 0.7,
+                            }}
+                          />
+                          <Box sx={{ flex: 1 }}>
+                            <Typography
+                              sx={{
+                                fontFamily: appleFont,
+                                fontSize: "13px",
+                                fontWeight: 500,
+                                color: "#1D1D1F",
+                                marginBottom: theme.spacing(0.5),
+                                textTransform: "uppercase",
+                                letterSpacing: "0.05em",
+                                opacity: 0.7,
+                              }}
+                            >
+                              Publisher
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontFamily: appleFont,
+                                fontSize: "16px",
+                                fontWeight: 500,
+                                color: "#1D1D1F",
+                                letterSpacing: "-0.01em",
+                              }}
+                            >
+                              {chosenProduct.productPublisher}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      )}
+
+                      {/* Publication Date */}
+                      {chosenProduct.productPublicationDate && (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: theme.spacing(2),
+                          }}
+                        >
+                          <CalendarTodayIcon
+                            sx={{
+                              fontSize: "20px",
+                              color: "#1D1D1F",
+                              marginTop: "2px",
+                              opacity: 0.7,
+                            }}
+                          />
+                          <Box sx={{ flex: 1 }}>
+                            <Typography
+                              sx={{
+                                fontFamily: appleFont,
+                                fontSize: "13px",
+                                fontWeight: 500,
+                                color: "#1D1D1F",
+                                marginBottom: theme.spacing(0.5),
+                                textTransform: "uppercase",
+                                letterSpacing: "0.05em",
+                                opacity: 0.7,
+                              }}
+                            >
+                              Publication Date
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontFamily: appleFont,
+                                fontSize: "16px",
+                                fontWeight: 500,
+                                color: "#1D1D1F",
+                                letterSpacing: "-0.01em",
+                              }}
+                            >
+                              {chosenProduct.productPublicationDate}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      )}
+
+                      {/* Language */}
+                      {chosenProduct.productLanguage && (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: theme.spacing(2),
+                          }}
+                        >
+                          <LanguageIcon
+                            sx={{
+                              fontSize: "20px",
+                              color: "#1D1D1F",
+                              marginTop: "2px",
+                              opacity: 0.7,
+                            }}
+                          />
+                          <Box sx={{ flex: 1 }}>
+                            <Typography
+                              sx={{
+                                fontFamily: appleFont,
+                                fontSize: "13px",
+                                fontWeight: 500,
+                                color: "#1D1D1F",
+                                marginBottom: theme.spacing(1),
+                                textTransform: "uppercase",
+                                letterSpacing: "0.05em",
+                                opacity: 0.7,
+                              }}
+                            >
+                              Language
+                            </Typography>
+                            <Chip
+                              label={chosenProduct.productLanguage}
+                              sx={{
+                                fontFamily: appleFont,
+                                fontSize: "14px",
+                                fontWeight: 500,
+                                backgroundColor: "#F5F5F7",
+                                color: "#1D1D1F",
+                                borderRadius: "8px",
+                                height: "32px",
+                              }}
+                            />
+                          </Box>
+                        </Box>
+                      )}
+
+                      {/* Page Count */}
+                      {chosenProduct.productPageCount && (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: theme.spacing(2),
+                          }}
+                        >
+                          <BookIcon
+                            sx={{
+                              fontSize: "20px",
+                              color: "#1D1D1F",
+                              marginTop: "2px",
+                              opacity: 0.7,
+                            }}
+                          />
+                          <Box sx={{ flex: 1 }}>
+                            <Typography
+                              sx={{
+                                fontFamily: appleFont,
+                                fontSize: "13px",
+                                fontWeight: 500,
+                                color: "#1D1D1F",
+                                marginBottom: theme.spacing(0.5),
+                                textTransform: "uppercase",
+                                letterSpacing: "0.05em",
+                                opacity: 0.7,
+                              }}
+                            >
+                              Page Count
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontFamily: appleFont,
+                                fontSize: "16px",
+                                fontWeight: 500,
+                                color: "#1D1D1F",
+                                letterSpacing: "-0.01em",
+                              }}
+                            >
+                              {chosenProduct.productPageCount} pages
+                            </Typography>
+                          </Box>
+                        </Box>
+                      )}
+                    </Stack>
+                  )}
+                </Stack>
+              </Box>
             )}
           </Box>
         </Box>
