@@ -35,8 +35,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
   const [memberPassword, setMemberPassword] = useState<string>("");
   const { setAuthMember } = useGlobals();
 
-  /** HANDLERS **/
-
   const handleUsername = (e: T) => {
     setMemberNick(e.target.value);
   };
@@ -59,7 +57,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
   const handleSignupRequest = async () => {
     try {
-      console.log("inputs:", memberNick, memberPassword, memberPhone);
       const isFullfill =
         memberNick !== "" && memberPassword !== "" && memberPhone !== "";
       if (!isFullfill) throw new Error(Messages.error3);
@@ -73,14 +70,12 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
       const member = new MemberService();
       const result = await member.signup(signupInput);
 
-      // Saving Authenticated user
       setAuthMember(result);
       setMemberNick("");
       setMemberPhone("");
       setMemberPassword("");
       handleSignupClose();
     } catch (err) {
-      console.log(err);
       handleSignupClose();
       sweetErrorHandling(err).then();
     }
@@ -99,13 +94,11 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
       const member = new MemberService();
       const result = await member.login(loginInput);
 
-      // Saving Authenticated user
       setAuthMember(result);
       setMemberNick("");
       setMemberPassword("");
       handleLoginClose();
     } catch (err) {
-      console.log(err);
       handleLoginClose();
       sweetErrorHandling(err).then();
     }

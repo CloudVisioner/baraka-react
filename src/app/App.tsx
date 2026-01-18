@@ -14,7 +14,6 @@ import "../css/app.css";
 import "../css/navbar.css";
 import "../css/footer.css";
 import HelpPage from "./screens/helpPage";
-import Test from "./screens/Test";
 import { CartItem } from "../lib/types/search";
 import useBasket from "./hooks/useBasket";
 import AuthenticationModal from "./components/auth";
@@ -37,7 +36,6 @@ function App() {
   const [loginOpen, setLoginOpen] = useState<boolean>(false);
   const [anchorEl, setnAnchorEl] = useState<HTMLElement | null>(null);
 
-  /** Hadlers **/
   const handleSignupClose = () => setSignupOpen(false);
   const handleLoginClose = () => setLoginOpen(false);
 
@@ -49,12 +47,9 @@ function App() {
     try {
       const member = new MemberService();
       await member.logout();
-
-
       await sweetTopSuccessAlert("success", 700);
       setAuthMember(null);
     } catch (err) {
-      console.log(err);
       sweetErrorHandling(Messages.error1);
     }
   };

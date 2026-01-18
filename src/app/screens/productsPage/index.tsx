@@ -12,7 +12,6 @@ interface ProductPageProps {
 export default function ProductsPages(props: ProductPageProps) {
   const { onAdd } = props;
   const products = useRouteMatch();
-  console.log("products", products);
   return (
     <div className={"products-page"}>
       <Switch>

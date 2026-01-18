@@ -78,16 +78,14 @@ export function Settings() {
 
       await sweetTopSmallSuccessAlert("Modified successfully!", 700);
     } catch (err) {
-      console.log(err);
       sweetErrorHandling(err).then();
     }
   };
 
   const handlerImageViewer = (e: T) => {
     const file = e.target.files[0];
-    console.log("file:", file);
-    const fileType = file.type,
-      validateImageTypes = ["image/jpg", "image/png", "image/jpeg"];
+    const fileType = file.type;
+    const validateImageTypes = ["image/jpg", "image/png", "image/jpeg"];
 
     if (!validateImageTypes.includes(fileType)){
       sweetErrorHandling(Messages.error5).then();

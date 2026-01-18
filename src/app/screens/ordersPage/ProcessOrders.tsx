@@ -44,7 +44,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
   const { authMember, setOrderBuilder } = useGlobals();
   const { processOrders } = useSelector(processdOrdersRetriever);
 
-  //** HANDLERS **//
 
   const finishOrderHandler = async (e: T) => {
     try {
@@ -65,7 +64,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
         setOrderBuilder(new Date());
       }
     } catch (err) {
-      console.log(err);
       sweetErrorHandling(err);
     }
   };

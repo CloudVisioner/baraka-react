@@ -68,13 +68,13 @@ export default function ChosenProduct(props: ChosenProductProps) {
     product
       .getProduct(productId)
       .then((data) => setChosenProduct(data))
-      .catch((err) => console.log(err));
+      .catch(() => {});
 
     const member = new MemberService();
     member
       .getRestaurant()
       .then((data) => setRestaurant(data))
-      .catch((err) => console.log(err));
+      .catch(() => {});
   }, []);
 
   if (!chosenProduct) return null;

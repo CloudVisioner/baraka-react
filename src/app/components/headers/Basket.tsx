@@ -39,7 +39,6 @@ export default function Basket(props: BasketProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  /** HANDLERS **/
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
   };
@@ -59,7 +58,6 @@ export default function Basket(props: BasketProps) {
       setOrderBuilder(new Date());
       history.push("/orders");
     } catch (err) {
-      console.log(err);
       sweetErrorHandling(err).then();
     }
   };

@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
 import Basket from "./Basket";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { CartItem } from "../../../lib/types/search";
 import { useGlobals } from "../../hooks/useGlobal";
 import { serverApi } from "../../../lib/config";
@@ -46,24 +46,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
 
   const { authMember } = useGlobals();
   const location = useLocation();
-  const [count, setCount] = useState<number>(0);
-  const [value, setvalue] = useState<boolean>(true);
-  
   const isActive = (path: string) => location.pathname === path;
-
-  useEffect(() => {
-    console.log("componentDidMount", count); // two time rendering "STRICT MODE"
-    setCount(count + 1); // Works only every render //3
-    return () => {
-      console.log("componentWillUnmount"); // 2
-    };
-  }, [value]);
-
-  // ** Handlers ** //
-  const buttonHandler = () => {
-    setvalue(!value); // 1
-    console.log("VALUE", value);
-  };
   return (
     <div className="home-navbar">
       {/* Glassmorphism Navigation Bar */}

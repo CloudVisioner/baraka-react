@@ -60,7 +60,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
         setOrderBuilder(new Date());
       }
     } catch (err) {
-      console.log(err);
       sweetErrorHandling(err);
     }
   };
@@ -68,7 +67,6 @@ export default function PausedOrders(props: PausedOrdersProps) {
   const proceedOrderHandler = async (e: T) => {
     try {
       if (!authMember) throw new Error(Messages.error2);
-      // PAYMENT PROCESS
 
       const orderId = e.target.value;
       const input: OrderUpdateInput = {
@@ -82,11 +80,10 @@ export default function PausedOrders(props: PausedOrdersProps) {
       if (confirmation) {
         const order = new OrderService();
         await order.updateOrder(input);
-        setValue("2")
+        setValue("2");
         setOrderBuilder(new Date());
       }
     } catch (err) {
-      console.log(err);
       sweetErrorHandling(err);
     }
   };

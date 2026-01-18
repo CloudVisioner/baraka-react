@@ -1,9 +1,7 @@
-import { UnarchiveRounded } from "@mui/icons-material";
 import { ReactNode, useState } from "react";
 import Cookies from "universal-cookie";
 import { Member } from "../../lib/types/member";
 import { GlobalContext } from "../hooks/useGlobal";
-import exp from "constants";
 
 const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const cookies = new Cookies();
@@ -15,7 +13,7 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       : null
   );
   const [orderBuilder, setOrderBuilder] = useState(new Date());
-  console.log("=== verify ==="); ///
+
   return (
     <GlobalContext.Provider
       value={{ authMember, setAuthMember, orderBuilder, setOrderBuilder }}

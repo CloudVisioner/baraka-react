@@ -29,7 +29,6 @@ import OrderService from "../../services/OrderService";
 import { useGlobals } from "../../hooks/useGlobal";
 import { useHistory } from "react-router-dom";
 import { serverApi } from "../../../lib/config";
-import { MemberType } from "../../../lib/enums/member.enum";
 
 const appleFont = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif';
 
@@ -54,26 +53,23 @@ export default function OrdersPage() {
   });
 
   useEffect(() => {
-    /////////////////////////////////////////
     const order = new OrderService();
 
     order
       .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PAUSE })
       .then((data) => setPausedOrders(data))
-      .catch((err) => console.log(err));
+      .catch(() => {});
 
     order
       .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PROCESS })
       .then((data) => setProcessOrders(data))
-      .catch((err) => console.log(err));
+      .catch(() => {});
 
     order
       .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.FINISH })
       .then((data) => setFinishedOrders(data))
-      .catch((err) => console.log(err));
+      .catch(() => {});
   }, [orderInquery, orderBuilder]);
-
-  //** HANDLERS **//
 
   const handleChange = (e: SyntheticEvent, newValue: string) => {
     setValue(newValue);

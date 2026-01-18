@@ -38,12 +38,9 @@ export default function HomePage() {
         limit: 8,
         order: "productViews",
       })
-      .then((data) => {
-        setPopularDishes(data);
-      })
-      .catch((err) => console.log(err));
+      .then((data) => setPopularDishes(data))
+      .catch(() => {});
 
-    // New dishes (most recent)
     product
       .getProducts({
         page: 1,
@@ -51,28 +48,25 @@ export default function HomePage() {
         order: "createdAt",
       })
       .then((data) => setNewDishes(data))
-      .catch((err) => console.log(err));
+      .catch(() => {});
 
-    // Featured dishes (less popular - lowest views)
-    // Get products sorted by views and reverse to get least popular first
     product
       .getProducts({
         page: 1,
-        limit: 100, // Get more to filter
+        limit: 100,
         order: "productViews",
       })
       .then((data) => {
-        // Reverse to get least popular (lowest views first), then take first 8
         const lessPopular = [...data].reverse().slice(0, 8);
         setFeaturedDishes(lessPopular);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {});
 
     const member = new MemberService();
     member
       .getTopUsers()
       .then((data) => setTopUsers(data))
-      .catch((err) => console.log(err));
+      .catch(() => {});
   }, []);
 
   return (

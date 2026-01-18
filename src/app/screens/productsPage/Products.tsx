@@ -68,21 +68,17 @@ export default function Products(props: ProductPageProps) {
   const theme = useTheme();
 
   useEffect(() => {
-    // Scroll to top when component mounts
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []); // componentDidMount
+  }, []);
 
   useEffect(() => {
-    console.log("data Arrived");
     const product = new ProductService();
     product
       .getProducts(productSearch)
-
       .then((data) => setProducts(data))
-      .catch((err) => console.log(err));
-  }, [productSearch]); // conmponentDidUpdate
+      .catch(() => {});
+  }, [productSearch]);
 
-  // Fetch Editor's Picks (most viewed products)
   useEffect(() => {
     const product = new ProductService();
     product
@@ -93,7 +89,7 @@ export default function Products(props: ProductPageProps) {
         search: "",
       })
       .then((data) => setEditorPicks(data.slice(0, 4)))
-      .catch((err) => console.log(err));
+      .catch(() => {});
   }, []);
 
   // useEffect(() => {
