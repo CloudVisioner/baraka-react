@@ -13,9 +13,9 @@ class OrderService {
   public async createOrder(input: CartItem[]): Promise<Order> {
     try {
       const orderItems: OrderItemInput[] = input.map((cartItem: CartItem) => ({
-        itemQuantity: cartItem.quantity,
-        itemPrice: cartItem.price,
-        productId: cartItem._id,
+          itemQuantity: cartItem.quantity,
+          itemPrice: cartItem.price,
+          productId: cartItem._id,
       }));
 
       const url = `${this.path}/order/create`;
@@ -39,11 +39,11 @@ class OrderService {
     }
   }
 
-  public async updateOrder(input: OrderUpdateInput): Promise<Order> {
+   public async updateOrder(input: OrderUpdateInput): Promise<Order> {
     try {
-      const url = `${serverApi}/order/update`;
+        const url = `${serverApi}/order/update`;
       const result = await axios.post(url, input, { withCredentials: true });
-      return result.data;
+        return result.data;
     } catch (err) {
       throw err;
     }

@@ -48,17 +48,17 @@ export default function Events() {
 
   const handleCloseModal = () => {
     setSelectedEvent(null);
+    setTimeout(() => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.paddingRight = "";
+      const htmlElement = document.documentElement;
+      if (htmlElement) {
+        htmlElement.style.overflow = "";
+        htmlElement.style.position = "";
+      }
+    }, 100);
   };
-
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    if (selectedEvent) {
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "unset";
-      };
-    }
-  }, [selectedEvent]);
 
   const getEventDetail = (title: string) => {
     return eventDetails[title] || {
@@ -129,13 +129,13 @@ export default function Events() {
         >
           {plans.slice(0, 3).map((event, index) => (
             <Card
-              key={index}
-              elevation={0}
-              sx={{
+                key={index}
+                elevation={0}
+                sx={{
                 borderRadius: "20px",
                 border: "1px solid rgba(0, 0, 0, 0.06)",
-                backgroundColor: "#FFFFFF",
-                overflow: "hidden",
+                  backgroundColor: "#FFFFFF",
+                  overflow: "hidden",
                 transition: theme.transitions.create(
                   ["transform", "box-shadow"],
                   {
@@ -165,9 +165,9 @@ export default function Events() {
                   src={event.img}
                   alt={event.title}
                   sx={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
                     transition: theme.transitions.create("transform", {
                       duration: theme.transitions.duration.standard,
                       easing: theme.transitions.easing.easeOut,
@@ -175,47 +175,47 @@ export default function Events() {
                     "&:hover": {
                       transform: "scale(1.05)",
                     },
-                  }}
-                />
-              </Box>
+                    }}
+                  />
+                </Box>
 
               {/* Content Section */}
               <CardContent
-                sx={{
-                  padding: theme.spacing(3),
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: theme.spacing(2),
-                }}
-              >
-                {/* Category Badge */}
-                <Typography
                   sx={{
-                    fontFamily: appleFont,
+                  padding: theme.spacing(3),
+                    display: "flex",
+                    flexDirection: "column",
+                  gap: theme.spacing(2),
+                  }}
+                >
+                    {/* Category Badge */}
+                    <Typography
+                      sx={{
+                        fontFamily: appleFont,
                     fontSize: "11px",
                     fontWeight: 600,
-                    textTransform: "uppercase",
+                        textTransform: "uppercase",
                     letterSpacing: "0.08em",
                     color: "#1D1D1F",
                     marginBottom: theme.spacing(-1),
-                  }}
-                >
+                      }}
+                    >
                   BOOK EVENT
-                </Typography>
+                    </Typography>
 
-                {/* Event Title */}
-                <Typography
-                  sx={{
-                    fontFamily: appleFont,
+                    {/* Event Title */}
+                    <Typography
+                      sx={{
+                        fontFamily: appleFont,
                     fontSize: { xs: "18px", md: "20px" },
                     fontWeight: 600,
-                    letterSpacing: "-0.02em",
-                    color: "#1D1D1F",
+                        letterSpacing: "-0.02em",
+                        color: "#1D1D1F",
                     lineHeight: 1.3,
-                  }}
-                >
-                  {event.title}
-                </Typography>
+                      }}
+                    >
+                      {event.title}
+                    </Typography>
 
                 {/* Description */}
                 <Typography
@@ -250,34 +250,34 @@ export default function Events() {
                     marginBottom: theme.spacing(1.5),
                   }}
                 >
-                  {/* Author */}
-                  {event.author && (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
+                    {/* Author */}
+                    {event.author && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
                         gap: theme.spacing(1.5),
-                      }}
-                    >
-                      <PersonIcon
-                        sx={{
-                          fontSize: "18px",
-                          color: "#1D1D1F",
                         }}
-                      />
-                      <Typography
-                        sx={{
-                          fontFamily: appleFont,
+                      >
+                        <PersonIcon
+                          sx={{
+                            fontSize: "18px",
+                          color: "#1D1D1F",
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontFamily: appleFont,
                           fontSize: "16px",
                           fontWeight: 400,
                           letterSpacing: "-0.01em",
                           color: "#1D1D1F",
-                        }}
-                      >
-                        {event.author}
-                      </Typography>
-                    </Box>
-                  )}
+                          }}
+                        >
+                          {event.author}
+                        </Typography>
+                      </Box>
+                    )}
 
                   {/* Date */}
                   <Box
@@ -307,10 +307,10 @@ export default function Events() {
                   </Box>
 
                   {/* Location */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
                       gap: theme.spacing(1.5),
                     }}
                   >
@@ -389,6 +389,12 @@ export default function Events() {
         }}
         maxWidth="sm"
         fullWidth
+        disableScrollLock={false}
+        onTransitionExited={() => {
+          document.body.style.overflow = "";
+          document.body.style.position = "";
+          document.body.style.paddingRight = "";
+        }}
         sx={{
           zIndex: 1300,
           "& .MuiDialog-container": {
@@ -437,7 +443,11 @@ export default function Events() {
           >
             {/* Close Button */}
             <IconButton
-              onClick={handleCloseModal}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleCloseModal();
+              }}
               sx={{
                 position: "absolute",
                 top: theme.spacing(2),
@@ -567,35 +577,35 @@ export default function Events() {
                     display: "flex",
                     alignItems: "center",
                     gap: theme.spacing(1.5),
-                  }}
-                >
-                  <CalendarTodayIcon
-                    sx={{
-                      fontSize: "18px",
+                      }}
+                    >
+                      <CalendarTodayIcon
+                        sx={{
+                          fontSize: "18px",
                       color: "#1D1D1F",
-                    }}
-                  />
-                  <Typography
-                    sx={{
-                      fontFamily: appleFont,
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          fontFamily: appleFont,
                       fontSize: "16px",
-                      fontWeight: 400,
+                          fontWeight: 400,
                       letterSpacing: "-0.01em",
                       color: "#1D1D1F",
-                    }}
-                  >
+                        }}
+                      >
                     {selectedEvent.date}
-                  </Typography>
-                </Box>
+                      </Typography>
+                    </Box>
 
                 {/* Location */}
-                <Box
-                  sx={{
-                    display: "flex",
+                    <Box
+                      sx={{
+                        display: "flex",
                     alignItems: "center",
                     gap: theme.spacing(1.5),
-                  }}
-                >
+                      }}
+                    >
                   <LocationOnIcon
                     sx={{
                       fontSize: "18px",
@@ -603,19 +613,19 @@ export default function Events() {
                     }}
                   />
                   <Typography
-                    sx={{
-                      fontFamily: appleFont,
+                        sx={{
+                          fontFamily: appleFont,
                       fontSize: "16px",
                       fontWeight: 400,
-                      letterSpacing: "-0.01em",
+                          letterSpacing: "-0.01em",
                       color: "#1D1D1F",
-                    }}
-                  >
+                        }}
+                      >
                     {selectedEvent.location}
                   </Typography>
+                    </Box>
+                  </Box>
                 </Box>
-              </Box>
-              </Box>
             </CardContent>
           </Card>
         )}

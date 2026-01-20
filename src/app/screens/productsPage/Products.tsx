@@ -435,7 +435,7 @@ export default function Products(props: ProductPageProps) {
                 })}
               </Box>
             </Container>
-          ) : (
+            ) : (
             <Box
               className="no-data"
               sx={{
@@ -474,7 +474,7 @@ export default function Products(props: ProductPageProps) {
                 We couldn't find any products matching your search criteria. Try adjusting your filters or search terms.
               </Typography>
             </Box>
-          )}
+            )}
         </Box>
 
         {/* Pagination Section - Outside Grid, Always Visible, Stable */}

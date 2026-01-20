@@ -96,7 +96,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
               </Box>
               <Box className="nav-link-modern">
                 <NavLink to="/products" className={isActive("/products") ? "nav-active" : ""}>
-                  Products
+                  Books
                 </NavLink>
               </Box>
               {authMember && (
@@ -115,7 +115,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
               )}
               <Box className="nav-link-modern">
                 <NavLink to="/help-page" className={isActive("/help-page") ? "nav-active" : ""}>
-                  Help
+                  Support
                 </NavLink>
               </Box>
             </Stack>
@@ -136,7 +136,8 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                   <Button
                     variant="text"
                     className="login-button-modern"
-                    onClick={() => setLoginOpen(true)}
+                    component={NavLink}
+                    to="/auth"
                     sx={{
                       color: '#f8f8ff',
                       fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
@@ -158,7 +159,8 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                   <Button
                     variant="contained"
                     className="signup-button-navbar"
-                    onClick={() => setSignupOpen(true)}
+                    component={NavLink}
+                    to="/auth?mode=signup"
                     sx={{
                       color: '#ffffff',
                       fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',

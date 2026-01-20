@@ -56,11 +56,11 @@ export default function OrdersPage() {
     const order = new OrderService();
 
     order
-      .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PAUSE })
+     .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PAUSE })
       .then((data) => setPausedOrders(data))
       .catch(() => {});
 
-    order
+    order 
       .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PROCESS })
       .then((data) => setProcessOrders(data))
       .catch(() => {});
@@ -121,7 +121,7 @@ export default function OrdersPage() {
           >
             Manage and track your book orders
           </Typography>
-        </Box>
+            </Box>
 
         <Box
           sx={{
@@ -149,17 +149,17 @@ export default function OrdersPage() {
               }}
             >
               <Avatar
-                src={
-                  authMember?.memberImage
-                    ? `${serverApi}/uploads/${authMember.memberImage}`
-                    : "/icons/default-user.svg"
-                }
+                  src={
+                    authMember?.memberImage
+                      ? `${serverApi}/uploads/${authMember.memberImage}`
+                      : "/icons/default-user.svg"
+                  }
                 sx={{
                   width: 72,
                   height: 72,
                   border: "3px solid #F5F5F7",
                 }}
-              />
+                />
               <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Box
                   sx={{
@@ -275,7 +275,7 @@ export default function OrdersPage() {
                 gap: theme.spacing(1.5),
                 marginBottom: theme.spacing(3),
               }}
-            >
+              >
               <CreditCardIcon
                 sx={{
                   fontSize: "24px",
@@ -294,7 +294,7 @@ export default function OrdersPage() {
               >
                 Payment Method
               </Typography>
-            </Box>
+          </Box>
 
             <Stack spacing={2.5}>
               <TextField
@@ -412,7 +412,7 @@ export default function OrdersPage() {
                     borderTop: "1px solid rgba(0, 0, 0, 0.08)",
                   }}
                 >
-                  <img
+              <img
                     src={"/icons/visa-card.svg"}
                     alt="Visa"
                     style={{ 
@@ -421,9 +421,9 @@ export default function OrdersPage() {
                       filter: "contrast(1.1) brightness(1)",
                       imageRendering: "crisp-edges"
                     }}
-                  />
-                  <img
-                    src={"/icons/master-card.svg"}
+              />
+              <img
+                src={"/icons/master-card.svg"}
                     alt="Mastercard"
                     style={{ 
                       height: "36px", 
@@ -431,9 +431,9 @@ export default function OrdersPage() {
                       filter: "contrast(1.1) brightness(1)",
                       imageRendering: "crisp-edges"
                     }}
-                  />
-                  <img
-                    src={"/icons/paypal-card.svg"}
+              />
+              <img
+                src={"/icons/paypal-card.svg"}
                     alt="PayPal"
                     style={{ 
                       height: "36px", 
@@ -493,7 +493,7 @@ export default function OrdersPage() {
               <FinishedOrders />
             </Box>
           </TabContext>
-        </Box>
+          </Box>
       </Container>
     </Box>
   );

@@ -86,9 +86,9 @@ export default function HelpPage() {
               marginBottom: theme.spacing(4),
             }}
           >
-            <Tabs
-              value={value}
-              onChange={handleChange}
+              <Tabs
+                value={value}
+                onChange={handleChange}
               sx={{
                 "& .MuiTab-root": {
                   fontFamily: appleFont,
@@ -111,11 +111,11 @@ export default function HelpPage() {
                   height: "2px",
                 },
               }}
-            >
+              >
               <Tab label="Terms of Service" value={"1"} />
-              <Tab label="FAQ" value={"2"} />
+                <Tab label="FAQ" value={"2"} />
               <Tab label="Contact Us" value={"3"} />
-            </Tabs>
+              </Tabs>
           </Box>
 
           {/* Tab Panels */}
@@ -185,12 +185,12 @@ export default function HelpPage() {
                             }}
                           />
                         )}
-                      </Box>
+                  </Box>
                     ))}
-                  </Stack>
+                </Stack>
                 </CardContent>
               </Card>
-            </TabPanel>
+              </TabPanel>
 
             {/* FAQ Tab */}
             <TabPanel value={"2"} sx={{ padding: 0 }}>
@@ -288,10 +288,10 @@ export default function HelpPage() {
                         </AccordionDetails>
                       </Accordion>
                     ))}
-                  </Stack>
+                </Stack>
                 </CardContent>
               </Card>
-            </TabPanel>
+              </TabPanel>
 
             {/* Contact Tab */}
             <TabPanel value={"3"} sx={{ padding: 0 }}>
@@ -330,16 +330,16 @@ export default function HelpPage() {
                     >
                       Fill out the form below to send us a message
                     </Typography>
-                  </Box>
+                    </Box>
 
-                  <form
-                    action={"#"}
-                    method={"POST"}
+                    <form
+                      action={"#"}
+                      method={"POST"}
                     onSubmit={(e) => {
                       e.preventDefault();
                       // Handle form submission
                     }}
-                  >
+                    >
                     <Stack spacing={3}>
                       {/* Name Field */}
                       <Box>
@@ -509,10 +509,10 @@ export default function HelpPage() {
                         </Button>
                       </Box>
                     </Stack>
-                  </form>
+                    </form>
                 </CardContent>
               </Card>
-            </TabPanel>
+              </TabPanel>
           </Box>
         </TabContext>
       </Container>

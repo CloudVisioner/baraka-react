@@ -55,10 +55,10 @@ export default function PausedOrders(props: PausedOrdersProps) {
       );
 
       if (confirmed) {
-        const input: OrderUpdateInput = {
-          orderId: orderId,
-          orderStatus: OrderStatus.DELETE,
-        };
+      const input: OrderUpdateInput = {
+        orderId: orderId,
+        orderStatus: OrderStatus.DELETE,
+      };
         const order = new OrderService();
         await order.updateOrder(input);
         setOrderBuilder(new Date());
@@ -98,11 +98,11 @@ export default function PausedOrders(props: PausedOrdersProps) {
       );
 
       if (confirmed) {
-        const orderId = e.target.value;
-        const input: OrderUpdateInput = {
-          orderId: orderId,
-          orderStatus: OrderStatus.PROCESS,
-        };
+      const orderId = e.target.value;
+      const input: OrderUpdateInput = {
+        orderId: orderId,
+        orderStatus: OrderStatus.PROCESS,
+      };
         const order = new OrderService();
         await order.updateOrder(input);
         setValue("2");
@@ -120,7 +120,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
       <Stack spacing={3}>
         {pausedOrders && pausedOrders.length > 0 ? (
           pausedOrders.map((order: Order) => {
-            return (
+          return (
               <Card
                 key={order._id}
                 elevation={0}
@@ -138,15 +138,15 @@ export default function PausedOrders(props: PausedOrdersProps) {
               >
                 <CardContent sx={{ padding: theme.spacing(4) }}>
                   <Stack spacing={2} sx={{ marginBottom: theme.spacing(3) }}>
-                    {order?.orderItems?.map((item: OrderItem) => {
-                      const product: Product = order.productData.filter(
-                        (ele: Product) => item.productId === ele._id
-                      )[0];
-                      if (!product || !product.productImages?.length) return null;
+                {order?.orderItems?.map((item: OrderItem) => {
+                  const product: Product = order.productData.filter(
+                    (ele: Product) => item.productId === ele._id
+                  )[0];
+                  if (!product || !product.productImages?.length) return null;
                       const imagePath = normalizeImagePath(
                         product.productImages?.[0]
                       );
-                      return (
+                  return (
                         <Box
                           key={item._id}
                           sx={{
@@ -192,7 +192,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                             >
                               ${item.itemPrice} × {item.itemQuantity}
                             </Typography>
-                          </Box>
+                      </Box>
                           <Typography
                             sx={{
                               fontFamily: appleFont,
@@ -203,9 +203,9 @@ export default function PausedOrders(props: PausedOrdersProps) {
                           >
                             ${(item.itemQuantity * item.itemPrice).toFixed(2)}
                           </Typography>
-                        </Box>
-                      );
-                    })}
+                    </Box>
+                  );
+                })}
                   </Stack>
 
                   <Divider sx={{ marginBottom: theme.spacing(3) }} />
@@ -303,8 +303,8 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       >
                         ${order.orderTotal.toFixed(2)}
                       </Typography>
-                    </Box>
-                  </Box>
+              </Box>
+                </Box>
 
                   <Box
                     sx={{
@@ -313,11 +313,11 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       justifyContent: "flex-end",
                     }}
                   >
-                    <Button
-                      value={order._id}
+                <Button
+                  value={order._id}
                       variant="outlined"
                       startIcon={<DeleteOutlineIcon />}
-                      onClick={deleteOrderHandler}
+                  onClick={deleteOrderHandler}
                       sx={{
                         fontFamily: appleFont,
                         fontSize: "17px",
@@ -332,14 +332,14 @@ export default function PausedOrders(props: PausedOrdersProps) {
                           backgroundColor: "rgba(0, 0, 0, 0.04)",
                         },
                       }}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      value={order._id}
-                      variant="contained"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  value={order._id}
+                  variant="contained"
                       startIcon={<PaymentIcon />}
-                      onClick={proceedOrderHandler}
+                  onClick={proceedOrderHandler}
                       sx={{
                         fontFamily: appleFont,
                         fontSize: "17px",
@@ -357,14 +357,14 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       }}
                     >
                       Proceed to Payment
-                    </Button>
-                  </Box>
+                </Button>
+              </Box>
                 </CardContent>
               </Card>
-            );
+          );
           })
         ) : (
-          <Box
+            <Box
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -373,12 +373,12 @@ export default function PausedOrders(props: PausedOrdersProps) {
               padding: theme.spacing(8),
               textAlign: "center",
             }}
-          >
-            <img
-              src={"/icons/noimage-list.svg"}
+            >
+              <img
+                src={"/icons/noimage-list.svg"}
               alt="No orders"
               style={{ width: 200, height: 200, opacity: 0.5 }}
-            />
+              />
             <Typography
               sx={{
                 fontFamily: appleFont,
@@ -401,7 +401,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
             >
               Your pending orders will appear here
             </Typography>
-          </Box>
+            </Box>
         )}
       </Stack>
     </TabPanel>

@@ -9,8 +9,6 @@ export enum ProductStatus {
   DELETE = "DELETE",
 }
 
-
-
 export enum ProductType {
   FICTION = "FICTION",
   NON_FICTION = "NON_FICTION",

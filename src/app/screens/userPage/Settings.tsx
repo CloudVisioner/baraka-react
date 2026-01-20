@@ -169,7 +169,7 @@ export function Settings() {
           >
             Upload Image
             <input type="file" hidden accept="image/jpeg,image/jpg,image/png" />
-          </Button>
+            </Button>
         </Box>
       </Box>
 
@@ -218,7 +218,7 @@ export function Settings() {
               },
             }}
           />
-        </Box>
+      </Box>
 
         {/* Phone and Address Row */}
         <Box
@@ -245,8 +245,8 @@ export function Settings() {
               fullWidth
               placeholder={authMember?.memberPhone || "Enter phone number"}
               value={memberUpdateInput.memberPhone || ""}
-              name="memberPhone"
-              onChange={memberPhoneHandler}
+            name="memberPhone"
+            onChange={memberPhoneHandler}
               variant="outlined"
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -288,12 +288,12 @@ export function Settings() {
             </Typography>
             <TextField
               fullWidth
-              placeholder={
+            placeholder={
                 authMember?.memberAddress || "Enter your address"
-              }
+            }
               value={memberUpdateInput.memberAddress || ""}
-              name="memberAddress"
-              onChange={memberAddressHandler}
+            name="memberAddress"
+            onChange={memberAddressHandler}
               variant="outlined"
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -317,9 +317,9 @@ export function Settings() {
                   },
                 },
               }}
-            />
+          />
           </Box>
-        </Box>
+      </Box>
 
         {/* Description */}
         <Box>
@@ -368,7 +368,7 @@ export function Settings() {
               },
             }}
           />
-        </Box>
+      </Box>
       </Stack>
 
       {/* Save Button */}

@@ -37,7 +37,7 @@ export default function FinishedOrders() {
       <Stack spacing={3}>
         {finishedOrders && finishedOrders.length > 0 ? (
           finishedOrders.map((order: Order) => {
-            return (
+          return (
               <Card
                 key={order._id}
                 elevation={0}
@@ -91,15 +91,15 @@ export default function FinishedOrders() {
 
                   {/* Order Items */}
                   <Stack spacing={2} sx={{ marginBottom: theme.spacing(3) }}>
-                    {order?.orderItems?.map((item: OrderItem) => {
-                      const product: Product = order.productData.filter(
-                        (ele: Product) => item.productId === ele._id
-                      )[0];
-                      if (!product || !product.productImages?.length) return null;
+                {order?.orderItems?.map((item: OrderItem) => {
+                  const product: Product = order.productData.filter(
+                    (ele: Product) => item.productId === ele._id
+                  )[0];
+                  if (!product || !product.productImages?.length) return null;
                       const imagePath = normalizeImagePath(
                         product.productImages?.[0]
                       );
-                      return (
+                  return (
                         <Box
                           key={item._id}
                           sx={{
@@ -145,7 +145,7 @@ export default function FinishedOrders() {
                             >
                               ${item.itemPrice} × {item.itemQuantity}
                             </Typography>
-                          </Box>
+                      </Box>
                           <Typography
                             sx={{
                               fontFamily: appleFont,
@@ -156,9 +156,9 @@ export default function FinishedOrders() {
                           >
                             ${(item.itemQuantity * item.itemPrice).toFixed(2)}
                           </Typography>
-                        </Box>
-                      );
-                    })}
+                    </Box>
+                  );
+                })}
                   </Stack>
 
                   <Divider sx={{ marginBottom: theme.spacing(3) }} />
@@ -198,7 +198,7 @@ export default function FinishedOrders() {
                       >
                         ${(order.orderTotal - order.orderDelivery).toFixed(2)}
                       </Typography>
-                    </Box>
+              </Box>
                     <Box
                       sx={{
                         display: "flex",
@@ -226,7 +226,7 @@ export default function FinishedOrders() {
                       >
                         ${order.orderDelivery.toFixed(2)}
                       </Typography>
-                    </Box>
+                </Box>
                     <Divider sx={{ marginTop: theme.spacing(1) }} />
                     <Box
                       sx={{
@@ -256,11 +256,11 @@ export default function FinishedOrders() {
                       >
                         ${order.orderTotal.toFixed(2)}
                       </Typography>
-                    </Box>
-                  </Box>
+              </Box>
+            </Box>
                 </CardContent>
               </Card>
-            );
+          );
           })
         ) : (
           <Box

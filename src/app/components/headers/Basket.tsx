@@ -300,7 +300,7 @@ export default function Basket(props: BasketProps) {
                         >
                           <AddIcon fontSize="small" />
                         </IconButton>
-                      </Box>
+                    </Box>
 
                       {/* Delete Button */}
                       <IconButton

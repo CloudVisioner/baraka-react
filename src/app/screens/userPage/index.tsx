@@ -113,7 +113,7 @@ export default function UserPage() {
                 <Settings />
               </CardContent>
             </Card>
-          </Box>
+            </Box>
 
           {/* Sidebar - Profile Card */}
           <Box
@@ -162,11 +162,11 @@ export default function UserPage() {
                     }}
                   />
                   <Avatar
-                    src={
-                      authMember?.memberType === MemberType.RESTAURANT
-                        ? "/icons/restaurant.svg"
-                        : "/icons/user-badge.svg"
-                    }
+                      src={
+                        authMember?.memberType === MemberType.RESTAURANT
+                          ? "/icons/restaurant.svg"
+                          : "/icons/user-badge.svg"
+                      }
                     sx={{
                       width: 36,
                       height: 36,
@@ -333,8 +333,8 @@ export default function UserPage() {
                 )}
               </Box>
             </Card>
-          </Box>
-        </Box>
+              </Box>
+            </Box>
       </Container>
     </Box>
   );

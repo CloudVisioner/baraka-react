@@ -20,6 +20,16 @@ export default function Advertisement() {
 
   const handleCloseModal = () => {
     setModalOpen(false);
+    setTimeout(() => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.paddingRight = "";
+      const htmlElement = document.documentElement;
+      if (htmlElement) {
+        htmlElement.style.overflow = "";
+        htmlElement.style.position = "";
+      }
+    }, 100);
   };
 
   // Handle ESC key
@@ -33,19 +43,6 @@ export default function Advertisement() {
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [modalOpen]);
-
-  // Lock scroll when modal is open
-  useEffect(() => {
-    if (modalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-
-    return () => {
-      document.body.style.overflow = "unset";
     };
   }, [modalOpen]);
 
@@ -275,6 +272,17 @@ export default function Advertisement() {
           handleCloseModal();
         }}
         maxWidth={false}
+        disableScrollLock={false}
+        onTransitionExited={() => {
+          document.body.style.overflow = "";
+          document.body.style.position = "";
+          document.body.style.paddingRight = "";
+          const htmlElement = document.documentElement;
+          if (htmlElement) {
+            htmlElement.style.overflow = "";
+            htmlElement.style.position = "";
+          }
+        }}
         PaperProps={{
           sx: {
             maxWidth: "480px",
@@ -303,7 +311,11 @@ export default function Advertisement() {
         >
           {/* Close Button - Top Right */}
           <IconButton
-            onClick={handleCloseModal}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleCloseModal();
+            }}
             sx={{
               position: "absolute",
               top: theme.spacing(2),

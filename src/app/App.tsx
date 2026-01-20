@@ -13,6 +13,7 @@ import "../css/app.css";
 import "../css/navbar.css";
 import "../css/footer.css";
 import HelpPage from "./screens/helpPage";
+import AuthPage from "./screens/authPage";
 import { CartItem } from "../lib/types/search";
 import useBasket from "./hooks/useBasket";
 import AuthenticationModal from "./components/auth";
@@ -53,36 +54,42 @@ function App() {
     }
   };
 
+  const isAuthPage = location.pathname === "/auth";
+
   return (
     <>
-      {location.pathname === "/" ? (
-        <HomeNavbar
-          cartItems={cartItems}
-          onAdd={onAdd}
-          onRemove={onRemove}
-          onDelete={onDelete}
-          onDeleteAll={onDeleteAll}
-          setSignupOpen={setSignupOpen}
-          setLoginOpen={setLoginOpen}
-          anchorEl={anchorEl}
-          handleLogoutClick={handleLogoutClick}
-          handleCloseLogout={handleCloseLogout}
-          handleLogoutRequest={handleLogoutRequest}
-        />
-      ) : (
-        <OtherNavbar
-          cartItems={cartItems}
-          onAdd={onAdd}
-          onRemove={onRemove}
-          onDelete={onDelete}
-          onDeleteAll={onDeleteAll}
-          setSignupOpen={setSignupOpen}
-          setLoginOpen={setLoginOpen}
-           anchorEl={anchorEl}
-          handleLogoutClick={handleLogoutClick}
-          handleCloseLogout={handleCloseLogout}
-          handleLogoutRequest={handleLogoutRequest}
-        />
+      {!isAuthPage && (
+        <>
+          {location.pathname === "/" ? (
+            <HomeNavbar
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              onDelete={onDelete}
+              onDeleteAll={onDeleteAll}
+              setSignupOpen={setSignupOpen}
+              setLoginOpen={setLoginOpen}
+              anchorEl={anchorEl}
+              handleLogoutClick={handleLogoutClick}
+              handleCloseLogout={handleCloseLogout}
+              handleLogoutRequest={handleLogoutRequest}
+            />
+          ) : (
+            <OtherNavbar
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              onDelete={onDelete}
+              onDeleteAll={onDeleteAll}
+              setSignupOpen={setSignupOpen}
+              setLoginOpen={setLoginOpen}
+              anchorEl={anchorEl}
+              handleLogoutClick={handleLogoutClick}
+              handleCloseLogout={handleCloseLogout}
+              handleLogoutRequest={handleLogoutRequest}
+            />
+          )}
+        </>
       )}
       <Switch>
         <Route path="/products">
@@ -97,14 +104,17 @@ function App() {
         <Route path="/help-page">
           <HelpPage />
         </Route>
+        <Route path="/auth">
+          <AuthPage />
+        </Route>
         <Route path="/">
           <HomePage />
         </Route>
       </Switch>
-      <Footer />
+      {!isAuthPage && <Footer />}
 
       {/* Scroll to Top Button */}
-      <ScrollToTop />
+      {!isAuthPage && <ScrollToTop />}
 
       <AuthenticationModal
         signupOpen={signupOpen}
