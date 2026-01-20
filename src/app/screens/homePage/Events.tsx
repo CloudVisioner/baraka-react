@@ -19,22 +19,31 @@ import { plans } from "../../../lib/data/plans";
 
 const appleFont = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif';
 
-// Detailed event descriptions
-const eventDetails: Record<string, { title: string; description: string; fullDescription: string }> = {
-  "Hot Discount Days": {
-    title: "Hot Discount Days",
-    description: "Each Friday we deliver highest discounts",
-    fullDescription: "Join us every Friday for our exclusive Hot Discount Days at Baraka Books. Discover amazing savings on a wide selection of books across all genres. Whether you're looking for fiction, non-fiction, academic texts, or comics, you'll find incredible deals. Our curated collection features titles from bestsellers to hidden gems, all at special prices. This weekly event is perfect for book lovers who want to expand their library while saving. Don't miss out on the best book deals in town every Friday.",
+// Detailed info descriptions for bookstore sections
+const eventDetails: Record<
+  string,
+  { title: string; description: string; fullDescription: string }
+> = {
+  "About Baraka Books": {
+    title: "About Baraka Books",
+    description:
+      "Learn who we are, what we believe in, and how we build a space for readers.",
+    fullDescription:
+      "Baraka Books is an independent bookstore created for readers who love discovery. Our shelves are carefully curated across fiction, non‑fiction, academic titles, and graphic novels, with a special focus on quality and diversity of voices. We believe bookstores should feel warm, calm, and welcoming, so we designed our space for slow browsing, quiet reading, and meaningful conversations. Whether you are looking for a specific title or just exploring, our booksellers are always ready to help you find the next book that fits your journey.",
   },
-  "Coming Soon": {
-    title: "Coming Soon - Fresh Arrivals",
-    description: "Be ready for fresh Arrivals from Monday!",
-    fullDescription: "Get ready for exciting new arrivals every Monday at Baraka Books. We're constantly updating our collection with the latest releases, bestsellers, and carefully selected titles. From newly published novels to academic resources and graphic novels, our Monday arrivals bring fresh perspectives and new stories to our shelves. Be among the first to discover these new additions and find your next favorite read. Visit us on Mondays to explore what's new and expand your reading horizons with our latest curated selections.",
+  "Membership & Loyalty": {
+    title: "Membership & Loyalty Program",
+    description:
+      "Earn points on every purchase and unlock special benefits as a Baraka member.",
+    fullDescription:
+      "Our membership program is for readers who visit us often and want a little extra value every time. As a Baraka Books member, you earn points on every purchase that can be redeemed for discounts on future orders. Members also receive early access to new arrivals, curated reading lists, and invitations to small in‑store gatherings. Signing up is quick and free, and your profile keeps track of your preferences so we can recommend books that truly match your taste.",
   },
-  "New Project Lunch": {
-    title: "New Project Launch - Literary Series",
-    description: "New Restaurant is opening in Florida",
-    fullDescription: "We're thrilled to announce our new Literary Series program launching at Baraka Books. This innovative project brings together readers, authors, and book enthusiasts for monthly themed discussions, author readings, and community events. Each session focuses on a different literary theme or genre, creating opportunities for deep exploration and meaningful conversations. Join us as we celebrate literature, foster connections, and build a vibrant reading community. This project represents our commitment to making books more accessible and creating spaces where ideas flourish.",
+  "Services & Amenities": {
+    title: "Services & Amenities",
+    description:
+      "From reading corners to gift wrapping, discover all the ways we can support your reading life.",
+    fullDescription:
+      "Beyond selling books, Baraka Books offers a range of services designed to make reading easier and more enjoyable. You can reserve or pre‑order upcoming titles, request special orders that are not yet on our shelves, and ask our staff for personalized recommendations. In‑store, you will find quiet reading corners, free Wi‑Fi, and dedicated spaces for studying or working with a book. We also provide gift wrapping, curated gift boxes, and company book‑bundle partnerships for schools, offices, and events.",
   },
 };
 
@@ -94,7 +103,7 @@ export default function Events() {
               marginBottom: theme.spacing(2),
             }}
           >
-            Literary Events
+            Bookstore Information
           </Typography>
           <Typography
             sx={{
@@ -108,7 +117,8 @@ export default function Events() {
               margin: "0 auto",
             }}
           >
-            Join us for engaging book readings, author meet-and-greets, and literary discussions at Baraka Books.
+            Learn more about Baraka Books, our membership program, and the
+            services we offer to support your reading life.
           </Typography>
         </Box>
 
@@ -200,7 +210,7 @@ export default function Events() {
                     marginBottom: theme.spacing(-1),
                       }}
                     >
-                  BOOK EVENT
+                  BOOKSTORE INFO
                     </Typography>
 
                     {/* Event Title */}
@@ -488,18 +498,18 @@ export default function Events() {
             >
               <Box sx={{ maxWidth: "600px", margin: "0 auto" }}>
                 {/* Category Label */}
-                <Typography
-                  sx={{
-                    fontFamily: appleFont,
-                    fontSize: "11px",
-                    fontWeight: 600,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.08em",
-                    color: "#86868B",
-                    marginBottom: theme.spacing(4),
-                  }}
-                >
-                  BOOK EVENT
+              <Typography
+                sx={{
+                  fontFamily: appleFont,
+                  fontSize: "11px",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                  color: "#86868B",
+                  marginBottom: theme.spacing(4),
+                }}
+              >
+              BOOKSTORE INFO
                 </Typography>
 
                 {/* Event Title */}
