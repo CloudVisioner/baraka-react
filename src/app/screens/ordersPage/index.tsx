@@ -55,19 +55,31 @@ export default function OrdersPage() {
   useEffect(() => {
     const order = new OrderService();
 
-    order
-     .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PAUSE })
-      .then((data) => setPausedOrders(data))
+    // Fetch all orders that need payment proof (PAUSE, PENDING, REJECTED)
+    Promise.all([
+      order.getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PAUSE }),
+      order.getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PENDING }),
+      order.getMyOrders({ ...orderInquery, orderStatus: OrderStatus.REJECTED }),
+    ])
+      .then(([pauseData, pendingData, rejectedData]) => {
+        // Combine all orders that need payment proof
+        const allPausedOrders = [...pauseData, ...pendingData, ...rejectedData];
+        setPausedOrders(allPausedOrders);
+      })
       .catch(() => {});
 
+    // Fetch orders in processing (admin approved - status is PROCESS)
     order 
       .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.PROCESS })
-      .then((data) => setProcessOrders(data))
-      .catch(() => {});
+      .then((data) => setProcessOrders(data || []))
+      .catch(() => {
+        setProcessOrders([]);
+      });
 
+    // Fetch completed orders (customer confirmed receipt - status is FINISH)
     order
       .getMyOrders({ ...orderInquery, orderStatus: OrderStatus.FINISH })
-      .then((data) => setFinishedOrders(data))
+      .then((data) => setFinishedOrders(data || []))
       .catch(() => {});
   }, [orderInquery, orderBuilder]);
 
@@ -292,157 +304,152 @@ export default function OrdersPage() {
                   color: "#1D1D1F",
                 }}
               >
-                Payment Method
+                Bank Account Details
               </Typography>
           </Box>
 
-            <Stack spacing={2.5}>
-              <TextField
-                fullWidth
-                placeholder="Card number"
-                variant="outlined"
+            <Box
+              sx={{
+                backgroundColor: "#F5F5F7",
+                borderRadius: "16px",
+                padding: theme.spacing(3),
+                marginBottom: theme.spacing(2),
+              }}
+            >
+              <Typography
                 sx={{
-                  "& .MuiOutlinedInput-root": {
-                    fontFamily: appleFont,
-                    fontSize: "17px",
-                    borderRadius: "14px",
-                    backgroundColor: "#F5F5F7",
-                    "& fieldset": {
-                      borderColor: "rgba(0, 0, 0, 0.08)",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "rgba(0, 0, 0, 0.12)",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#1D1D1F",
-                      borderWidth: "2px",
-                    },
-                  },
-                  "& .MuiInputBase-input::placeholder": {
-                    color: "#86868B",
-                    opacity: 1,
-                  },
-                }}
-              />
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: theme.spacing(2),
+                  fontFamily: appleFont,
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  color: "#6E6E73",
+                  marginBottom: theme.spacing(2),
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
                 }}
               >
-                <TextField
-                  fullWidth
-                  placeholder="MM/YY"
-                  variant="outlined"
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
+                Transfer Payment To
+              </Typography>
+              
+              <Stack spacing={1.5}>
+                <Box>
+                  <Typography
+                    sx={{
+                      fontFamily: appleFont,
+                      fontSize: "13px",
+                      fontWeight: 500,
+                      color: "#6E6E73",
+                      marginBottom: theme.spacing(0.5),
+                    }}
+                  >
+                    Bank Name
+                  </Typography>
+                  <Typography
+                    sx={{
                       fontFamily: appleFont,
                       fontSize: "17px",
-                      borderRadius: "14px",
-                      backgroundColor: "#F5F5F7",
-                      "& fieldset": {
-                        borderColor: "rgba(0, 0, 0, 0.08)",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "rgba(0, 0, 0, 0.12)",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#1D1D1F",
-                        borderWidth: "2px",
-                      },
-                    },
-                  }}
-                />
-                <TextField
-                  fullWidth
-                  placeholder="CVV"
-                  variant="outlined"
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      fontFamily: appleFont,
-                      fontSize: "17px",
-                      borderRadius: "14px",
-                      backgroundColor: "#F5F5F7",
-                      "& fieldset": {
-                        borderColor: "rgba(0, 0, 0, 0.08)",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "rgba(0, 0, 0, 0.12)",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#1D1D1F",
-                        borderWidth: "2px",
-                      },
-                    },
-                  }}
-                />
-              </Box>
-              <TextField
-                fullWidth
-                placeholder="Cardholder name"
-                variant="outlined"
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    fontFamily: appleFont,
-                    fontSize: "17px",
-                    borderRadius: "14px",
-                    backgroundColor: "#F5F5F7",
-                    "& fieldset": {
-                      borderColor: "rgba(0, 0, 0, 0.08)",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "rgba(0, 0, 0, 0.12)",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#1D1D1F",
-                      borderWidth: "2px",
-                    },
-                  },
-                }}
-              />
-            </Stack>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: theme.spacing(2.5),
-                    marginTop: theme.spacing(4),
-                    paddingTop: theme.spacing(3),
-                    borderTop: "1px solid rgba(0, 0, 0, 0.08)",
-                  }}
-                >
-              <img
-                    src={"/icons/visa-card.svg"}
-                    alt="Visa"
-                    style={{ 
-                      height: "36px", 
-                      opacity: 1,
-                      filter: "contrast(1.1) brightness(1)",
-                      imageRendering: "crisp-edges"
+                      fontWeight: 600,
+                      color: "#1D1D1F",
                     }}
-              />
-              <img
-                src={"/icons/master-card.svg"}
-                    alt="Mastercard"
-                    style={{ 
-                      height: "36px", 
-                      opacity: 1,
-                      filter: "contrast(1.1) brightness(1)",
-                      imageRendering: "crisp-edges"
-                    }}
-              />
-              <img
-                src={"/icons/paypal-card.svg"}
-                    alt="PayPal"
-                    style={{ 
-                      height: "36px", 
-                      opacity: 1,
-                      filter: "contrast(1.1) brightness(1)",
-                      imageRendering: "crisp-edges"
-                    }}
-                  />
+                  >
+                    Baraka Books Bank
+                  </Typography>
                 </Box>
+                
+                <Box>
+                  <Typography
+                    sx={{
+                      fontFamily: appleFont,
+                      fontSize: "13px",
+                      fontWeight: 500,
+                      color: "#6E6E73",
+                      marginBottom: theme.spacing(0.5),
+                    }}
+                  >
+                    Account Number
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontFamily: appleFont,
+                      fontSize: "17px",
+                      fontWeight: 600,
+                      color: "#1D1D1F",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    1234 5678 9012 3456
+                  </Typography>
+                </Box>
+                
+                <Box>
+                  <Typography
+                    sx={{
+                      fontFamily: appleFont,
+                      fontSize: "13px",
+                      fontWeight: 500,
+                      color: "#6E6E73",
+                      marginBottom: theme.spacing(0.5),
+                    }}
+                  >
+                    Account Holder
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontFamily: appleFont,
+                      fontSize: "17px",
+                      fontWeight: 600,
+                      color: "#1D1D1F",
+                    }}
+                  >
+                    Baraka Books LLC
+                  </Typography>
+                </Box>
+                
+                <Box>
+                  <Typography
+                    sx={{
+                      fontFamily: appleFont,
+                      fontSize: "13px",
+                      fontWeight: 500,
+                      color: "#6E6E73",
+                      marginBottom: theme.spacing(0.5),
+                    }}
+                  >
+                    SWIFT/BIC Code
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontFamily: appleFont,
+                      fontSize: "17px",
+                      fontWeight: 600,
+                      color: "#1D1D1F",
+                    }}
+                  >
+                    BRKAUS33
+                  </Typography>
+                </Box>
+              </Stack>
+            </Box>
+
+            <Box
+              sx={{
+                padding: theme.spacing(2),
+                backgroundColor: "#FFF4E6",
+                borderRadius: "12px",
+                border: "1px solid #FFE5CC",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: appleFont,
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  color: "#E67E22",
+                  lineHeight: 1.5,
+                }}
+              >
+                <strong>Payment Flow:</strong> After making the bank transfer, upload your payment proof in the "Awaiting Payment Proof" tab. Once verified by our team, your order will move to "Processing" where it will be packed and shipped. After delivery, mark it as received to complete the order.
+              </Typography>
+            </Box>
           </Card>
         </Box>
 
@@ -481,7 +488,7 @@ export default function OrdersPage() {
                   },
                 }}
               >
-                <Tab label="Pending" value={"1"} />
+                <Tab label="Awaiting Payment Proof" value={"1"} />
                 <Tab label="Processing" value={"2"} />
                 <Tab label="Completed" value={"3"} />
               </Tabs>

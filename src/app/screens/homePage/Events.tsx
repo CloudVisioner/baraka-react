@@ -148,6 +148,10 @@ export default function Events() {
         <Box
           sx={{
             marginBottom: { xs: theme.spacing(4), md: theme.spacing(6) },
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <Typography

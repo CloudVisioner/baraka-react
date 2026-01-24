@@ -27,6 +27,7 @@ export interface Order {
   memberId: string;
   createdAt: Date;
   updatedAt: Date;
+  paymentImage?: string; // Optional payment proof image path
   /** from aggregations **/
   orderItems: OrderItem[];
   productData: Product[];
@@ -48,6 +49,7 @@ export interface OrderInquiry {
 export interface OrderUpdateInput {
   orderId: string;
   orderStatus: OrderStatus;
+  paymentImage?: File | string; // Optional payment image file
 }
 
 

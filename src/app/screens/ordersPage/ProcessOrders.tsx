@@ -14,6 +14,7 @@ import {
 import TabPanel from "@mui/lab/TabPanel";
 import moment from "moment";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -72,6 +73,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
 
   const theme = useTheme();
 
+
   return (
     <TabPanel value={"2"} sx={{ padding: 0 }}>
       <Stack spacing={3}>
@@ -125,6 +127,49 @@ export default function PausedOrders(props: PausedOrdersProps) {
                       }}
                     >
                       {moment(order.createdAt).format("MMM DD, YYYY • hh:mm A")}
+                    </Typography>
+                  </Box>
+
+                  {/* Payment Approval Status */}
+                  <Box
+                    sx={{
+                      backgroundColor: "#E8F5E9",
+                      borderRadius: "12px",
+                      padding: theme.spacing(2),
+                      marginBottom: theme.spacing(3),
+                      border: "1px solid #C8E6C9",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: theme.spacing(1),
+                        marginBottom: theme.spacing(0.5),
+                      }}
+                    >
+                      <CheckCircleIcon sx={{ fontSize: "20px", color: "#2E7D32" }} />
+                      <Typography
+                        sx={{
+                          fontFamily: appleFont,
+                          fontSize: "16px",
+                          fontWeight: 600,
+                          color: "#2E7D32",
+                        }}
+                      >
+                        Payment Approved - Order Processing
+                      </Typography>
+                    </Box>
+                    <Typography
+                      sx={{
+                        fontFamily: appleFont,
+                        fontSize: "14px",
+                        fontWeight: 400,
+                        color: "#1B5E20",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      Your payment has been verified by our team. Your order is now being packed and will be shipped soon. Once you receive your books, please mark the order as received.
                     </Typography>
                   </Box>
 

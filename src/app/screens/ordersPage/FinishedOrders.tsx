@@ -89,6 +89,49 @@ export default function FinishedOrders() {
                     </Typography>
                   </Box>
 
+                  {/* Order Completed Status */}
+                  <Box
+                    sx={{
+                      backgroundColor: "#E8F5E9",
+                      borderRadius: "12px",
+                      padding: theme.spacing(2),
+                      marginBottom: theme.spacing(3),
+                      border: "1px solid #C8E6C9",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: theme.spacing(1),
+                        marginBottom: theme.spacing(0.5),
+                      }}
+                    >
+                      <CheckCircleIcon sx={{ fontSize: "20px", color: "#2E7D32" }} />
+                      <Typography
+                        sx={{
+                          fontFamily: appleFont,
+                          fontSize: "16px",
+                          fontWeight: 600,
+                          color: "#2E7D32",
+                        }}
+                      >
+                        Order Completed
+                      </Typography>
+                    </Box>
+                    <Typography
+                      sx={{
+                        fontFamily: appleFont,
+                        fontSize: "14px",
+                        fontWeight: 400,
+                        color: "#1B5E20",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      You've confirmed receipt of your order. Thank you for shopping with Baraka Books! We hope you enjoy your new books.
+                    </Typography>
+                  </Box>
+
                   {/* Order Items */}
                   <Stack spacing={2} sx={{ marginBottom: theme.spacing(3) }}>
                 {order?.orderItems?.map((item: OrderItem) => {

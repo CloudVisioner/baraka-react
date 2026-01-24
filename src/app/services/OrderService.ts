@@ -41,9 +41,45 @@ class OrderService {
 
    public async updateOrder(input: OrderUpdateInput): Promise<Order> {
     try {
-        const url = `${serverApi}/order/update`;
-      const result = await axios.post(url, input, { withCredentials: true });
+      const url = `${serverApi}/order/update`;
+      
+      // If paymentImage is a File, use FormData (for file uploads)
+      if (input.paymentImage instanceof File) {
+        const formData = new FormData();
+        formData.append("orderId", input.orderId);
+        formData.append("orderStatus", input.orderStatus);
+        formData.append("paymentImage", input.paymentImage);
+        
+        const result = await axios.post(url, formData, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
         return result.data;
+      } else {
+        // Regular JSON update (no file)
+        const result = await axios.post(url, input, {
+          withCredentials: true,
+        });
+        return result.data;
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  public async uploadPaymentImage(formData: FormData): Promise<any> {
+    try {
+      // Use the update endpoint with FormData instead of non-existent upload-payment
+      const url = `${this.path}/order/update`;
+      const result = await axios.post(url, formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return result.data;
     } catch (err) {
       throw err;
     }
