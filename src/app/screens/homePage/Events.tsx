@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Box,
   Container,
@@ -15,45 +15,61 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PersonIcon from "@mui/icons-material/Person";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CloseIcon from "@mui/icons-material/Close";
-import { plans } from "../../../lib/data/plans";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import EventService, { Event } from "../../services/EventService";
+import { serverApi } from "../../../lib/config";
 
 const appleFont = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif';
 
-// Detailed info descriptions for bookstore sections
+// Event types for community events
+type EventType = "author-talk" | "book-club" | "story-time" | "workshop" | "reading-challenge" | "other";
+
+// Detailed event descriptions (can be extended with backend data)
 const eventDetails: Record<
   string,
   { title: string; description: string; fullDescription: string }
 > = {
-  "About Baraka Books": {
-    title: "About Baraka Books",
-    description:
-      "Learn who we are, what we believe in, and how we build a space for readers.",
+  // Default fallback
+  default: {
+    title: "Community Event",
+    description: "Join us for this exciting community event at Baraka Books.",
     fullDescription:
-      "Baraka Books is an independent bookstore created for readers who love discovery. Our shelves are carefully curated across fiction, non‑fiction, academic titles, and graphic novels, with a special focus on quality and diversity of voices. We believe bookstores should feel warm, calm, and welcoming, so we designed our space for slow browsing, quiet reading, and meaningful conversations. Whether you are looking for a specific title or just exploring, our booksellers are always ready to help you find the next book that fits your journey.",
-  },
-  "Membership & Loyalty": {
-    title: "Membership & Loyalty Program",
-    description:
-      "Earn points on every purchase and unlock special benefits as a Baraka member.",
-    fullDescription:
-      "Our membership program is for readers who visit us often and want a little extra value every time. As a Baraka Books member, you earn points on every purchase that can be redeemed for discounts on future orders. Members also receive early access to new arrivals, curated reading lists, and invitations to small in‑store gatherings. Signing up is quick and free, and your profile keeps track of your preferences so we can recommend books that truly match your taste.",
-  },
-  "Services & Amenities": {
-    title: "Services & Amenities",
-    description:
-      "From reading corners to gift wrapping, discover all the ways we can support your reading life.",
-    fullDescription:
-      "Beyond selling books, Baraka Books offers a range of services designed to make reading easier and more enjoyable. You can reserve or pre‑order upcoming titles, request special orders that are not yet on our shelves, and ask our staff for personalized recommendations. In‑store, you will find quiet reading corners, free Wi‑Fi, and dedicated spaces for studying or working with a book. We also provide gift wrapping, curated gift boxes, and company book‑bundle partnerships for schools, offices, and events.",
+      "Join us for this exciting community event at Baraka Books. Experience the joy of reading and discover new perspectives through engaging discussions and community connections.",
   },
 };
 
 export default function Events() {
   const theme = useTheme();
-  const [selectedEvent, setSelectedEvent] = useState<typeof plans[0] | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const handleOpenModal = (event: typeof plans[0]) => {
+  const handleOpenModal = (event: Event) => {
     setSelectedEvent(event);
   };
+
+  // Fetch events from API
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setIsLoading(true);
+        const eventService = new EventService();
+        const data = await eventService.getAllEvents();
+        setEvents(data);
+      } catch (err) {
+        console.error("Error fetching events:", err);
+        setEvents([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const handleCloseModal = () => {
     setSelectedEvent(null);
@@ -70,12 +86,54 @@ export default function Events() {
   };
 
   const getEventDetail = (title: string) => {
-    return eventDetails[title] || {
+    return eventDetails[title] || eventDetails.default || {
       title,
       description: "",
-      fullDescription: "Join us for this exciting literary event at Baraka Books. Experience the joy of reading and discover new perspectives through engaging discussions and community connections.",
+      fullDescription: "Join us for this exciting community event at Baraka Books. Experience the joy of reading and discover new perspectives through engaging discussions and community connections.",
     };
   };
+
+  // Check scroll position to show/hide arrows
+  const checkScrollPosition = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10); // 10px threshold for rounding
+    }
+  };
+
+  // Scroll functions
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      const cardWidth = window.innerWidth >= 960 ? 360 : window.innerWidth >= 600 ? 320 : 280;
+      const scrollAmount = cardWidth * 1.5; // Scroll by 1.5 cards
+      scrollContainerRef.current.scrollBy({
+        left: -scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      const cardWidth = window.innerWidth >= 960 ? 360 : window.innerWidth >= 600 ? 320 : 280;
+      const scrollAmount = cardWidth * 1.5; // Scroll by 1.5 cards
+      scrollContainerRef.current.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  // Check scroll position on mount, resize, and when events change
+  useEffect(() => {
+    checkScrollPosition();
+    const handleResize = () => {
+      checkScrollPosition();
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [events.length]);
 
   return (
     <Box
@@ -89,21 +147,20 @@ export default function Events() {
         {/* Header Section */}
         <Box
           sx={{
-            marginBottom: { xs: theme.spacing(6), md: theme.spacing(8) },
-            textAlign: "center",
+            marginBottom: { xs: theme.spacing(4), md: theme.spacing(6) },
           }}
         >
           <Typography
             sx={{
               fontFamily: appleFont,
-              fontSize: { xs: "28px", md: "40px" },
+              fontSize: { xs: "28px", md: "36px" },
               fontWeight: 600,
               letterSpacing: "-0.02em",
               color: "#1D1D1F",
-              marginBottom: theme.spacing(2),
+              marginBottom: theme.spacing(1),
             }}
           >
-            Bookstore Information
+            Events & Community
           </Typography>
           <Typography
             sx={{
@@ -111,41 +168,95 @@ export default function Events() {
               fontSize: { xs: "15px", md: "17px" },
               fontWeight: 400,
               letterSpacing: "-0.01em",
-              color: "#1D1D1F",
-              lineHeight: 1.6,
-              maxWidth: "640px",
-              margin: "0 auto",
+              color: "#6E6E73",
+              lineHeight: 1.5,
+              maxWidth: "600px",
             }}
           >
-            Learn more about Baraka Books, our membership program, and the
-            services we offer to support your reading life.
+            Join us for author talks, book clubs, children's story time, workshops, and reading challenges.
           </Typography>
         </Box>
 
-        {/* Events Grid */}
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "1fr",
-              sm: "repeat(2, 1fr)",
-              md: "repeat(3, 1fr)",
-            },
-            gap: { xs: theme.spacing(3), md: theme.spacing(4) },
-            width: "100%",
-            maxWidth: "1200px",
-            margin: "0 auto",
-          }}
-        >
-          {plans.slice(0, 3).map((event, index) => (
+        {/* Events Content - Show cards or empty state */}
+        {isLoading ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "300px",
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: appleFont,
+                fontSize: "17px",
+                color: "#6E6E73",
+              }}
+            >
+              Loading events...
+            </Typography>
+          </Box>
+        ) : events.length > 0 ? (
+          <Box
+            sx={{
+              position: "relative",
+              width: "100%",
+            }}
+          >
+            {/* Scrollable Container */}
+            <Box
+            ref={scrollContainerRef}
+            onScroll={checkScrollPosition}
+            sx={{
+              width: "100%",
+              overflowX: "auto",
+              overflowY: "hidden",
+              paddingBottom: theme.spacing(2),
+              scrollBehavior: "smooth",
+              // Custom scrollbar styling
+              scrollbarWidth: "thin",
+              scrollbarColor: "#D0D0D0 transparent",
+              "&::-webkit-scrollbar": {
+                height: "8px",
+              },
+              "&::-webkit-scrollbar-track": {
+                background: "transparent",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#D0D0D0",
+                borderRadius: "4px",
+                "&:hover": {
+                  backgroundColor: "#A0A0A0",
+                },
+              },
+              // Enable smooth scrolling with mouse wheel + Shift
+              scrollSnapType: "x proximity",
+            }}
+          >
+          <Box
+            sx={{
+              display: "flex",
+              gap: { xs: theme.spacing(2), sm: theme.spacing(3), md: theme.spacing(4) },
+              width: "max-content",
+              paddingRight: { xs: theme.spacing(3), md: theme.spacing(4) },
+            }}
+          >
+          {events.map((event: Event, index: number) => (
             <Card
-                key={index}
+                key={event._id || index}
                 elevation={0}
                 sx={{
                 borderRadius: "20px",
                 border: "1px solid rgba(0, 0, 0, 0.06)",
                   backgroundColor: "#FFFFFF",
                   overflow: "hidden",
+                  // Fixed width for horizontal scroll
+                  minWidth: { xs: "280px", sm: "320px", md: "360px" },
+                  maxWidth: { xs: "280px", sm: "320px", md: "360px" },
+                  width: { xs: "280px", sm: "320px", md: "360px" },
+                  flexShrink: 0,
+                  scrollSnapAlign: "start",
                 transition: theme.transitions.create(
                   ["transform", "box-shadow"],
                   {
@@ -172,7 +283,7 @@ export default function Events() {
               >
                 <Box
                   component="img"
-                  src={event.img}
+                  src={event.img.startsWith('http') ? event.img : `${serverApi}/uploads/${event.img}`}
                   alt={event.title}
                   sx={{
                       width: "100%",
@@ -210,7 +321,7 @@ export default function Events() {
                     marginBottom: theme.spacing(-1),
                       }}
                     >
-                  BOOKSTORE INFO
+                  COMMUNITY EVENT
                     </Typography>
 
                     {/* Event Title */}
@@ -260,8 +371,8 @@ export default function Events() {
                     marginBottom: theme.spacing(1.5),
                   }}
                 >
-                    {/* Author */}
-                    {event.author && (
+                    {/* Host */}
+                    {event.host && (
                       <Box
                         sx={{
                           display: "flex",
@@ -284,7 +395,7 @@ export default function Events() {
                           color: "#1D1D1F",
                           }}
                         >
-                          {event.author}
+                          Host: {event.host}
                         </Typography>
                       </Box>
                     )}
@@ -385,7 +496,108 @@ export default function Events() {
               </CardContent>
             </Card>
           ))}
+          </Box>
+          </Box>
+
+          {/* Left Arrow Button - Outside cards */}
+          {canScrollLeft && (
+            <IconButton
+              onClick={scrollLeft}
+              aria-label="Scroll left"
+              sx={{
+                position: "absolute",
+                left: { xs: theme.spacing(-2), md: theme.spacing(-3) },
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 2,
+                backgroundColor: "#FFFFFF",
+                boxShadow: "0 4px 16px rgba(0, 0, 0, 0.12)",
+                width: { xs: "40px", md: "48px" },
+                height: { xs: "40px", md: "48px" },
+                "&:hover": {
+                  backgroundColor: "#F5F5F7",
+                  boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)",
+                },
+                "&:active": {
+                  transform: "translateY(-50%) scale(0.95)",
+                },
+              }}
+            >
+              <ArrowBackIosIcon sx={{ fontSize: { xs: "18px", md: "20px" }, color: "#1D1D1F" }} />
+            </IconButton>
+          )}
+
+          {/* Right Arrow Button - Outside cards */}
+          {canScrollRight && (
+            <IconButton
+              onClick={scrollRight}
+              aria-label="Scroll right"
+              sx={{
+                position: "absolute",
+                right: { xs: theme.spacing(-2), md: theme.spacing(-3) },
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 2,
+                backgroundColor: "#FFFFFF",
+                boxShadow: "0 4px 16px rgba(0, 0, 0, 0.12)",
+                width: { xs: "40px", md: "48px" },
+                height: { xs: "40px", md: "48px" },
+                "&:hover": {
+                  backgroundColor: "#F5F5F7",
+                  boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)",
+                },
+                "&:active": {
+                  transform: "translateY(-50%) scale(0.95)",
+                },
+              }}
+            >
+              <ArrowForwardIosIcon sx={{ fontSize: { xs: "18px", md: "20px" }, color: "#1D1D1F" }} />
+            </IconButton>
+          )}
         </Box>
+        ) : (
+          /* Empty State */
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              minHeight: "300px",
+              padding: theme.spacing(6, 4),
+              textAlign: "center",
+              backgroundColor: "#F5F5F7",
+              borderRadius: "16px",
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: appleFont,
+                fontSize: { xs: "24px", md: "28px" },
+                fontWeight: 600,
+                color: "#1D1D1F",
+                marginBottom: theme.spacing(2),
+                letterSpacing: "-0.02em",
+              }}
+            >
+              No Upcoming Events
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: appleFont,
+                fontSize: { xs: "16px", md: "17px" },
+                fontWeight: 400,
+                color: "#6E6E73",
+                maxWidth: "500px",
+                lineHeight: 1.6,
+                letterSpacing: "-0.01em",
+              }}
+            >
+              We're currently planning exciting community events. Check back soon for author talks, book clubs, workshops, and more!
+            </Typography>
+          </Box>
+        )}
       </Container>
 
       {/* Event Detail Modal */}
@@ -419,9 +631,11 @@ export default function Events() {
             borderRadius: "24px",
             boxShadow: "0 12px 48px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(0, 0, 0, 0.1)",
             maxWidth: "560px",
+            width: "100%",
             margin: theme.spacing(2),
             backgroundColor: "#FFFFFF",
             overflow: "hidden",
+            overflowX: "hidden",
             position: "relative",
             zIndex: 1300,
             maxHeight: "90vh",
@@ -449,6 +663,8 @@ export default function Events() {
               flexDirection: "column",
               maxHeight: "90vh",
               overflow: "hidden",
+              overflowX: "hidden",
+              width: "100%",
             }}
           >
             {/* Close Button */}
@@ -478,7 +694,7 @@ export default function Events() {
             {/* Event Image */}
             <CardMedia
               component="img"
-              image={selectedEvent.img}
+              image={selectedEvent.img.startsWith('http') ? selectedEvent.img : `${serverApi}/uploads/${selectedEvent.img}`}
               alt={selectedEvent.title}
               sx={{
                 height: { xs: "280px", sm: "320px" },
@@ -491,25 +707,49 @@ export default function Events() {
               sx={{ 
                 padding: { xs: theme.spacing(5, 4), sm: theme.spacing(6, 5) },
                 overflowY: "auto",
+                overflowX: "hidden",
                 flex: 1,
                 position: "relative",
                 zIndex: 1,
+                maxHeight: "calc(90vh - 320px)",
+                "&::-webkit-scrollbar": {
+                  width: "8px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  background: "transparent",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: "#D0D0D0",
+                  borderRadius: "4px",
+                  "&:hover": {
+                    backgroundColor: "#A0A0A0",
+                  },
+                },
               }}
             >
-              <Box sx={{ maxWidth: "600px", margin: "0 auto" }}>
+              <Box sx={{ 
+                maxWidth: "100%", 
+                margin: "0 auto",
+                width: "100%",
+                wordWrap: "break-word",
+                overflowWrap: "break-word",
+                overflow: "hidden",
+              }}>
                 {/* Category Label */}
-              <Typography
-                sx={{
-                  fontFamily: appleFont,
-                  fontSize: "11px",
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  color: "#86868B",
-                  marginBottom: theme.spacing(4),
-                }}
-              >
-              BOOKSTORE INFO
+                <Typography
+                  sx={{
+                    fontFamily: appleFont,
+                    fontSize: "11px",
+                    fontWeight: 600,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.08em",
+                    color: "#86868B",
+                    marginBottom: theme.spacing(4),
+                    wordWrap: "break-word",
+                    overflowWrap: "break-word",
+                  }}
+                >
+              COMMUNITY EVENT
                 </Typography>
 
                 {/* Event Title */}
@@ -522,9 +762,11 @@ export default function Events() {
                     color: "#1D1D1F",
                     marginBottom: theme.spacing(4),
                     lineHeight: 1.3,
+                    wordWrap: "break-word",
+                    overflowWrap: "break-word",
                   }}
                 >
-                  {getEventDetail(selectedEvent.title).title}
+                  {selectedEvent.title}
                 </Typography>
 
               {/* Full Description */}
@@ -537,9 +779,14 @@ export default function Events() {
                   color: "#1D1D1F",
                   lineHeight: 1.8,
                   marginBottom: theme.spacing(5),
+                  wordWrap: "break-word",
+                  overflowWrap: "break-word",
+                  whiteSpace: "pre-wrap",
+                  maxWidth: "100%",
+                  overflow: "hidden",
                 }}
               >
-                {getEventDetail(selectedEvent.title).fullDescription}
+                {selectedEvent.fullDesc || selectedEvent.desc}
               </Typography>
 
               {/* Event Details */}
@@ -552,8 +799,8 @@ export default function Events() {
                   gap: theme.spacing(2.5),
                 }}
               >
-                {/* Author */}
-                {selectedEvent.author && (
+                {/* Host */}
+                {selectedEvent.host && (
                   <Box
                     sx={{
                       display: "flex",
@@ -576,7 +823,7 @@ export default function Events() {
                         color: "#1D1D1F",
                       }}
                     >
-                      {selectedEvent.author}
+                      Host: {selectedEvent.host}
                     </Typography>
                   </Box>
                 )}

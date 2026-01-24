@@ -63,6 +63,9 @@ export default function Products(props: ProductPageProps) {
   const [searchText, setSearchText] = useState<string>("");
   const [editorPicks, setEditorPicks] = useState<Product[]>([]);
   const [animatingItem, setAnimatingItem] = useState<{ id: string; from: { x: number; y: number }; to: { x: number; y: number } } | null>(null);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [hasReachedEnd, setHasReachedEnd] = useState<boolean>(false);
+  const productsSectionRef = useRef<HTMLDivElement>(null);
   const cartIconRef = useRef<HTMLElement | null>(null);
   const history = useHistory();
   const theme = useTheme();
@@ -71,12 +74,82 @@ export default function Products(props: ProductPageProps) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  // Auto-reset to page 1 when filters change and current page would be empty
+  // Use a ref to track previous filter values to detect actual filter changes
+  const prevFiltersRef = useRef<{ search: string; productType: ProductType; order: string }>({
+    search: productSearch.search || "",
+    productType: productSearch.productType || ProductType.FICTION,
+    order: productSearch.order || "createdAt",
+  });
+
+  useEffect(() => {
+    const currentFilters = {
+      search: productSearch.search || "",
+      productType: productSearch.productType || ProductType.FICTION,
+      order: productSearch.order || "createdAt",
+    };
+
+    const filtersChanged = 
+      prevFiltersRef.current.search !== currentFilters.search ||
+      prevFiltersRef.current.productType !== currentFilters.productType ||
+      prevFiltersRef.current.order !== currentFilters.order;
+
+    if (filtersChanged) {
+      prevFiltersRef.current = currentFilters;
+      // Filters changed - reset to page 1 if not already there
+      // Also reset totalPages to allow recalculation
+      if (productSearch.page !== 1) {
+        setProductSearch(prev => ({ ...prev, page: 1 }));
+      }
+      setTotalPages(1); // Reset to allow recalculation
+      setHasReachedEnd(false);
+    } else {
+      // No filter change, but check if current page is invalid
+      if (products.length === 0 && productSearch.page > 1 && totalPages === 0) {
+        // Empty results and we're not on page 1 - reset to page 1
+        setProductSearch(prev => ({ ...prev, page: 1 }));
+      } else if (products.length > 0 && totalPages > 0 && productSearch.page > totalPages) {
+        // Current page exceeds total pages - reset to last valid page
+        setProductSearch(prev => ({ ...prev, page: totalPages }));
+      }
+    }
+  }, [productSearch.search, productSearch.productType, productSearch.order, products.length, totalPages, productSearch.page]);
+
   useEffect(() => {
     const product = new ProductService();
     product
       .getProducts(productSearch)
-      .then((data) => setProducts(data))
-      .catch(() => {});
+      .then((data) => {
+        setProducts(data);
+        // Calculate total pages based on results
+        // If we get fewer products than the limit, we're on the last page
+        const isLastPage = data.length < productSearch.limit;
+        setHasReachedEnd(isLastPage);
+        
+        if (data.length === 0) {
+          // No products on this page
+          if (productSearch.page === 1) {
+            // No products at all - set to 0 pages
+            setTotalPages(0);
+          } else {
+            // We're on a page beyond the last page - set totalPages to previous page
+            setTotalPages(Math.max(1, productSearch.page - 1));
+          }
+        } else if (isLastPage) {
+          // We're on the last page, so total pages = current page
+          setTotalPages(productSearch.page);
+        } else {
+          // We got a full page, so there might be more pages
+          // Set to at least current page + 1 (will be adjusted if next page is empty)
+          // Don't decrease totalPages if we already have a higher value
+          setTotalPages(prev => Math.max(prev, productSearch.page + 1));
+        }
+      })
+      .catch(() => {
+        setProducts([]);
+        setTotalPages(0);
+        setHasReachedEnd(true);
+      });
   }, [productSearch]);
 
   useEffect(() => {
@@ -92,25 +165,61 @@ export default function Products(props: ProductPageProps) {
       .catch(() => {});
   }, []);
   const searchCollectionHandler = (collection: ProductType) => {
-    productSearch.page = 1;
-    productSearch.productType = collection;
-    setProductSearch({ ...productSearch });
+    setProductSearch({ 
+      ...productSearch, 
+      page: 1,
+      productType: collection 
+    });
   };
 
   const searchOrderHandler = (order: string) => {
-    productSearch.page = 1;
-    productSearch.order = order;
-    setProductSearch({ ...productSearch });
+    setProductSearch({ 
+      ...productSearch, 
+      page: 1,
+      order: order 
+    });
   };
 
   const searchProductHandler = () => {
-    productSearch.search = searchText;
-    setProductSearch({ ...productSearch });
+    setProductSearch({ 
+      ...productSearch, 
+      page: 1,
+      search: searchText 
+    });
   };
 
   const paginationHandler = (e: ChangeEvent<any>, value: number) => {
-    productSearch.page = value;
-    setProductSearch({ ...productSearch });
+    // Validate page number
+    if (value < 1 || (totalPages > 0 && value > totalPages)) {
+      return;
+    }
+    
+    // Update page - this will trigger the useEffect to fetch new products
+    setProductSearch({ 
+      ...productSearch, 
+      page: value 
+    });
+    
+    // Smooth scroll to products section so user can see the updated products
+    // Only scroll if the products section is not already in viewport
+    // This prevents fighting with user's own scroll actions
+    setTimeout(() => {
+      if (productsSectionRef.current) {
+        const rect = productsSectionRef.current.getBoundingClientRect();
+        const isInViewport = rect.top >= 0 && rect.top <= window.innerHeight;
+        
+        // Only scroll if products section is not visible or is far from top
+        if (!isInViewport || rect.top > 200) {
+          productsSectionRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start'
+          });
+        }
+      }
+    }, 100);
+    
+    // Focus stays on the pagination button that was clicked (default behavior)
+    // No need to force focus elsewhere
   };
 
   const chooseDishHandler = (id: string) => {
@@ -342,17 +451,50 @@ export default function Products(props: ProductPageProps) {
         </Stack>
 
         {/* Products Grid Section */}
-        <Box className="products-section" sx={{ width: "100%", marginBottom: theme.spacing(6) }}>
+        <Box 
+          ref={productsSectionRef}
+          className="products-section" 
+          sx={{ 
+            width: "100%", 
+            marginBottom: theme.spacing(6),
+          }}
+        >
+          {/* Aria-live region for screen reader announcements */}
+          <Box
+            component="div"
+            aria-live="polite"
+            aria-atomic="true"
+            sx={{
+              position: "absolute",
+              left: "-10000px",
+              width: "1px",
+              height: "1px",
+              overflow: "hidden",
+            }}
+          >
+            {products.length > 0 && (
+              <span>
+                Page {productSearch.page} of {totalPages}, {products.length} {products.length === 1 ? 'product' : 'products'} loaded
+              </span>
+            )}
+          </Box>
+
           {products.length !== 0 ? (
             <Container maxWidth="lg">
               <Box
                 sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "center",
+                  display: "grid",
+                  gridTemplateColumns: {
+                    xs: "1fr",
+                    sm: "repeat(2, 1fr)",
+                    md: "repeat(3, 1fr)",
+                    lg: "repeat(4, 1fr)",
+                  },
+                  gridTemplateRows: "repeat(2, auto)",
                   gap: { xs: theme.spacing(2), sm: theme.spacing(3), md: theme.spacing(3), lg: theme.spacing(4) },
                   width: "100%",
                   margin: 0,
+                  justifyItems: "center",
                 }}
               >
                 {products.map((product, index) => {
@@ -361,14 +503,11 @@ export default function Products(props: ProductPageProps) {
                     <Box
                       key={product._id || index}
                       sx={{
-                        // Grid breakpoints: xs={12} sm={6} md={4} lg={3}
-                        width: { xs: "100%", sm: "calc(50% - 12px)", md: "calc(33.333% - 16px)", lg: "calc(25% - 18px)" },
+                        width: "100%",
                         maxWidth: "280px",
                         minWidth: "260px",
                         display: "flex",
                         justifyContent: "center",
-                        flexGrow: 0,
-                        flexShrink: 0,
                       }}
                     >
                   <Stack
@@ -477,39 +616,125 @@ export default function Products(props: ProductPageProps) {
             )}
         </Box>
 
-        {/* Pagination Section - Outside Grid, Always Visible, Stable */}
-        <Box
-          className="pagination-section"
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: theme.spacing(4, 0),
-            minHeight: "80px",
-            position: "relative",
-          }}
-        >
-              <Pagination
-                count={
-                  products.length !== 0
-                    ? productSearch.page + 1
-                    : productSearch.page
+        {/* Pagination Section - Only show when products exist and totalPages > 0 */}
+        {products.length > 0 && totalPages > 0 && (
+          <Box
+            component="nav"
+            aria-label="Products pagination"
+            className="pagination-section"
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: theme.spacing(4, 0),
+              minHeight: "80px",
+              position: "relative",
+            }}
+          >
+            <Pagination
+              count={totalPages}
+              page={productSearch.page}
+              renderItem={(item) => {
+                // Add aria-current="page" to the active page button
+                const isActivePage = item.type === 'page' && item.page === productSearch.page;
+                
+                // Disable Previous button on page 1
+                if (item.type === 'previous' && productSearch.page === 1) {
+                  return (
+                    <PaginationItem
+                      {...item}
+                      disabled
+                      aria-label="Previous page"
+                      components={{
+                        previous: ArrowBackIcon,
+                        next: ArrowForwardIcon,
+                      }}
+                    />
+                  );
                 }
-                page={productSearch.page}
-                renderItem={(item) => (
+                // Disable Next button on last page
+                if (item.type === 'next' && (productSearch.page >= totalPages || hasReachedEnd)) {
+                  return (
+                    <PaginationItem
+                      {...item}
+                      disabled
+                      aria-label="Next page"
+                      components={{
+                        previous: ArrowBackIcon,
+                        next: ArrowForwardIcon,
+                      }}
+                    />
+                  );
+                }
+                // Active page button with aria-current
+                if (isActivePage) {
+                  return (
+                    <PaginationItem
+                      {...item}
+                      aria-current="page"
+                      aria-label={`Page ${item.page}, current page`}
+                      components={{
+                        previous: ArrowBackIcon,
+                        next: ArrowForwardIcon,
+                      }}
+                      sx={{
+                        '&.Mui-selected': {
+                          backgroundColor: '#007AFF',
+                          color: '#FFFFFF',
+                          fontWeight: 600,
+                          '&:hover': {
+                            backgroundColor: '#0051D5',
+                          },
+                        },
+                      }}
+                    />
+                  );
+                }
+                // Regular page buttons
+                if (item.type === 'page') {
+                  return (
+                    <PaginationItem
+                      {...item}
+                      aria-label={`Go to page ${item.page}`}
+                      components={{
+                        previous: ArrowBackIcon,
+                        next: ArrowForwardIcon,
+                      }}
+                    />
+                  );
+                }
+                // Previous/Next buttons
+                return (
                   <PaginationItem
+                    {...item}
+                    aria-label={item.type === 'previous' ? 'Previous page' : 'Next page'}
                     components={{
                       previous: ArrowBackIcon,
                       next: ArrowForwardIcon,
                     }}
-                    {...item}
                   />
-                )}
-                onChange={paginationHandler}
-            className="products-pagination"
-              />
-        </Box>
+                );
+              }}
+              onChange={paginationHandler}
+              className="products-pagination"
+              sx={{
+                '& .MuiPaginationItem-root': {
+                  minWidth: '40px',
+                  height: '40px',
+                  fontSize: '16px',
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 122, 255, 0.08)',
+                  },
+                },
+                '& .MuiPaginationItem-iconButton': {
+                  minWidth: '40px',
+                  height: '40px',
+                },
+              }}
+            />
+          </Box>
+        )}
       </Container>
 
       <Box
