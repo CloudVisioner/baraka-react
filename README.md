@@ -1,46 +1,50 @@
-# Getting Started with Create React App
+# Baraka — Online Bookstore (Frontend)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
+React + TypeScript frontend for Baraka, an online bookstore with a manual payment-approval order flow. Pairs with the [baraka](https://github.com/CloudVisioner/baraka) Express backend.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Product catalog and book details
+- Cart and checkout flow
+- Manual payment verification: customer uploads payment proof, admin approves or rejects before order ships
+- Order status tracking (Awaiting Payment → Processing → Completed)
+- Admin panel for order approval, products, and events
+- Book of the Month feature
+- Events page
 
-### `npm start`
+## Tech stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Frontend:** React, TypeScript, Redux Toolkit
+- **Bootstrapped with:** Create React App
+- **Backend:** [baraka](https://github.com/CloudVisioner/baraka) — Express, MongoDB, Socket.io (separate repo)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Order status flow
 
-### `npm test`
+PAUSE → PENDING → PROCESS → FINISH
+↓
+REJECTED (can re-upload)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **PAUSE** — awaiting payment proof
+- **PENDING** — proof uploaded, awaiting admin review
+- **REJECTED** — proof rejected, customer can re-upload
+- **PROCESS** — payment verified, order being fulfilled
+- **FINISH** — order completed
 
-### `npm run build`
+## Setup
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+yarn install
+yarn run start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Runs on `http://localhost:3000`. Requires the [backend](https://github.com/CloudVisioner/baraka) running on its configured port for full functionality.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Related
 
-### `npm run eject`
+- Backend repo: [baraka](https://github.com/CloudVisioner/baraka)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Documentation
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [Orders API](./ORDERS_BACKEND_SPECIFICATION.md)
+- [Events API](./EVENTS_API_SPECIFICATION.md)
+- [Book of the Month](./BOOK_OF_THE_MONTH_BACKEND_SPECIFICATION.md)
